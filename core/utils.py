@@ -4,6 +4,12 @@ from django.http import HttpResponse
 import xlwt
 
 
+def salva_criado_por(request, obj):
+    if not obj.pk:
+        obj.atendente = request.user
+    obj.save()
+
+
 def export_as_csv(self, request, queryset):
     meta = self.model._meta
     field_names = [field.name for field in meta.fields]

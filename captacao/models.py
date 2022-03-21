@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -34,15 +35,15 @@ class Curso(models.Model):
         verbose_name_plural = 'Cursos'
 
 
-class Atendente(models.Model):
-    nome = models.CharField('Nome', max_length=40)
-
-    def __str__(self):
-        return self.nome
-
-    class Meta:
-        verbose_name = 'Atendente'
-        verbose_name_plural = 'Atendentes'
+# class Atendente(models.Model):
+#     nome = models.CharField('Nome', max_length=40)
+#
+#     def __str__(self):
+#         return self.nome
+#
+#     class Meta:
+#         verbose_name = 'Atendente'
+#         verbose_name_plural = 'Atendentes'
 
 
 class Polo(models.Model):
@@ -56,18 +57,33 @@ class Polo(models.Model):
         verbose_name_plural = 'Polos'
 
 
+class Periodo(models.Model):
+    nome = models.CharField('Nome', max_length=40)
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        verbose_name = 'Periodo'
+        verbose_name_plural = 'Periodos'
+
+
 class Candidato(models.Model):
+    periodo = models.ForeignKey(Periodo, on_delete=models.CASCADE)
     polo = models.ForeignKey(Polo, on_delete=models.CASCADE)
     nome = models.CharField('Nome', max_length=40)
-    telefone1 = models.CharField('Telefone 1', max_length=20)
-    telefone2 = models.CharField('Telefone 2', max_length=20)
-    email = models.EmailField('Email', max_length=100)
+    telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
+    telefone2 = models.CharField('Telefone 2', max_length=20, null=True, blank=True)
+    email = models.EmailField('Email', max_length=100, null=True, blank=True)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     marketing = models.ForeignKey(Marketing, on_delete=models.CASCADE)
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
-    atendente = models.ForeignKey(Atendente, on_delete=models.CASCADE)
-    data_contato = models.DateTimeField()
+    atendente = models.ForeignKey(User, on_delete=models.PROTECT, related_name='atendente', editable=False)
+    data_contato = models.DateField()
     observacoes = models.TextField()
+
+    def save(self, *args, **kwargs):
+        super(Candidato, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.nome
