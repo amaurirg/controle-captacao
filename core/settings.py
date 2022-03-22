@@ -85,26 +85,26 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
-# default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
-# DATABASES = {
-#     'default': config('DATABASE_URL', default=default_dburl, cast=dburl),
-# }
-
+default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': config('DATABASE_URL', default=default_dburl, cast=dburl),
 }
 
-if config('DB_NAME'):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASS'),
-            'HOST': config('DB_HOST', default='localhost'),
-            'PORT': config('DB_PORT', default='5432'),
-        }
-    }
+# DATABASES = {
+#     'default': dj_database_url.config()
+# }
+#
+# if config('DB_NAME'):
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': config('DB_NAME'),
+#             'USER': config('DB_USER'),
+#             'PASSWORD': config('DB_PASS'),
+#             'HOST': config('DB_HOST', default='localhost'),
+#             'PORT': config('DB_PORT', default='5432'),
+#         }
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
