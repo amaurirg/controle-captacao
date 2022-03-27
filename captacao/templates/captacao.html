@@ -1,0 +1,211 @@
+{% load static %}
+
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Controle de Captação</title>
+
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+          integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+            integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        .pusher {
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+{% block content %} {% endblock %}
+
+<div class="ui left vertical inverted menu sidebar">
+    <a href="#" class="item sidebar_toggle">Candidatos</a>
+    <a href="#" class="item sidebar_toggle">Períodos</a>
+    <a href="#" class="item sidebar_toggle">Status</a>
+</div>
+
+<div class="ui basic icon top fixed menu">
+    <a class="item sidebar_toggle">
+        <i class="sidebar icon"></i>
+        Menu
+    </a>
+</div>
+
+<div class="pusher">
+    <!-- Site content !-->
+
+    <div class="ui grid" style="padding: 30px 0 50px 0">
+        <div class="eight wide column">
+            {#    <div style="margin: 20px 0 50px 0">#}
+            <h1 class="ui left floated">Candidatos</h1>
+        </div>
+        <div class="eight wide column">
+            <button class="ui right floated button">Adicionar</button>
+        </div>
+    </div>
+    <!--<table id="table_candidatos" class="ui selectable inverted table">-->
+    <table id="table_candidatos" class="hover" style="width:100%">
+        <thead>
+        <tr>
+            <th style="padding-left: 0; text-align: left">Período</th>
+            <th style="padding-left: 0; text-align: left">Polo</th>
+            <th style="padding-left: 0; text-align: left">Nome</th>
+            <th style="padding-left: 0; text-align: left">Telefone</th>
+            <th style="padding-left: 0; text-align: left">Curso</th>
+            <th style="padding-left: 0; text-align: left">Marketing</th>
+            <th style="padding-left: 0; text-align: left">Status</th>
+            <th style="padding-left: 0; text-align: left">Atendente</th>
+            <th style="padding-left: 0; text-align: left">Data do Contato</th>
+            <th style="padding-left: 0; text-align: left">Obs</th>
+            <th style="padding-left: 0; text-align: left">Editar</th>
+            <th style="padding-left: 0; text-align: left">Excluir</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for candidato in candidatos %}
+            <tr>
+                <td style="padding-left: 0; text-align: left">{{ candidato.periodo }}</td>
+                <td style="padding-left: 0; text-align: left">{{ candidato.polo }}</td>
+                <td style="padding-left: 0; text-align: left">{{ candidato.nome }}</td>
+                <td style="padding-left: 0; text-align: left">{{ candidato.telefone1 }}</td>
+                <td style="padding-left: 0; text-align: left">{{ candidato.curso }}</td>
+                <td style="padding-left: 0; text-align: left">{{ candidato.marketing }}</td>
+                <td style="padding-left: 0; text-align: left">{{ candidato.status }}</td>
+                {% if candidato.atendente.first_name %}
+                    <td style="padding-left: 0; text-align: left">{{ candidato.atendente.first_name }}</td>
+                {% else %}
+                    <td style="padding-left: 0; text-align: left">{{ candidato.atendente }}</td>
+                {% endif %}
+                <td style="padding-left: 0; text-align: left">{{ candidato.data_contato|date:"d/m/Y" }}</td>
+                <td style="padding-left: 0; text-align: left">
+                    <div class="ui accordion">
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                        </div>
+                        <div class="content">
+                            <p class="transition hidden">Observações: {{ candidato.observacoes }}</p>
+                        </div>
+                    </div>
+                </td>
+                <td style="padding-left: 0; text-align: left"><a href=""><i class="edit icon black"></i></a></td>
+                <td style="padding-left: 0; text-align: left"><a href=""><i class="trash icon black"></i></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 35px; padding-bottom: 50px">
+        <div class="ui top attached button" style="font-size: 20px; font-weight: bold" tabindex="0">Filtro</div>
+        <div class="ui attached segment">
+            <div class="ui grid">
+                <div class="four wide column">
+                    <div class="ui list">
+                        <h3>Período</h3>
+                        {% for periodo in periodos %}
+                            <div class="item ui toggle checkbox">
+                                <input type="checkbox" name="public"/>
+                                <label>{{ periodo }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <div class="ui list">
+                        <h3>Polo</h3>
+                        {% for polo in polos %}
+                            <div class="item ui toggle checkbox">
+                                <input type="checkbox" name="public">
+                                <label>{{ polo }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <div class="ui list">
+                        <h3>Marketing</h3>
+                        {% for marketing in marketing_list %}
+                            <div class="item ui toggle checkbox">
+                                <input type="checkbox" name="public">
+                                <label>{{ marketing }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <div class="four wide column">
+                    <div class="ui list">
+                        <h3>Status</h3>
+                        {% for status in status_list %}
+                            <div class="item ui toggle checkbox">
+                                <input type="checkbox" name="public">
+                                <label>{{ status }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script>
+    $('.sidebar_toggle').click(function () {
+        $('.ui.sidebar').sidebar('toggle');
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#table_candidatos').DataTable({
+            ordering:  false,
+            "language": {
+                "lengthMenu": "Listando _MENU_ registros por pagina",
+                "zeroRecords": "Nenhum registro localizado",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Nenhum registro disponível",
+                "infoFiltered": "(Filtrado de _MAX_ total resultados)",
+                "search": "Buscar",
+                "paginate": {
+                    "first": "Primeira",
+                    "last": "Última",
+                    "next": "Próxima",
+                    "previous": "Anterior"
+                },
+            }
+        });
+    });
+</script>
+
+<script>
+    $('#hybrid select')
+        .dropdown({
+            on: 'hover'
+        })
+    ;
+
+    $('.ui.accordion')
+        .accordion()
+    ;
+</script>
+
+{% block extrajs %}{% endblock %}
+
+</body>
+</html>
