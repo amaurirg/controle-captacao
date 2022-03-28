@@ -1,0 +1,32 @@
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Adicionar novo candidato
+    </div>
+    <div class="image content">
+        <div class="image">
+            An image can appear on left or an icon
+        </div>
+        <div class="description">
+            <form action="{% url 'adicionar' %}" method="post"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit" class="ui right floated button">Adicionar</button>
+            </form>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui button">Cancel</div>
+        <div class="ui button">OK</div>
+    </div>
+</div>
+
+<script>
+    $('.ui.modal')
+  .modal({
+    inverted: true
+  })
+  .modal('show')
+;
+</script>

@@ -1,4 +1,5 @@
 {% load static %}
+{% load widget_tweaks %}
 
 <!doctype html>
 <html lang="pt-br">
@@ -27,71 +28,223 @@
         .pusher {
             padding: 50px;
         }
+
+        .blue_color {
+            color: #1678C2;
+        }
+
+        .blue_background {
+            background-color: #1678C2 !important;
+            color: white !important;
+            font-size: 18px !important;
+        }
+
+        .pusher-ref {
+            padding: 20px !important;
+        }
+
+        a.sidebar_toggle {
+            color: white !important;
+        }
+
+        a.sidebar_toggle::before {
+            background-color: white !important;
+        }
+
+        a.sidebar_toggle:hover {
+            background-color: #003366 !important;
+        }
+
+        .grid-style {
+            padding: 30px 0 50px 0 !important;
+        }
+
+        #table_candidatos {
+            width: 100%;
+            background-color: #1678C2;
+            border-radius: 5px;
+        }
+
+        #table_candidatos thead {
+            color: white;
+        }
+
+        #table_candidatos th:first-child {
+            padding-left: 10px;
+            text-align: left
+        }
+
+        #table_candidatos td:first-child {
+            padding-left: 10px;
+            text-align: left
+        }
+
+        #table_candidatos th {
+            padding-left: 0;
+            text-align: left;
+        }
+
+        #table_candidatos td {
+            padding-left: 0;
+            text-align: left;
+        }
+
+        .form-ref {
+            padding: 20px;
+            background-color: #d7d8e0;
+        }
+
+        .filter-candidatos {
+            margin-top: 35px;
+            padding-bottom: 50px;
+        }
+
+        .filter-button {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
 {% block content %} {% endblock %}
 
-<div class="ui left vertical inverted menu sidebar">
+<div class="ui icon left vertical sidebar menu blue_background">
     <a href="#" class="item sidebar_toggle">Candidatos</a>
-    <a href="#" class="item sidebar_toggle">Períodos</a>
-    <a href="#" class="item sidebar_toggle">Status</a>
+    <a href="#" class="item sidebar_toggle">Inscritos</a>
+    <a href="#" class="item sidebar_toggle">Cancelados</a>
+    <a href="#" class="item sidebar_toggle">Trancados</a>
+    <a href="#" class="item sidebar_toggle">Outros</a>
 </div>
 
-<div class="ui basic icon top fixed menu">
-    <a class="item sidebar_toggle">
-        <i class="sidebar icon"></i>
-        Menu
-    </a>
-</div>
-
-<div class="pusher">
+<div class="pusher pusher-ref">
     <!-- Site content !-->
-
-    <div class="ui grid" style="padding: 30px 0 50px 0">
+    <div class="ui icon open button item sidebar_toggle">
+        <a>
+            <i class="sidebar icon"></i>
+            Menu
+        </a>
+    </div>
+    <div class="ui grid grid-style">
         <div class="eight wide column">
-            {#    <div style="margin: 20px 0 50px 0">#}
-            <h1 class="ui left floated">Candidatos</h1>
+            <h1 class="ui left floated blue_color">Candidatos</h1>
         </div>
         <div class="eight wide column">
-            <button class="ui right floated button">Adicionar</button>
+            <a href="#">
+                <button type="submit" id="abrir" class="ui right floated button primary">Adicionar</button>
+            </a>
         </div>
     </div>
-    <!--<table id="table_candidatos" class="ui selectable inverted table">-->
-    <table id="table_candidatos" class="hover" style="width:100%">
+
+    <div class="ui modal">
+        <i class="close icon"></i>
+        <div class="header">
+            Adicionar novo candidato
+        </div>
+        <form class="ui form" action="#" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="ui equal width form form-ref">
+                <div class="fields">
+                    <div class="field">
+                        <h4>Período</h4>
+                        {% render_field form.periodo %}
+                    </div>
+                    <div class="field">
+                        <h4>Polo</h4>
+                        {% render_field form.polo %}
+                    </div>
+                    <div class="field">
+                        <h4>Curso</h4>
+                        {% render_field form.curso %}
+                    </div>
+                    <div class="field">
+                        <h4>Marketing</h4>
+                        {% render_field form.marketing %}
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="field">
+                        <h4>Nome</h4>
+                        {% render_field form.nome %}
+                    </div>
+                    <div class="field">
+                        <h4>Email</h4>
+                        {% render_field form.email %}
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="field">
+                        <h4>Telefone 1</h4>
+                        {% render_field form.telefone1 %}
+                    </div>
+                    <div class="field">
+                        <h4>Telefone 2</h4>
+                        {% render_field form.telefone2 %}
+                    </div>
+                    <div class="field">
+                        <h4>Data do contato</h4>
+                        {% render_field form.data_contato %}
+                    </div>
+                    <div class="field">
+                        <h4>Status</h4>
+                        {% render_field form.status %}
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="field">
+                        <h4>Observações</h4>
+                        {% render_field form.observacoes %}
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="field">
+                        <button type="submit" class="ui floated button primary">Salvar</button>
+                        <button type="submit" class="ui floated button primary">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <table id="table_candidatos" class="hover">
         <thead>
         <tr>
-            <th style="padding-left: 0; text-align: left">Período</th>
-            <th style="padding-left: 0; text-align: left">Polo</th>
-            <th style="padding-left: 0; text-align: left">Nome</th>
-            <th style="padding-left: 0; text-align: left">Telefone</th>
-            <th style="padding-left: 0; text-align: left">Curso</th>
-            <th style="padding-left: 0; text-align: left">Marketing</th>
-            <th style="padding-left: 0; text-align: left">Status</th>
-            <th style="padding-left: 0; text-align: left">Atendente</th>
-            <th style="padding-left: 0; text-align: left">Data do Contato</th>
-            <th style="padding-left: 0; text-align: left">Obs</th>
-            <th style="padding-left: 0; text-align: left">Editar</th>
-            <th style="padding-left: 0; text-align: left">Excluir</th>
+            <th>Período</th>
+            <th>Polo</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Curso</th>
+            <th>Marketing</th>
+            <th>Status</th>
+            <th>Atendente</th>
+            <th>Data do Contato</th>
+            <th>Obs</th>
+            <th>Editar</th>
+            <th>Excluir</th>
         </tr>
         </thead>
         <tbody>
         {% for candidato in candidatos %}
             <tr>
-                <td style="padding-left: 0; text-align: left">{{ candidato.periodo }}</td>
-                <td style="padding-left: 0; text-align: left">{{ candidato.polo }}</td>
-                <td style="padding-left: 0; text-align: left">{{ candidato.nome }}</td>
-                <td style="padding-left: 0; text-align: left">{{ candidato.telefone1 }}</td>
-                <td style="padding-left: 0; text-align: left">{{ candidato.curso }}</td>
-                <td style="padding-left: 0; text-align: left">{{ candidato.marketing }}</td>
-                <td style="padding-left: 0; text-align: left">{{ candidato.status }}</td>
+                <td>{{ candidato.periodo }}</td>
+                <td>{{ candidato.polo }}</td>
+                <td>{{ candidato.nome }}</td>
+                <td>{{ candidato.telefone1 }}</td>
+                <td>{{ candidato.curso }}</td>
+                <td>{{ candidato.marketing }}</td>
+                <td>{{ candidato.status }}</td>
                 {% if candidato.atendente.first_name %}
-                    <td style="padding-left: 0; text-align: left">{{ candidato.atendente.first_name }}</td>
+                    <td>{{ candidato.atendente.first_name }}</td>
                 {% else %}
-                    <td style="padding-left: 0; text-align: left">{{ candidato.atendente }}</td>
+                    <td>{{ candidato.atendente }}</td>
                 {% endif %}
-                <td style="padding-left: 0; text-align: left">{{ candidato.data_contato|date:"d/m/Y" }}</td>
-                <td style="padding-left: 0; text-align: left">
+                <td>{{ candidato.data_contato|date:"d/m/Y" }}</td>
+                <td>
                     <div class="ui accordion">
                         <div class="title">
                             <i class="dropdown icon"></i>
@@ -101,15 +254,16 @@
                         </div>
                     </div>
                 </td>
-                <td style="padding-left: 0; text-align: left"><a href=""><i class="edit icon black"></i></a></td>
-                <td style="padding-left: 0; text-align: left"><a href=""><i class="trash icon black"></i></a></td>
+                <td><a href=""><i class="edit icon black"></i></a></td>
+                <td><a href=""><i class="trash icon black"></i></a></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <div style="margin-top: 35px; padding-bottom: 50px">
-        <div class="ui top attached button" style="font-size: 20px; font-weight: bold" tabindex="0">Filtro</div>
+    <div class="filter-candidatos">
+
+        <div class="ui top attached button primary filter-button" tabindex="0">Filtro</div>
         <div class="ui attached segment">
             <div class="ui grid">
                 <div class="four wide column">
@@ -160,12 +314,26 @@
             </div>
         </div>
     </div>
-
-
 </div>
 
 
 <script>
+
+    function open_modal(url) {
+        $('#open-modal').focus().load(url, function () {
+            //$(this).modal('show');
+            //$('.ui.modal').modal('show')
+            $(this).click(function () {
+                $('.ui.modal').modal('show')
+            });
+        })
+    }
+
+    $('#abrir').click(function () {
+        $('.ui.modal').modal('show')
+    });
+
+
     $('.sidebar_toggle').click(function () {
         $('.ui.sidebar').sidebar('toggle');
     });
@@ -174,7 +342,7 @@
 <script>
     $(document).ready(function () {
         $('#table_candidatos').DataTable({
-            ordering:  false,
+            ordering: false,
             "language": {
                 "lengthMenu": "Listando _MENU_ registros por pagina",
                 "zeroRecords": "Nenhum registro localizado",
