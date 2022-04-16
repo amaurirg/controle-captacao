@@ -13,6 +13,17 @@ class Status(models.Model):
         verbose_name_plural = 'Status'
 
 
+class Situacao(models.Model):
+    nome = models.CharField('Nome', max_length=40)
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        verbose_name = 'Situação'
+        verbose_name_plural = 'Situações'
+
+
 class Marketing(models.Model):
     nome = models.CharField('Nome', max_length=40)
 
@@ -35,15 +46,15 @@ class Curso(models.Model):
         verbose_name_plural = 'Cursos'
 
 
-# class Atendente(models.Model):
-#     nome = models.CharField('Nome', max_length=40)
-#
-#     def __str__(self):
-#         return self.nome
-#
-#     class Meta:
-#         verbose_name = 'Atendente'
-#         verbose_name_plural = 'Atendentes'
+class Atendente(models.Model):
+    nome = models.CharField('Nome', max_length=40)
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        verbose_name = 'Atendente'
+        verbose_name_plural = 'Atendentes'
 
 
 class Polo(models.Model):
@@ -64,8 +75,8 @@ class Periodo(models.Model):
         return self.nome
 
     class Meta:
-        verbose_name = 'Periodo'
-        verbose_name_plural = 'Periodos'
+        verbose_name = 'Período'
+        verbose_name_plural = 'Períodos'
 
 
 class Candidato(models.Model):
@@ -77,8 +88,9 @@ class Candidato(models.Model):
     email = models.EmailField('Email', max_length=100, null=True, blank=True)
     curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.CASCADE)
     marketing = models.ForeignKey(Marketing, verbose_name='Marketing', on_delete=models.CASCADE)
+    situacao = models.ForeignKey(Situacao, verbose_name='Situação', on_delete=models.CASCADE)
     status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE)
-    atendente = models.ForeignKey(User, verbose_name='Atendente', on_delete=models.PROTECT, related_name='atendente', editable=False)
+    atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.CASCADE)
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observacoes')
 
