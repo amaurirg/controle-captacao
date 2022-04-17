@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        ATUALIZAAAAAAR
+    </div>
+    <div class="image content">
+        <div class="image">
+            An image can appear on left or an icon
+        </div>
+        <div class="description">
+            <form action="{% url 'candidatos' %}" method="post"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit" class="ui right floated button">Salvar</button>
+            </form>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui button">Cancel</div>
+        <div class="ui button">OK</div>
+    </div>
+</div>
+{% endblock %}

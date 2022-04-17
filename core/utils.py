@@ -6,7 +6,9 @@ import xlwt
 
 def salva_criado_por(request, obj):
     if not obj.pk:
-        obj.atendente = request.user
+        obj.criado_por = request.user
+    else:
+        obj.atualizado_por = request.user
     obj.save()
 
 

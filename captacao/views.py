@@ -1,11 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from captacao.forms import CandidatoForm
-from captacao.models import Candidato, Periodo, Status, Marketing, Polo
+from captacao.models import Candidato, Periodo, Status, Marketing, Polo, Inscrito, ExAluno
 
 
 def captacao(request):
+    return render(request, 'base.html')
+
+def candidatos(request):
     candidatos = Candidato.objects.all()
 
     context = {
@@ -16,13 +19,56 @@ def captacao(request):
         'status_list': Status.objects.all(),
         'form': CandidatoForm(request.POST or None)
     }
-    return render(request, 'captacao.html', context)
+    return render(request, 'candidatos.html', context)
+
+
+def inscritos(request):
+    inscritos = Inscrito.objects.all()
+
+    context = {
+        'inscritos': inscritos,
+        'periodos': Periodo.objects.all(),
+        'polos': Polo.objects.all(),
+        'status_list': Status.objects.all(),
+        # 'form': InscritoForm(request.POST or None)
+    }
+    return render(request, 'inscritos.html', context)
+
+
+def exalunos(request):
+    ex_alunos = ExAluno.objects.all()
+
+    context = {
+        'ex_alunos': ex_alunos,
+        'periodos': Periodo.objects.all(),
+        'polos': Polo.objects.all(),
+        'status_list': Status.objects.all(),
+        # 'form': ExAlunoForm(request.POST or None)
+    }
+    return render(request, 'ex-alunos.html', context)
 
 
 def modal_cria_candidato(request):
     form = CandidatoForm(request.POST or None)
     if form.is_valid():
-        form.instance.atendente = request.user
         form.save()
-        return redirect(reverse('captacao'))
+        return redirect(reverse('candidatos'))
     return render(request, 'modal_cria_candidato.html', {'form': form})
+
+
+def modal_atualiza_candidato(request, pk):
+    candidato = get_object_or_404(Candidato, pk=pk)
+    form = CandidatoForm(request.POST or None, instance=candidato)
+    if form.is_valid():
+        candidato.save()
+        return redirect(reverse('candidatos'))
+    return render(request, 'modal_atualiza_candidato.html', {'form': form})
+
+
+def modal_remove_candidato(request, pk):
+    candidato = get_object_or_404(Candidato, pk=pk)
+    if request.POST:
+        candidato.save()
+        return redirect(reverse('candidatos'))
+    else:
+        return render(request, 'modal_remove_candidato.html', {'candidato': candidato})

@@ -1,133 +1,10 @@
-{% load static %}
+{% extends 'base.html' %}
 {% load widget_tweaks %}
 
-<!doctype html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Controle de Captação</title>
-
-    <link rel="stylesheet" href="//cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
-          integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
-            integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
-    <style>
-        .pusher {
-            padding: 50px;
-        }
-
-        .blue_color {
-            color: #1678C2;
-        }
-
-        .blue_background {
-            background-color: #1678C2 !important;
-            color: white !important;
-            font-size: 18px !important;
-        }
-
-        .pusher-ref {
-            padding: 20px !important;
-        }
-
-        a.sidebar_toggle {
-            color: white !important;
-        }
-
-        a.sidebar_toggle::before {
-            background-color: white !important;
-        }
-
-        a.sidebar_toggle:hover {
-            background-color: #003366 !important;
-        }
-
-        .grid-style {
-            padding: 30px 0 50px 0 !important;
-        }
-
-        #table_candidatos {
-            width: 100%;
-            background-color: #1678C2;
-            border-radius: 5px;
-        }
-
-        #table_candidatos thead {
-            color: white;
-        }
-
-        #table_candidatos th:first-child {
-            padding-left: 10px;
-            text-align: left
-        }
-
-        #table_candidatos td:first-child {
-            padding-left: 10px;
-            text-align: left
-        }
-
-        #table_candidatos th {
-            padding-left: 0;
-            text-align: left;
-        }
-
-        #table_candidatos td {
-            padding-left: 0;
-            text-align: left;
-        }
-
-        .form-ref {
-            padding: 20px;
-            background-color: #d7d8e0;
-        }
-
-        .filter-candidatos {
-            margin-top: 35px;
-            padding-bottom: 50px;
-        }
-
-        .filter-button {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-    </style>
-</head>
-<body>
-{% block content %} {% endblock %}
-
-<div class="ui icon left vertical sidebar menu blue_background">
-    <a href="#" class="item sidebar_toggle">Candidatos</a>
-    <a href="#" class="item sidebar_toggle">Inscritos</a>
-    <a href="#" class="item sidebar_toggle">Ex alunos</a>
-    <a href="#" class="item sidebar_toggle">Outros</a>
-</div>
-<!--Inscritos: [Pré inscrição, Ins port diploma, Ins transf externa, Convocado]-->
-<!--Ex alunos: [Cancelado, Trancado, Abandono, Formado]-->
-<div class="pusher pusher-ref">
-    <!-- Site content !-->
-    <div class="ui icon open button item sidebar_toggle">
-        <a>
-            <i class="sidebar icon"></i>
-            Menu
-        </a>
-    </div>
+{% block content %}
     <div class="ui grid grid-style">
         <div class="eight wide column">
-            <h1 class="ui left floated blue_color">Candidatos</h1>
+            <h1 class="ui left floated blue_color">Ex Alunos</h1>
         </div>
         <div class="eight wide column">
             <a href="#">
@@ -139,7 +16,7 @@
     <div class="ui modal">
         <i class="close icon"></i>
         <div class="header">
-            Adicionar novo candidato
+            Adicionar ex aluno
         </div>
         <form class="ui form" action="#" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -159,8 +36,8 @@
                         {% render_field form.curso %}
                     </div>
                     <div class="field">
-                        <h4>Marketing</h4>
-                        {% render_field form.marketing %}
+                        <h4>Situação</h4>
+                        {% render_field form.situacao %}
                     </div>
                 </div>
 
@@ -219,7 +96,7 @@
             <th>Nome</th>
             <th>Telefone</th>
             <th>Curso</th>
-            <th>Marketing</th>
+            <th>Situação</th>
             <th>Status</th>
             <th>Atendente</th>
             <th>Data do Contato</th>
@@ -229,28 +106,28 @@
         </tr>
         </thead>
         <tbody>
-        {% for candidato in candidatos %}
+        {% for ex_aluno in ex_alunos %}
             <tr>
-                <td>{{ candidato.periodo }}</td>
-                <td>{{ candidato.polo }}</td>
-                <td>{{ candidato.nome }}</td>
-                <td>{{ candidato.telefone1 }}</td>
-                <td>{{ candidato.curso }}</td>
-                <td>{{ candidato.marketing }}</td>
-                <td>{{ candidato.status }}</td>
-                {% if candidato.atendente.first_name %}
-                    <td>{{ candidato.atendente.first_name }}</td>
+                <td>{{ ex_aluno.periodo }}</td>
+                <td>{{ ex_aluno.polo }}</td>
+                <td>{{ ex_aluno.nome }}</td>
+                <td>{{ ex_aluno.telefone1 }}</td>
+                <td>{{ ex_aluno.curso }}</td>
+                <td>{{ ex_aluno.situacao }}</td>
+                <td>{{ ex_aluno.status }}</td>
+                {% if ex_aluno.atendente.first_name %}
+                    <td>{{ ex_aluno.atendente.first_name }}</td>
                 {% else %}
-                    <td>{{ candidato.atendente }}</td>
+                    <td>{{ ex_aluno.atendente }}</td>
                 {% endif %}
-                <td>{{ candidato.data_contato|date:"d/m/Y" }}</td>
+                <td>{{ ex_aluno.data_contato|date:"d/m/Y" }}</td>
                 <td>
                     <div class="ui accordion">
                         <div class="title">
                             <i class="dropdown icon"></i>
                         </div>
                         <div class="content">
-                            <p class="transition hidden">Observações: {{ candidato.observacoes }}</p>
+                            <p class="transition hidden">Observações: {{ ex_aluno.observacoes }}</p>
                         </div>
                     </div>
                 </td>
@@ -314,66 +191,4 @@
             </div>
         </div>
     </div>
-</div>
-
-
-<script>
-
-    function open_modal(url) {
-        $('#open-modal').focus().load(url, function () {
-            //$(this).modal('show');
-            //$('.ui.modal').modal('show')
-            $(this).click(function () {
-                $('.ui.modal').modal('show')
-            });
-        })
-    }
-
-    $('#abrir').click(function () {
-        $('.ui.modal').modal('show')
-    });
-
-
-    $('.sidebar_toggle').click(function () {
-        $('.ui.sidebar').sidebar('toggle');
-    });
-</script>
-
-<script>
-    $(document).ready(function () {
-        $('#table_candidatos').DataTable({
-            ordering: false,
-            "language": {
-                "lengthMenu": "Listando _MENU_ registros por pagina",
-                "zeroRecords": "Nenhum registro localizado",
-                "info": "Pagina _PAGE_ de _PAGES_",
-                "infoEmpty": "Nenhum registro disponível",
-                "infoFiltered": "(Filtrado de _MAX_ total resultados)",
-                "search": "Buscar",
-                "paginate": {
-                    "first": "Primeira",
-                    "last": "Última",
-                    "next": "Próxima",
-                    "previous": "Anterior"
-                },
-            }
-        });
-    });
-</script>
-
-<script>
-    $('#hybrid select')
-        .dropdown({
-            on: 'hover'
-        })
-    ;
-
-    $('.ui.accordion')
-        .accordion()
-    ;
-</script>
-
-{% block extrajs %}{% endblock %}
-
-</body>
-</html>
+{% endblock %}
