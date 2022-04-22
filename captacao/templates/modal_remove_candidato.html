@@ -1,0 +1,17 @@
+<div class="header">
+    <h1 class="ui left floated blue_color">Remover candidato</h1>
+    <form action="{% url 'modal_remove_candidato' candidato.id %}" method="post"
+          enctype="multipart/form-data">
+        <p>Tem certeza que deseja excluir <span>{{ candidato }}</span> ?</p>
+        {% csrf_token %}
+        <button class="ui blue button" type="submit"><i class="thumbs up icon"></i>Sim</button>
+        <a href="{% url 'candidatos' %}">
+            <div class="ui blue button"><i class="thumbs down icon"></i>Não</div>
+        </a>
+    </form>
+</div>
+<div class="actions">
+    <a href="{% url 'candidatos' %}">
+        <div class="ui blue button"><i class="close icon icon"></i>Fechar</div>
+    </a>
+</div>

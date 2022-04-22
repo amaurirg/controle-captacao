@@ -67,12 +67,18 @@ class CandidatoForm(forms.ModelForm):
             }),
             'observacoes': forms.Textarea(attrs={
                 'class': 'ui input focus',
-                'placeholder': 'Observacoes',
+                'placeholder': 'Observações',
                 'rows': 6
             }),
 
         }
 
+
+class FiltroForm(forms.Form):
+    periodo = forms.CheckboxInput()
+    polo = forms.CheckboxInput()
+    marketing = forms.CheckboxInput()
+    status = forms.CheckboxInput()
 
 # class InscritoForm(forms.ModelForm):
 #     class Meta:

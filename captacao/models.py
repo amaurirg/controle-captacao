@@ -113,7 +113,7 @@ class Candidato(models.Model):
     status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE)
     atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.CASCADE)
     data_contato = models.DateField('Data do contato')
-    observacoes = models.TextField('Observacoes')
+    observacoes = models.TextField('Observações')
     # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='candidato_criado_por', editable=False)
     # criado_em = models.DateTimeField(auto_now_add=True)
     # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,

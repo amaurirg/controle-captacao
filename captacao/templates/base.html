@@ -127,19 +127,14 @@
 
 <script>
 
-    function open_modal(url) {
+    {% comment %}function open_modal(url) {
         $('#open-modal').focus().load(url, function () {
             $(this).modal('show');
             //$('.ui.modal').modal('show')
             {#$(this).click(function () {#}
             {#    $('.ui.modal').modal('show')#}
             });
-        }
-
-    $('#abrir').click(function () {
-        $('.ui.modal').modal('show')
-    });
-
+        }{% endcomment %}
 
     $('.sidebar_toggle').click(function () {
         $('.ui.sidebar').sidebar('toggle');
@@ -169,11 +164,11 @@
 </script>
 
 <script>
-    $('#hybrid select')
+    {% comment %}$('#hybrid select')
         .dropdown({
             on: 'hover'
         })
-    ;
+    ;{% endcomment %}
 
     $('.ui.accordion')
         .accordion()

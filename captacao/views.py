@@ -68,7 +68,26 @@ def modal_atualiza_candidato(request, pk):
 def modal_remove_candidato(request, pk):
     candidato = get_object_or_404(Candidato, pk=pk)
     if request.POST:
-        candidato.save()
+        candidato.delete()
         return redirect(reverse('candidatos'))
     else:
         return render(request, 'modal_remove_candidato.html', {'candidato': candidato})
+
+
+def editar(request, pk):
+    candidato = get_object_or_404(Candidato, pk=pk)
+    form = CandidatoForm(request.POST or None, instance=candidato)
+    if form.is_valid():
+        candidato.save()
+        return redirect(reverse('candidatos'))
+    return render(request, 'editar.html', {'form': form})
+
+
+def CHECKBOXES(request):
+    ms = ['Apple', 'Mango', 'Orange']
+    if request.method == 'POST':
+        fruits = request.POST.getlist('fruits')
+        print(fruits)
+        if fruits == ['Mango']:
+            print('You selected Mango')
+    return render(request, 'checkbox.html')

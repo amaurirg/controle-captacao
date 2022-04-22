@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <div class="ui grid grid-style">
+        <div class="eight wide column">
+            <h1 class="ui left floated blue_color">Editar Candidato</h1>
+        </div>
+    </div>
+    <div class="center aligned one column row" id="editar_candidato">
+        <div class="column">
+            <div class="ui segment">
+                <form class="ui form" action="{% url 'editar' form.instance.id %}" method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="field">
+                            <label for="{{ field.auto_id }}"><strong>{{ field.label }}</strong></label>
+                            {% render_field field %}
+                            {{ field.errors }}
+                        </div>
+                    {% endfor %}
+                    <button type="submit">Salvar</button>
+                </form>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui button">Cancel</div>
+            <div class="ui button">OK</div>
+        </div>
+    </div>
+{% endblock %}

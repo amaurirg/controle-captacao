@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="post">
+    {% csrf_token %}
+<div class="form-check">
+    <input type="checkbox" value="Aplle" id="apple" name="fruits">
+    <label for="apple">Apple</label>
+</div>
+<div class="form-check">
+    <input type="checkbox" value="Mango" id="mango" name="fruits">
+    <label for="mango">Mango</label>
+</div>
+<div class="form-check">
+    <input type="checkbox" value="Orange" id="orange" name="fruits">
+    <label for="orange">Orange</label>
+</div>
+<button type="submit">Submit</button>
+</form>
+</body>
+</html>

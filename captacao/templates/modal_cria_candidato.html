@@ -1,84 +1,90 @@
 {% load widget_tweaks %}
-<div class="ui modal">
-    <i class="close icon"></i>
-    <div class="header">
-        Adicionar novo candidato
-    </div>
-    <form class="ui form" action="{% url 'modal_cria_candidato' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+<div class="header">
+    <h1 class="ui left floated blue_color">Adicionar novo candidato</h1>
+</div>
+<form class="ui form" action="{% url 'modal_cria_candidato' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
 
-        <div class="ui equal width form form-ref">
-            <div class="fields">
-                <div class="field">
-                    <h4>Período</h4>
-                    {% render_field form.periodo %}
-                </div>
-                <div class="field">
-                    <h4>Polo</h4>
-                    {% render_field form.polo %}
-                </div>
-                <div class="field">
-                    <h4>Curso</h4>
-                    {% render_field form.curso %}
-                </div>
-                <div class="field">
-                    <h4>Marketing</h4>
-                    {% render_field form.marketing %}
-                </div>
+    <div class="ui equal width form form-ref">
+        <div class="fields">
+            <div class="field">
+                <h4>Período</h4>
+                {% render_field form.periodo %}
             </div>
-
-            <div class="fields">
-                <div class="field">
-                    <h4>Nome</h4>
-                    {% render_field form.nome %}
-                </div>
-                <div class="field">
-                    <h4>Email</h4>
-                    {% render_field form.email %}
-                </div>
+            <div class="field">
+                <h4>Polo</h4>
+                {% render_field form.polo %}
             </div>
-
-            <div class="fields">
-                <div class="field">
-                    <h4>Telefone 1</h4>
-                    {% render_field form.telefone1 %}
-                </div>
-                <div class="field">
-                    <h4>Telefone 2</h4>
-                    {% render_field form.telefone2 %}
-                </div>
-                <div class="field">
-                    <h4>Data do contato</h4>
-                    {% render_field form.data_contato %}
-                </div>
+            <div class="field">
+                <h4>Curso</h4>
+                {% render_field form.curso %}
             </div>
-
-            <div class="fields">
-                <div class="field">
-                    <h4>Atendente</h4>
-                    {% render_field form.atendente %}
-                </div>
-                <div class="field">
-                    <h4>Status</h4>
-                    {% render_field form.status %}
-                </div>
-            </div>
-
-            <div class="fields">
-                <div class="field">
-                    <h4>Observações</h4>
-                    {% render_field form.observacoes %}
-                </div>
-            </div>
-
-            <div class="fields">
-                <div class="field">
-                    <button type="submit" class="ui floated button primary">Salvar</button>
-                    <a href="{% url 'candidatos' %}">
-                        <button type="button" class="ui floated button primary">Cancelar</button>
-                    </a>
-                </div>
+            <div class="field">
+                <h4>Marketing</h4>
+                {% render_field form.marketing %}
             </div>
         </div>
-    </form>
+
+        <div class="fields">
+            <div class="field">
+                <h4>Nome</h4>
+                {% render_field form.nome %}
+            </div>
+            <div class="field">
+                <h4>Email</h4>
+                {% render_field form.email %}
+            </div>
+        </div>
+
+        <div class="fields">
+            <div class="field">
+                <h4>Telefone 1</h4>
+                {% render_field form.telefone1 %}
+            </div>
+            <div class="field">
+                <h4>Telefone 2</h4>
+                {% render_field form.telefone2 %}
+            </div>
+            <div class="field">
+                <h4>Data do contato</h4>
+                {% render_field form.data_contato %}
+            </div>
+        </div>
+
+        <div class="fields">
+            <div class="field">
+                <h4>Atendente</h4>
+                {% render_field form.atendente %}
+            </div>
+            <div class="field">
+                <h4>Status</h4>
+                {% render_field form.status %}
+            </div>
+        </div>
+
+        <div class="fields">
+            <div class="field">
+                <h4>Observações</h4>
+                {% render_field form.observacoes %}
+            </div>
+        </div>
+
+        <div class="fields">
+            <div class="field">
+                <button type="submit" class="ui floated button primary">
+                    <i class="thumbs up icon"></i>
+                    Salvar
+                </button>
+                <button type="button" class="ui floated button primary">
+                    <i class="thumbs down icon"></i>
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="actions">
+    <a href="{% url 'candidatos' %}">
+        <div class="ui blue button"><i class="close icon icon"></i>Fechar</div>
+    </a>
 </div>
