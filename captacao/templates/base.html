@@ -122,28 +122,39 @@
             Menu
         </a>
     </div>
-{% block content %} {% endblock %}
+
+    {% block content %} {% endblock %}
+    <div class="ui modal" id="open-modal" tabindex="-1" role="dialog"></div>
+
+
 </div>
 
+
+
 <script>
-
-    {% comment %}function open_modal(url) {
-        $('#open-modal').focus().load(url, function () {
-            $(this).modal('show');
-            //$('.ui.modal').modal('show')
-            {#$(this).click(function () {#}
-            {#    $('.ui.modal').modal('show')#}
-            });
-        }{% endcomment %}
-
     $('.sidebar_toggle').click(function () {
         $('.ui.sidebar').sidebar('toggle');
     });
+    $('.ui.accordion').accordion();
 </script>
 
 <script>
     $(document).ready(function () {
         $('#table_candidatos').DataTable({
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    var select = $('<select style="border-radius: 4px;"><option value=""></option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false).draw();
+                        });
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+            },
             ordering: false,
             "language": {
                 "lengthMenu": "Listando _MENU_ registros por pagina",
@@ -164,15 +175,11 @@
 </script>
 
 <script>
-    {% comment %}$('#hybrid select')
-        .dropdown({
-            on: 'hover'
-        })
-    ;{% endcomment %}
-
-    $('.ui.accordion')
-        .accordion()
-    ;
+    function open_modal(url) {
+        $('#open-modal').focus().load(url, function () {
+            $(this).modal('show');
+        });
+    }
 </script>
 
 {% block extrajs %}{% endblock %}

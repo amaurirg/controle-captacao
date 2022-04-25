@@ -1,5 +1,5 @@
 from django import forms
-from .models import Candidato, Inscrito, ExAluno
+from .models import Candidato, Inscrito, ExAluno, Periodo
 
 
 class CandidatoForm(forms.ModelForm):
@@ -23,7 +23,7 @@ class CandidatoForm(forms.ModelForm):
         widgets = {
             'periodo': forms.Select(attrs={
                 'class': 'ui fluid dropdown',
-                'placeholder': 'Periodo',
+                'placeholder': 'Período',
             }),
             'polo': forms.Select(attrs={
                 'class': 'ui fluid dropdown',
@@ -74,11 +74,16 @@ class CandidatoForm(forms.ModelForm):
         }
 
 
-class FiltroForm(forms.Form):
-    periodo = forms.CheckboxInput()
-    polo = forms.CheckboxInput()
-    marketing = forms.CheckboxInput()
-    status = forms.CheckboxInput()
+class PeriodoForm(forms.ModelForm):
+    class Meta:
+        model = Periodo
+        fields = ['nome']
+        widgets = {
+            'periodo': forms.TextInput(attrs={
+                'class': 'ui input focus',
+                'placeholder': 'Período',
+            })
+        }
 
 # class InscritoForm(forms.ModelForm):
 #     class Meta:

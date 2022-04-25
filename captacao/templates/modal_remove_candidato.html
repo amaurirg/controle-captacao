@@ -4,14 +4,18 @@
           enctype="multipart/form-data">
         <p>Tem certeza que deseja excluir <span>{{ candidato }}</span> ?</p>
         {% csrf_token %}
-        <button class="ui blue button" type="submit"><i class="thumbs up icon"></i>Sim</button>
-        <a href="{% url 'candidatos' %}">
-            <div class="ui blue button"><i class="thumbs down icon"></i>Não</div>
-        </a>
+        <div class="actions">
+            <button class="ui blue deny button" type="submit"><i class="thumbs up icon"></i>Sim</button>
+            <div class="ui blue deny button">
+                <i class="thumbs down icon"></i>
+                Cancelar
+            </div>
+        </div>
     </form>
 </div>
 <div class="actions">
-    <a href="{% url 'candidatos' %}">
-        <div class="ui blue button"><i class="close icon icon"></i>Fechar</div>
-    </a>
+    <div class="ui blue deny button">
+        <i class="close icon"></i>
+        Fechar
+    </div>
 </div>

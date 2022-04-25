@@ -1,23 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
-from captacao.forms import CandidatoForm
+from captacao.forms import CandidatoForm, PeriodoForm
 from captacao.models import Candidato, Periodo, Status, Marketing, Polo, Inscrito, ExAluno
 
 
 def captacao(request):
     return render(request, 'base.html')
 
+
 def candidatos(request):
     candidatos = Candidato.objects.all()
-
     context = {
         'candidatos': candidatos,
         'periodos': Periodo.objects.all(),
         'polos': Polo.objects.all(),
         'marketing_list': Marketing.objects.all(),
         'status_list': Status.objects.all(),
-        'form': CandidatoForm(request.POST or None)
+        'form': CandidatoForm(request.POST or None),
     }
     return render(request, 'candidatos.html', context)
 
@@ -74,20 +74,37 @@ def modal_remove_candidato(request, pk):
         return render(request, 'modal_remove_candidato.html', {'candidato': candidato})
 
 
-def editar(request, pk):
-    candidato = get_object_or_404(Candidato, pk=pk)
-    form = CandidatoForm(request.POST or None, instance=candidato)
-    if form.is_valid():
-        candidato.save()
-        return redirect(reverse('candidatos'))
-    return render(request, 'editar.html', {'form': form})
+# def modal_cria_periodo(request):
+#     form = PeriodoForm(request.POST or None)
+#     if form.is_valid():
+#         form.save()
+#         return redirect(reverse('modal_cria_candidato'))
+#     return render(request, 'modal_cria_periodo.html', {'form': form})
+#
 
-
-def CHECKBOXES(request):
-    ms = ['Apple', 'Mango', 'Orange']
-    if request.method == 'POST':
-        fruits = request.POST.getlist('fruits')
-        print(fruits)
-        if fruits == ['Mango']:
-            print('You selected Mango')
-    return render(request, 'checkbox.html')
+# def multiple_modals(request):
+#     form = PeriodoForm(request.POST or None)
+#     if form.is_valid():
+#         form.save()
+#         return redirect(reverse('modal_cria_candidato'))
+#     return render(request, 'multiple_modals.html', {'form': form})
+#
+#
+#
+# def editar(request, pk):
+#     candidato = get_object_or_404(Candidato, pk=pk)
+#     form = CandidatoForm(request.POST or None, instance=candidato)
+#     if form.is_valid():
+#         candidato.save()
+#         return redirect(reverse('candidatos'))
+#     return render(request, 'editar.html', {'form': form})
+#
+#
+# def CHECKBOXES(request):
+#     ms = ['Apple', 'Mango', 'Orange']
+#     if request.method == 'POST':
+#         fruits = request.POST.getlist('fruits')
+#         print(fruits)
+#         if fruits == ['Mango']:
+#             print('You selected Mango')
+#     return render(request, 'checkbox.html')

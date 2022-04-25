@@ -164,6 +164,7 @@ class Inscrito(models.Model):
 class ExAluno(models.Model):
     periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.CASCADE)
     polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.CASCADE)
+    ra = models.CharField('RA', max_length=7)
     nome = models.CharField('Nome', max_length=40)
     telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
     telefone2 = models.CharField('Telefone 2', max_length=20, null=True, blank=True)

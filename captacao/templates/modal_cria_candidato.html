@@ -8,7 +8,9 @@
     <div class="ui equal width form form-ref">
         <div class="fields">
             <div class="field">
-                <h4>Período</h4>
+                <h4>Período
+                    {% comment %}<a href="#" onclick="open_modal('{% url 'modal_cria_periodo' %}')"><i class="plus icon"></i></a>{% endcomment %}
+                </h4>
                 {% render_field form.periodo %}
             </div>
             <div class="field">
@@ -69,22 +71,23 @@
             </div>
         </div>
 
-        <div class="fields">
-            <div class="field">
-                <button type="submit" class="ui floated button primary">
-                    <i class="thumbs up icon"></i>
-                    Salvar
-                </button>
-                <button type="button" class="ui floated button primary">
-                    <i class="thumbs down icon"></i>
-                    Cancelar
-                </button>
+        <div class="actions">
+            <button type="submit" class="ui floated deny button primary">
+                <i class="thumbs up icon"></i>
+                Salvar
+            </button>
+            <div class="ui blue deny button">
+                <i class="thumbs down icon"></i>
+                Cancelar
             </div>
         </div>
+
     </div>
+
 </form>
 <div class="actions">
-    <a href="{% url 'candidatos' %}">
-        <div class="ui blue button"><i class="close icon icon"></i>Fechar</div>
-    </a>
+    <div class="ui blue deny button">
+        <i class="close icon"></i>
+        Fechar
+    </div>
 </div>
