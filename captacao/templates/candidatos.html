@@ -36,7 +36,11 @@
                 <td>{{ candidato.periodo }}</td>
                 <td>{{ candidato.polo }}</td>
                 <td>{{ candidato.nome }}</td>
-                <td>{{ candidato.telefone1 }}</td>
+                {% if candidato.telefone1 == None %}
+                    <td>Não informado</td>
+                {% else %}
+                    <td>{{ candidato.telefone1 }}</td>
+                {% endif %}
                 <td>{{ candidato.curso }}</td>
                 <td>{{ candidato.marketing }}</td>
                 <td>{{ candidato.status }}</td>

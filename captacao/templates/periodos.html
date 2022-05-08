@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <div class="ui grid grid-style">
+        <div class="eight wide column">
+            <h1 class="ui left floated blue_color">Períodos</h1>
+        </div>
+    </div>
+
+    <table id="table_candidatos" class="hover">
+        <thead>
+        <tr>
+            <th>Período</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for periodo in periodos %}
+            <tr>
+                <td>{{ periodo.nome }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

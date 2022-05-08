@@ -22,33 +22,34 @@
     </div>
 
     <div class="ui info event-modal modal" data-object="trigger1">
-        <div class="header">
-            <h1 class="ui left floated blue_color">Adicionar novo período</h1>
-        </div>
-        <div class="content">
-            <form class="ui form" action="{% url 'modal_cria_periodo' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="ui equal width form form-ref">
-                    <div class="fields">
-                        <div class="field">
-                            {% render_field form.nome %}
-                        </div>
-                    </div>
+    <div class="header">
+        <h1 class="ui left floated blue_color">Adicionar novo período</h1>
+    </div>
+    <div class="content">
+    <form class="ui form" action="{% url 'modal_cria_periodo' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="ui equal width form form-ref">
+            <div class="fields">
 
-                    <div class="actions">
-                        <button type="submit" class="ui floated deny button primary">
-                            <i class="thumbs up icon"></i>
-                            Salvar
-                        </button>
-                        <div class="ui blue deny button">
-                            <i class="thumbs down icon"></i>
-                            Cancelar
-                        </div>
-                    </div>
-
+                <div class="field">
+                    {% render_field form.nome %}
                 </div>
-            </form>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="ui floated deny button primary">
+                    <i class="thumbs up icon"></i>
+                    Salvar
+                </button>
+                <div class="ui blue deny button">
+                    <i class="thumbs down icon"></i>
+                    Cancelar
+                </div>
+            </div>
+
         </div>
+    </form>
+    </div>
     </div>
     <div class="actions">
         <div class="ui blue deny button">
@@ -85,7 +86,7 @@
 {% endblock content %}
 
 <!--script js-->
-{% block extrajs %}
+{% comment %}{% block extrajs %}
     <script>
         $('.event-modal').modal({
             allowMultiple: true
@@ -125,7 +126,7 @@
             $('#id_nome').val('');
         }
     </script>
-{% endblock extrajs %}
+{% endblock extrajs %}{% endcomment %}
 <!--fim do script js-->
 
 <!--exemplo semantic-ui-->

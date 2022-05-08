@@ -1,34 +1,55 @@
 {% load widget_tweaks %}
-<div class="header">
-    <h1 class="ui left floated blue_color">Adicionar novo período</h1>
-</div>
-<form class="ui form" action="{% url 'modal_cria_periodo' %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="ui equal width form form-ref">
-        <div class="fields">
-
+{% block content %}
+    <div class="header">
+        <h1 class="ui left floated blue_color">Adicionar novo período</h1>
+    </div>
+    <form class="ui form" action="#" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="ui equal width form form-ref">
             <div class="field">
-                <h4>Período</h4>
                 {% render_field form.nome %}
             </div>
-        </div>
 
-        <div class="actions">
-            <button type="submit" class="ui floated button primary">
-                <i class="thumbs up icon"></i>
-                Salvar
-            </button>
-            <div class="ui blue deny button">
-                <i class="thumbs down icon"></i>
-                Cancelar
+            <div class="actions">
+                <button type="submit" class="ui floated button primary" data-dismiss="ui modal">
+                    <i class="thumbs up icon"></i>
+                    Salvar
+                </button>
+                <div class="ui blue deny button">
+                    <i class="thumbs down icon"></i>
+                    Cancelar
+                </div>
             </div>
-        </div>
 
+        </div>
+    </form>
+    <div class="actions">
+        <div class="ui blue deny button">
+            <i class="close icon"></i>
+            Fechar
+        </div>
     </div>
-</form>
-<div class="actions">
-    <div class="ui blue deny button">
-        <i class="close icon icon"></i>
-        Fechar
-    </div>
-</div>
+{% endblock %}
+
+{% block extrajs %}
+ {% comment %}   <script>
+        $(function () {
+            $('form').on('submit', function () {
+                $('.ui.modal').modal('hide');
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'modal_cria_periodo' %}',
+                    data: {nome: $(this).nome.value}
+                });
+                return false;
+            });
+        })
+    </script>{% endcomment %}
+
+    {% comment %}<script>
+        $('form').on('submit', function () {
+            $('.ui.modal').modal('hide');
+
+        });
+    </script>{% endcomment %}
+{% endblock %}

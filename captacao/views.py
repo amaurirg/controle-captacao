@@ -74,20 +74,27 @@ def modal_remove_candidato(request, pk):
         return render(request, 'modal_remove_candidato.html', {'candidato': candidato})
 
 
-# def modal_cria_periodo(request):
-#     form = PeriodoForm(request.POST or None)
-#     if form.is_valid():
-#         form.save()
-#         return redirect(reverse('modal_cria_candidato'))
-#     return render(request, 'modal_cria_periodo.html', {'form': form})
-#
+def modal_cria_periodo(request):
+    form = PeriodoForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect(reverse('multiple_modals'))
+    return render(request, 'modal_cria_periodo.html', {'form': form})
 
-# def multiple_modals(request):
-#     form = PeriodoForm(request.POST or None)
-#     if form.is_valid():
-#         form.save()
-#         return redirect(reverse('modal_cria_candidato'))
-#     return render(request, 'multiple_modals.html', {'form': form})
+
+def periodos(request):
+    periodos = Periodo.objects.all()
+    context = {
+        'periodos': periodos
+    }
+    return render(request, 'periodos.html', context)
+
+def multiple_modals(request):
+    form = PeriodoForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect(reverse('modal_cria_candidato'))
+    return render(request, 'multiple_modals.html', {'form': form})
 #
 #
 #

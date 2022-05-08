@@ -1,7 +1,9 @@
 from django.urls import path
 from .views import (captacao, modal_cria_candidato, candidatos, inscritos, exalunos, modal_atualiza_candidato,
                     modal_remove_candidato,
-                    # editar, CHECKBOXES, modal_cria_periodo, multiple_modals
+                    modal_cria_periodo,
+                    multiple_modals, periodos
+    # editar, CHECKBOXES,
                     )
 
 urlpatterns = [
@@ -13,8 +15,10 @@ urlpatterns = [
     path('atualizar_candidato/<int:pk>', modal_atualiza_candidato, name='modal_atualiza_candidato'),
     path('remover_candidato/<int:pk>', modal_remove_candidato, name='modal_remove_candidato'),
 
-    # path('adicionar_periodo/', modal_cria_periodo, name='modal_cria_periodo'),
-    # path('multiple_modals/', multiple_modals, name='multiple_modals'),
+    path('periodos/', periodos, name='periodos'),
+    path('periodos/adicionar/', modal_cria_periodo, name='modal_cria_periodo'),
+    path('multiple_modals/', multiple_modals, name='multiple_modals'),
     # path('editar/<int:pk>', editar, name='editar'),
     # path('check', CHECKBOXES)
 ]
+

@@ -79,9 +79,9 @@ class PeriodoForm(forms.ModelForm):
         model = Periodo
         fields = ['nome']
         widgets = {
-            'periodo': forms.TextInput(attrs={
+            'nome': forms.TextInput(attrs={
                 'class': 'ui input focus',
-                'placeholder': 'Período',
+                'placeholder': 'Digite um novo período',
             })
         }
 
