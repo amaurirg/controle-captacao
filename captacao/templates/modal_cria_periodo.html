@@ -1,9 +1,8 @@
 {% load widget_tweaks %}
-{% block content %}
     <div class="header">
-        <h1 class="ui left floated blue_color">Adicionar novo período</h1>
+        <h1 class="ui left floated blue_color">Adicionar novo período HTML PAGE</h1>
     </div>
-    <form class="ui form" action="#" method="post" enctype="multipart/form-data">
+    <form class="ui form" action="{% url 'modal_cria_periodo' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="ui equal width form form-ref">
             <div class="field">
@@ -29,7 +28,6 @@
             Fechar
         </div>
     </div>
-{% endblock %}
 
 {% block extrajs %}
  {% comment %}   <script>

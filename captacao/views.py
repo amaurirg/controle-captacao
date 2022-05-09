@@ -52,7 +52,7 @@ def modal_cria_candidato(request):
     form = CandidatoForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return redirect(reverse('candidatos'))
+        return redirect(reverse('multiple_modals'))
     return render(request, 'modal_cria_candidato.html', {'form': form})
 
 
@@ -78,7 +78,8 @@ def modal_cria_periodo(request):
     form = PeriodoForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return redirect(reverse('multiple_modals'))
+        return redirect(reverse('modal_cria_candidato'))
+        # return redirect(reverse('modal_cria_candidato'))
     return render(request, 'modal_cria_periodo.html', {'form': form})
 
 
@@ -90,11 +91,23 @@ def periodos(request):
     return render(request, 'periodos.html', context)
 
 def multiple_modals(request):
-    form = PeriodoForm(request.POST or None)
-    if form.is_valid():
-        form.save()
+    form = CandidatoForm(request.POST or None)
+    form2 = PeriodoForm(request.POST or None)
+    # if form.is_valid():
+    #     form.save()
+    #     return redirect(reverse('modal_cria_candidato'))
+    if form2.is_valid():
+        form2.save()
         return redirect(reverse('modal_cria_candidato'))
-    return render(request, 'multiple_modals.html', {'form': form})
+    return render(request, 'multiple_modals.html', {'form': form, 'form2': form2})
+
+
+# def multiple_modals(request):
+#     form = PeriodoForm(request.POST or None)
+#     if form.is_valid():
+#         form.save()
+#         return redirect(reverse('modal_cria_candidato'))
+#     return render(request, 'multiple_modals.html', {'form': form})
 #
 #
 #

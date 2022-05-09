@@ -82,6 +82,7 @@ class PeriodoForm(forms.ModelForm):
             'nome': forms.TextInput(attrs={
                 'class': 'ui input focus',
                 'placeholder': 'Digite um novo período',
+                'id': 'periodo-nome'
             })
         }
 

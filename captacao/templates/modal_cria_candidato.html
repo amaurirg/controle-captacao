@@ -1,4 +1,5 @@
 {% load widget_tweaks %}
+{% comment %}{% block content %}{% endcomment %}
 <div class="header">
     <h1 class="ui left floated blue_color">Adicionar novo candidato</h1>
 </div>
@@ -10,7 +11,9 @@
             <div class="fields">
                 <div class="field">
                     <h4>Período
-                        {% comment %}<a href="#" onclick="open_modal('{% url 'modal_cria_periodo' %}')"><i class="plus icon"></i></a>{% endcomment %}
+                        <a href="#" onclick="open_modal('{% url 'modal_cria_periodo' %}')">
+                            <i class="plus icon"></i>
+                        </a>
                     </h4>
                     {% render_field form.periodo %}
                 </div>
@@ -90,3 +93,48 @@
         Fechar
     </div>
 </div>
+{% comment %}{% endblock %}{% endcomment %}
+
+<!--script js-->
+{% block extrajs %}
+    <script>
+        $('.event-modal').modal({
+            allowMultiple: true
+        });
+
+        $('#showmodal').click(function () {
+            $('.fullscreen.modal').modal('show');
+        });
+
+        $('.event-modal.info').each(function (idx, elem) {
+            $(elem).modal('attach events', '#' + $(elem).attr('data-object'));
+        });
+
+        $('form').on('submit', function (e) {
+            let url = ''
+            let postData = $('form').serialize();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: postData,
+                success: function (response) {
+                    console.log(response.data);
+                },
+                error: function (xhr) {
+                    console.log('Erro');
+                },
+                complete: function () {
+                    closeModal();
+                    console.log('Complete');
+                }
+            });
+            e.preventDefault();
+        });
+
+        function closeModal() {
+            {#$('.modal').modal('hide');#}
+            $('#id_nome').val('');
+        }
+    </script>
+{% endblock extrajs %}
+<!--fim do script js-->
