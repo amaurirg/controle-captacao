@@ -1,10 +1,6 @@
 from django.urls import path
 from .views import (captacao, modal_cria_candidato, candidatos, inscritos, exalunos, modal_atualiza_candidato,
-                    modal_remove_candidato,
-                    modal_cria_periodo,
-                    multiple_modals, periodos
-    # editar, CHECKBOXES,
-                    )
+                    modal_remove_candidato, periodos, CreateCrudPeriodo)
 
 urlpatterns = [
     path('', captacao, name="captacao"),
@@ -16,9 +12,6 @@ urlpatterns = [
     path('remover_candidato/<int:pk>', modal_remove_candidato, name='modal_remove_candidato'),
 
     path('periodos/', periodos, name='periodos'),
-    path('periodos/adicionar/', modal_cria_periodo, name='modal_cria_periodo'),
-    path('multiple_modals/', multiple_modals, name='multiple_modals'),
-    # path('editar/<int:pk>', editar, name='editar'),
-    # path('check', CHECKBOXES)
-]
+    path('ajax/crud/create/', CreateCrudPeriodo.as_view(), name='crud_ajax_create'),
 
+]

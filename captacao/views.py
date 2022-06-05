@@ -1,5 +1,7 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.views import View
 
 from captacao.forms import CandidatoForm, PeriodoForm
 from captacao.models import Candidato, Periodo, Status, Marketing, Polo, Inscrito, ExAluno
@@ -52,7 +54,7 @@ def modal_cria_candidato(request):
     form = CandidatoForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return redirect(reverse('multiple_modals'))
+        return redirect(reverse('candidatos'))
     return render(request, 'modal_cria_candidato.html', {'form': form})
 
 
@@ -74,13 +76,16 @@ def modal_remove_candidato(request, pk):
         return render(request, 'modal_remove_candidato.html', {'candidato': candidato})
 
 
-def modal_cria_periodo(request):
-    form = PeriodoForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect(reverse('modal_cria_candidato'))
-        # return redirect(reverse('modal_cria_candidato'))
-    return render(request, 'modal_cria_periodo.html', {'form': form})
+class CreateCrudPeriodo(View):
+    def get(self, request):
+        nome = request.GET.get('novo_nome', None)
+
+        obj = Periodo.objects.create(nome=nome)
+
+        periodo = {'id': obj.id, 'nome': obj.nome}
+
+        data = {'periodo': periodo}
+        return JsonResponse(data)
 
 
 def periodos(request):
@@ -89,42 +94,3 @@ def periodos(request):
         'periodos': periodos
     }
     return render(request, 'periodos.html', context)
-
-def multiple_modals(request):
-    form = CandidatoForm(request.POST or None)
-    form2 = PeriodoForm(request.POST or None)
-    # if form.is_valid():
-    #     form.save()
-    #     return redirect(reverse('modal_cria_candidato'))
-    if form2.is_valid():
-        form2.save()
-        return redirect(reverse('modal_cria_candidato'))
-    return render(request, 'multiple_modals.html', {'form': form, 'form2': form2})
-
-
-# def multiple_modals(request):
-#     form = PeriodoForm(request.POST or None)
-#     if form.is_valid():
-#         form.save()
-#         return redirect(reverse('modal_cria_candidato'))
-#     return render(request, 'multiple_modals.html', {'form': form})
-#
-#
-#
-# def editar(request, pk):
-#     candidato = get_object_or_404(Candidato, pk=pk)
-#     form = CandidatoForm(request.POST or None, instance=candidato)
-#     if form.is_valid():
-#         candidato.save()
-#         return redirect(reverse('candidatos'))
-#     return render(request, 'editar.html', {'form': form})
-#
-#
-# def CHECKBOXES(request):
-#     ms = ['Apple', 'Mango', 'Orange']
-#     if request.method == 'POST':
-#         fruits = request.POST.getlist('fruits')
-#         print(fruits)
-#         if fruits == ['Mango']:
-#             print('You selected Mango')
-#     return render(request, 'checkbox.html')

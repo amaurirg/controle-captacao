@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-    <div class="header">
+    {% comment %}<div class="header">
         <h1 class="ui left floated blue_color">Adicionar novo período HTML PAGE</h1>
     </div>
     <form class="ui form" action="{% url 'modal_cria_periodo' %}" method="post" enctype="multipart/form-data">
@@ -27,7 +27,48 @@
             <i class="close icon"></i>
             Fechar
         </div>
+    </div>{% endcomment %}
+
+
+
+
+<div class="ui info event-modal modal periodo" data-object="trigger1">
+        <div class="header">
+            <h1 class="ui left floated blue_color">Adicionar novo período MESMO HTML</h1>
+        </div>
+        <div class="content">
+            <form class="ui form" id="form-periodo" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="ui equal width form form-ref">
+                    <div class="fields">
+                        <div class="field">
+                            {% comment %}{% render_field form2.nome %}{% endcomment %}
+
+                            <label for="novo">Novo Período</label>
+                            <input type="text" id="novo" name="novo">
+                            {% comment %}<button type="button" id="botao">Incluir</button>{% endcomment %}
+
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" id="botao" class="ui floated button primary">
+                            <i class="thumbs up icon"></i>
+                            Salvar
+                        </button>
+                        <div class="ui blue deny button">
+                            <i class="thumbs down icon"></i>
+                            Cancelar
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
     </div>
+
+
+
 
 {% block extrajs %}
  {% comment %}   <script>
