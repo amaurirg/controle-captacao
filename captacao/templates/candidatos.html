@@ -112,7 +112,10 @@
                             {% render_field form.periodo %}
                         </div>
                         <div class="field">
-                            <h4>Polo</h4>
+                            <h4>
+                                Polo
+                                <i class="plus blue icon" id="trigger2" style="margin-left: 5px; cursor: pointer"></i>
+                            </h4>
                             {% render_field form.polo %}
                         </div>
                         <div class="field">
@@ -190,38 +193,71 @@
         </div>
     </div>
 
-    <div id="criar" class="ui info event-modal modal" data-object="trigger1">
+    <!-- Criar novo período -->
+    <div id="criar-periodo" class="ui info event-modal modal" data-object="trigger1">
         <div class="header">
-            Modal 2
+            Criar novo período
         </div>
         <div class="content">
-            Texto do Modal 2
-        </div>
-
-        <form class="ui form" action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="ui equal width form-ref">
-                <div class="fields">
-                    <div class="field">
-                        <label for="novo-nome">Criar</label>
-                        <input type="text" name="novo-nome" id="novo-nome" placeholder="Criar">
+            <form class="ui form" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="ui equal width form-ref">
+                    <div class="fields">
+                        <div class="field">
+                            {% comment %}<label for="novo-periodo">Criar novo período</label>{% endcomment %}
+                            <input type="text" name="novo-periodo" id="novo-periodo" placeholder="Novo período">
+                        </div>
                     </div>
-                </div>
 
-                <div class="actions">
-                    {% comment %}<button type="submit" id="botao" class="ui floated button primary">
+                    <div class="actions">
+                        {% comment %}<button type="submit" id="botao" class="ui floated button primary">
                             <i class="thumbs up icon"></i>
                             Salvar
                         </button>{% endcomment %}
-                    <div id="botao" class="ui blue button">Salvar</div>
-                    <div class="ui blue deny button">
-                        <i class="thumbs down icon"></i>
-                        Cancelar
+                        <div id="salvar-periodo" class="ui blue button">Salvar</div>
+                        <div class="ui blue deny button">
+                            <i class="thumbs down icon"></i>
+                            Cancelar
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
+
+    <!-- Criar novo polo -->
+    <div id="criar-polo" class="ui info event-modal modal" data-object="trigger2">
+        <div class="header">
+            Adicionar novo polo
+        </div>
+        <div class="content">
+            <form class="ui form" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="ui equal width form-ref">
+                    <div class="fields">
+                        <div class="field">
+                            {% comment %}<label for="novo-polo">Criar novo polo</label>{% endcomment %}
+                            <input type="text" name="novo-polo" id="novo-polo" placeholder="Novo polo">
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        {% comment %}<button type="submit" id="botao" class="ui floated button primary">
+                            <i class="thumbs up icon"></i>
+                            Salvar
+                        </button>{% endcomment %}
+                        <div id="salvar-polo" class="ui blue button">Salvar</div>
+                        <div class="ui blue deny button">
+                            <i class="thumbs down icon"></i>
+                            Cancelar
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 
 {% endblock %}
 
@@ -240,29 +276,52 @@
         });
 
         $(document).ready(function () {
-            $("#botao").click(function () {
+            $("#salvar-periodo").click(function () {
                 $.ajax({
                     url: '{% url 'crud_ajax_create' %}',
                     type: 'get',
                     data: {
-                        novo_nome: $('input[name=novo-nome]').val().trim()
+                        novo_nome: $('input[name=novo-periodo]').val().trim()
                     },
                     success: function (response) {
                         console.log(response.periodo.id)
                         console.log(response.periodo.nome)
                         $("#id_periodo").append($("<option></option>").attr("value", response.periodo.id).text(response.periodo.nome));
-                        closeModal()
+                        $('#criar-periodo').modal('hide');
+                        $('#novo-periodo').val('');
                     },
                     error: function () {
                         console.log("ERROR")
                     }
                 });
             });
+
+            $("#salvar-polo").click(function () {
+                $.ajax({
+                    url: '{% url 'ajax_create_polo' %}',
+                    type: 'get',
+                    data: {
+                        novo_nome: $('input[name=novo-polo]').val().trim()
+                    },
+                    success: function (response) {
+                        console.log(response.polo.id)
+                        console.log(response.polo.nome)
+                        $("#id_polo").append($("<option></option>").attr("value", response.polo.id).text(response.polo.nome));
+                        $('#criar-polo').modal('hide');
+                        $('#novo-polo').val('');
+                    },
+                    error: function () {
+                        console.log("ERROR")
+                    }
+                });
+            });
+
+
         });
 
-        function closeModal() {
+        {% comment %}function closeModal() {
             $('#criar').modal('hide');
-            $('#novo-nome').val('');
-        }
+            $('#novo-periodo').val('');
+        }{% endcomment %}
     </script>
 {% endblock %}
