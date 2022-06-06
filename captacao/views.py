@@ -12,39 +12,39 @@ def captacao(request):
 
 
 def candidatos(request):
-    candidatos = Candidato.objects.all()
+    candidatos = Candidato.objects.filter(ativo=True)
     context = {
         'candidatos': candidatos,
-        'periodos': Periodo.objects.all(),
-        'polos': Polo.objects.all(),
-        'marketing_list': Marketing.objects.all(),
-        'status_list': Status.objects.all(),
+        # 'periodos': Periodo.objects.all(),
+        # 'polos': Polo.objects.all(),
+        # 'marketing_list': Marketing.objects.all(),
+        # 'status_list': Status.objects.all(),
         'form': CandidatoForm(request.POST or None),
     }
     return render(request, 'candidatos.html', context)
 
 
 def inscritos(request):
-    inscritos = Inscrito.objects.all()
+    inscritos = Inscrito.objects.filter(ativo=True)
 
     context = {
         'inscritos': inscritos,
-        'periodos': Periodo.objects.all(),
-        'polos': Polo.objects.all(),
-        'status_list': Status.objects.all(),
+        # 'periodos': Periodo.objects.all(),
+        # 'polos': Polo.objects.all(),
+        # 'status_list': Status.objects.all(),
         # 'form': InscritoForm(request.POST or None)
     }
     return render(request, 'inscritos.html', context)
 
 
 def exalunos(request):
-    ex_alunos = ExAluno.objects.all()
+    ex_alunos = ExAluno.objects.filter(ativo=True)
 
     context = {
         'ex_alunos': ex_alunos,
-        'periodos': Periodo.objects.all(),
-        'polos': Polo.objects.all(),
-        'status_list': Status.objects.all(),
+        # 'periodos': Periodo.objects.all(),
+        # 'polos': Polo.objects.all(),
+        # 'status_list': Status.objects.all(),
         # 'form': ExAlunoForm(request.POST or None)
     }
     return render(request, 'ex-alunos.html', context)
@@ -96,7 +96,7 @@ class CreateCrudPolo(View):
 
 
 def periodos(request):
-    periodos = Periodo.objects.all()
+    periodos = Periodo.objects.filter(ativo=True)
     context = {
         'periodos': periodos
     }

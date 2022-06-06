@@ -4,6 +4,7 @@ from django.db import models
 
 class Status(models.Model):
     nome = models.CharField('Nome', max_length=40)
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nome
@@ -15,6 +16,7 @@ class Status(models.Model):
 
 class SituacaoInscrito(models.Model):
     nome = models.CharField('Nome', max_length=40)
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nome
@@ -26,6 +28,7 @@ class SituacaoInscrito(models.Model):
 
 class SituacaoExAluno(models.Model):
     nome = models.CharField('Nome', max_length=40)
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nome
@@ -37,6 +40,7 @@ class SituacaoExAluno(models.Model):
 
 class Motivo(models.Model):
     nome = models.CharField('Nome', max_length=40)
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nome
@@ -48,6 +52,7 @@ class Motivo(models.Model):
 
 class Marketing(models.Model):
     nome = models.CharField('Nome', max_length=40)
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nome
@@ -59,6 +64,7 @@ class Marketing(models.Model):
 
 class Curso(models.Model):
     nome = models.CharField('Nome', max_length=40)
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nome
@@ -70,6 +76,7 @@ class Curso(models.Model):
 
 class Atendente(models.Model):
     nome = models.CharField('Nome', max_length=40)
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nome
@@ -81,6 +88,7 @@ class Atendente(models.Model):
 
 class Polo(models.Model):
     nome = models.CharField('Nome', max_length=40)
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nome
@@ -92,6 +100,7 @@ class Polo(models.Model):
 
 class Periodo(models.Model):
     nome = models.CharField('Nome', max_length=40)
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nome
@@ -102,18 +111,19 @@ class Periodo(models.Model):
 
 
 class Candidato(models.Model):
-    periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.CASCADE)
-    polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.CASCADE)
+    periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
+    polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
     nome = models.CharField('Nome', max_length=40)
     telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
     telefone2 = models.CharField('Telefone 2', max_length=20, null=True, blank=True)
     email = models.EmailField('Email', max_length=100, null=True, blank=True)
-    curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.CASCADE)
-    marketing = models.ForeignKey(Marketing, verbose_name='Marketing', on_delete=models.CASCADE)
-    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE)
-    atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
+    marketing = models.ForeignKey(Marketing, verbose_name='Marketing', on_delete=models.PROTECT)
+    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
+    atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observações')
+    ativo = models.BooleanField(default=True)
     # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='candidato_criado_por', editable=False)
     # criado_em = models.DateTimeField(auto_now_add=True)
     # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
@@ -132,18 +142,19 @@ class Candidato(models.Model):
 
 
 class Inscrito(models.Model):
-    periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.CASCADE)
-    polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.CASCADE)
+    periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
+    polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
     nome = models.CharField('Nome', max_length=40)
     telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
     telefone2 = models.CharField('Telefone 2', max_length=20, null=True, blank=True)
     email = models.EmailField('Email', max_length=100, null=True, blank=True)
-    curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.CASCADE)
-    situacao = models.ForeignKey(SituacaoInscrito, verbose_name='Situação', on_delete=models.CASCADE)
-    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE)
-    atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
+    situacao = models.ForeignKey(SituacaoInscrito, verbose_name='Situação', on_delete=models.PROTECT)
+    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
+    atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observacoes')
+    ativo = models.BooleanField(default=True)
     # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='inscrito_criado_por', editable=False)
     # criado_em = models.DateTimeField(auto_now_add=True)
     # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
@@ -162,20 +173,21 @@ class Inscrito(models.Model):
 
 
 class ExAluno(models.Model):
-    periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.CASCADE)
-    polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.CASCADE)
+    periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
+    polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
     ra = models.CharField('RA', max_length=7)
     nome = models.CharField('Nome', max_length=40)
     telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
     telefone2 = models.CharField('Telefone 2', max_length=20, null=True, blank=True)
     email = models.EmailField('Email', max_length=100, null=True, blank=True)
-    curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.CASCADE)
-    situacao = models.ForeignKey(SituacaoExAluno, verbose_name='Situação', on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
+    situacao = models.ForeignKey(SituacaoExAluno, verbose_name='Situação', on_delete=models.PROTECT)
     data_saida = models.DateField('Data da saída')
-    motivo = models.ForeignKey(Motivo, verbose_name="Motivo", on_delete=models.CASCADE)
-    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.CASCADE)
-    atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.CASCADE)
+    motivo = models.ForeignKey(Motivo, verbose_name="Motivo", on_delete=models.PROTECT)
+    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
+    atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
     observacoes = models.TextField('Observacoes')
+    ativo = models.BooleanField(default=True)
     # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='exaluno_criado_por', editable=False)
     # criado_em = models.DateTimeField(auto_now_add=True)
     # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
