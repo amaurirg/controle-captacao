@@ -79,8 +79,9 @@ def modal_remove_candidato(request, pk):
 class CreateCrudPeriodo(View):
     def get(self, request):
         nome = request.GET.get('novo_nome', None)
+        h4_text = request.GET.get('h4_text', None)
         obj = Periodo.objects.create(nome=nome)
-        periodo = {'id': obj.id, 'nome': obj.nome}
+        periodo = {'id': obj.id, 'nome': obj.nome, 'h4_text': h4_text}
         data = {'periodo': periodo}
         return JsonResponse(data)
 

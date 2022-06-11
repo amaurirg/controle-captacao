@@ -107,14 +107,16 @@
                         <div class="field">
                             <h4>
                                 Período
-                                <i class="plus blue icon" id="trigger1" style="margin-left: 5px; cursor: pointer"></i>
+                                <i class="plus blue icon" id="trigger1" onclick="get_plus(this)"
+                                   style="margin-left: 5px; cursor: pointer"></i>
                             </h4>
                             {% render_field form.periodo %}
                         </div>
                         <div class="field">
                             <h4>
                                 Polo
-                                <i class="plus blue icon" id="trigger2" style="margin-left: 5px; cursor: pointer"></i>
+                                <i class="plus blue icon" id="trigger1" onclick="get_plus(this)"
+                                   style="margin-left: 5px; cursor: pointer"></i>
                             </h4>
                             {% render_field form.polo %}
                         </div>
@@ -194,10 +196,8 @@
     </div>
 
     <!-- Criar novo período -->
-    <div id="criar-periodo" class="ui info event-modal modal" data-object="trigger1">
-        <div class="header">
-            Criar novo período
-        </div>
+    <div id="criar-novo" class="ui info event-modal modal" data-object="trigger1">
+        <div class="header titulo"></div>
         <div class="content">
             <form class="ui form" action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -205,7 +205,7 @@
                     <div class="fields">
                         <div class="field">
                             {% comment %}<label for="novo-periodo">Criar novo período</label>{% endcomment %}
-                            <input type="text" name="novo-periodo" id="novo-periodo" placeholder="Novo período">
+                            <input type="text" name="novo-nome" id="novo-nome" placeholder="Novo">
                         </div>
                     </div>
 
@@ -214,7 +214,7 @@
                             <i class="thumbs up icon"></i>
                             Salvar
                         </button>{% endcomment %}
-                        <div id="salvar-periodo" class="ui blue button">Salvar</div>
+                        <div id="salvar-novo" class="ui blue button">Salvar</div>
                         <div class="ui blue deny button">
                             <i class="thumbs down icon"></i>
                             Cancelar
@@ -226,7 +226,7 @@
     </div>
 
     <!-- Criar novo polo -->
-    <div id="criar-polo" class="ui info event-modal modal" data-object="trigger2">
+    {% comment %}<div id="criar-polo" class="ui info event-modal modal" data-object="trigger2">
         <div class="header">
             Adicionar novo polo
         </div>
@@ -236,16 +236,16 @@
                 <div class="ui equal width form-ref">
                     <div class="fields">
                         <div class="field">
-                            {% comment %}<label for="novo-polo">Criar novo polo</label>{% endcomment %}
+                            <label for="novo-polo">Criar novo polo</label>
                             <input type="text" name="novo-polo" id="novo-polo" placeholder="Novo polo">
                         </div>
                     </div>
 
                     <div class="actions">
-                        {% comment %}<button type="submit" id="botao" class="ui floated button primary">
+                        <button type="submit" id="botao" class="ui floated button primary">
                             <i class="thumbs up icon"></i>
                             Salvar
-                        </button>{% endcomment %}
+                        </button>
                         <div id="salvar-polo" class="ui blue button">Salvar</div>
                         <div class="ui blue deny button">
                             <i class="thumbs down icon"></i>
@@ -255,7 +255,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div>{% endcomment %}
 
 
 
@@ -275,20 +275,39 @@
             $(elem).modal('attach events', '#' + $(elem).attr('data-object'));
         });
 
+        h4 = ''
+
+        function get_plus(elem) {
+            h4 = $(elem).parent('h4').text().trim()
+            $('.header.titulo').text('Criar novo ' + h4)
+            {% comment %}console.log('get_plus')
+            console.log(h4)
+            console.log('mostrou?'){% endcomment %}
+            return h4
+        }
+
         $(document).ready(function () {
-            $("#salvar-periodo").click(function () {
+
+            $("#salvar-novo").click(function () {
+                console.log('get_plus')
+                console.log(h4)
+                console.log('mostrou?')
                 $.ajax({
                     url: '{% url 'crud_ajax_create' %}',
                     type: 'get',
                     data: {
-                        novo_nome: $('input[name=novo-periodo]').val().trim()
+                        novo_nome: $('input[name=novo-nome]').val().trim(),
+                        h4_text: h4
+                        {% comment %}h4: $("#trigger1").parent('h4').text().trim(){% endcomment %}
                     },
                     success: function (response) {
+                        console.log('Retorno do Django')
                         console.log(response.periodo.id)
                         console.log(response.periodo.nome)
-                        $("#id_periodo").append($("<option></option>").attr("value", response.periodo.id).text(response.periodo.nome));
-                        $('#criar-periodo').modal('hide');
-                        $('#novo-periodo').val('');
+                        console.log(response.periodo.h4_text)
+                        $("#novo-nome").append($("<option></option>").attr("value", response.periodo.id).text(response.periodo.nome));
+                        $('#criar-novo').modal('hide');
+                        $('#novo-nome').val('');
                     },
                     error: function () {
                         console.log("ERROR")
@@ -321,7 +340,7 @@
 
         {% comment %}function closeModal() {
             $('#criar').modal('hide');
-            $('#novo-periodo').val('');
+            $('#novo-nome').val('');
         }{% endcomment %}
     </script>
 {% endblock %}
