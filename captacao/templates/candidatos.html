@@ -107,7 +107,7 @@
                         <div class="field">
                             <h4>
                                 Período
-                                <i class="plus blue icon" id="trigger1" onclick="get_plus(this)"
+                                <i class="plus blue icon" onclick="get_plus(this)"
                                    style="margin-left: 5px; cursor: pointer"></i>
                             </h4>
                             {% render_field form.periodo %}
@@ -115,7 +115,7 @@
                         <div class="field">
                             <h4>
                                 Polo
-                                <i class="plus blue icon" id="trigger1" onclick="get_plus(this)"
+                                <i class="plus blue icon" onclick="get_plus(this)"
                                    style="margin-left: 5px; cursor: pointer"></i>
                             </h4>
                             {% render_field form.polo %}
@@ -196,7 +196,7 @@
     </div>
 
     <!-- Criar novo período -->
-    <div id="criar-novo" class="ui info event-modal modal" data-object="trigger1">
+    <div id="criar-novo" class="ui info event-modal modal"> <!-- data-object="trigger1">-->
         <div class="header titulo"></div>
         <div class="content">
             <form class="ui form" action="" method="post" enctype="multipart/form-data">
@@ -271,19 +271,21 @@
             $('#addCandidato').modal('show');
         });
 
-        $('.event-modal.info').each(function (idx, elem) {
+        {% comment %}$('.event-modal.info').each(function (idx, elem) {
             $(elem).modal('attach events', '#' + $(elem).attr('data-object'));
-        });
+        });{% endcomment %}
 
         h4 = ''
 
         function get_plus(elem) {
+            //id="trigger1"
+            //elem.setAttribute('id', 'trigger1')
             h4 = $(elem).parent('h4').text().trim()
             $('.header.titulo').text('Criar novo ' + h4)
             {% comment %}console.log('get_plus')
             console.log(h4)
             console.log('mostrou?'){% endcomment %}
-            return h4
+            $('#criar-novo').modal('show');
         }
 
         $(document).ready(function () {
@@ -302,10 +304,11 @@
                     },
                     success: function (response) {
                         console.log('Retorno do Django')
-                        console.log(response.periodo.id)
-                        console.log(response.periodo.nome)
-                        console.log(response.periodo.h4_text)
-                        $("#novo-nome").append($("<option></option>").attr("value", response.periodo.id).text(response.periodo.nome));
+                        console.log(response.novo.id)
+                        console.log(response.novo.nome)
+                        console.log(response.novo.h4_text)
+                        console.log(response.novo.select_id)
+                        $(response.novo.select_id).append($("<option></option>").attr("value", response.novo.id).text(response.novo.nome));
                         $('#criar-novo').modal('hide');
                         $('#novo-nome').val('');
                     },

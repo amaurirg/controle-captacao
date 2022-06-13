@@ -1,3 +1,5 @@
+import unicodedata
+
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -77,12 +79,18 @@ def modal_remove_candidato(request, pk):
 
 
 class CreateCrudPeriodo(View):
+
     def get(self, request):
+        dic_tables = {
+            'Período': Periodo,
+            'Polo': Polo,
+        }
         nome = request.GET.get('novo_nome', None)
         h4_text = request.GET.get('h4_text', None)
-        obj = Periodo.objects.create(nome=nome)
-        periodo = {'id': obj.id, 'nome': obj.nome, 'h4_text': h4_text}
-        data = {'periodo': periodo}
+        obj = dic_tables[h4_text].objects.create(nome=nome)
+        select_id = unicodedata.normalize("NFD", h4_text.lower()).encode("ascii", "ignore").decode("utf-8")
+        novo = {'id': obj.id, 'nome': obj.nome, 'h4_text': h4_text, 'select_id': f'#id_{select_id}'}
+        data = {'novo': novo}
         return JsonResponse(data)
 
 
