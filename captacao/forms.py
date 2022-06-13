@@ -74,17 +74,16 @@ class CandidatoForm(forms.ModelForm):
         }
 
 
-class PeriodoForm(forms.ModelForm):
-    class Meta:
-        model = Periodo
-        fields = ['nome']
-        widgets = {
-            'nome': forms.TextInput(attrs={
+class CreateNewForm(forms.Form):
+    name = forms.CharField(max_length=50)
+    widgets = {
+        'name': forms.TextInput(
+            attrs={
                 'class': 'ui input focus',
-                'placeholder': 'Digite um novo período',
-                'id': 'periodo-nome'
-            })
-        }
+                'placeholder': 'Digite um novo',
+            }
+        )
+    }
 
 # class InscritoForm(forms.ModelForm):
 #     class Meta:

@@ -104,6 +104,10 @@
             font-weight: bold;
         }
 
+        .actions-buttons {
+            margin-left: 0 !important;
+        }
+
     </style>
 </head>
 <body>
@@ -126,180 +130,7 @@
     {% block content %} {% endblock %}
     <div class="ui modal" id="open-modal" tabindex="-1" role="dialog"></div>
 
-    {% comment %}<div id="addPeriodo" class="ui button primary">
-        Show Modal
-    </div>{% endcomment %}
-
-    {% comment %}<div class="ui info event-modal modal periodo" data-object="trigger1">
-        <div class="header">
-            <h1 class="ui left floated blue_color">Adicionar novo período MESMO HTML</h1>
-        </div>
-        <div class="content">
-            <form class="ui form" id="form-periodo" action="" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="ui equal width form form-ref">
-                    <div class="fields">
-                        <div class="field">
-                            {% render_field form2.nome %}
-
-                            <label for="novo">Novo Período</label>
-                            <input type="text" id="novo" name="novo">
-                            <button type="button" id="botao">Incluir</button>
-
-                        </div>
-                    </div>
-
-                    <div class="actions">
-                        <button type="button" id="botao" class="ui floated button primary">
-                            <i class="thumbs up icon"></i>
-                            Salvar
-                        </button>
-                        <div class="ui blue deny button">
-                            <i class="thumbs down icon"></i>
-                            Cancelar
-                        </div>
-                    </div>
-
-                </div>
-            </form>
-        </div>
-    </div>{% endcomment %}
-
-
-    {% comment %}<div class="ui addCan modal event-modal">
-        <div class="header">
-            <h1 class="ui left floated blue_color">Adicionar novo candidato</h1>
-        </div>
-        <div class="content">
-            <form class="ui form" action="" method="post"
-                  enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <div class="ui equal width form form-ref">
-                    <div class="fields">
-                        <div class="field">
-                            <h4>
-                                Período
-                                <i class="plus blue icon" id="trigger1" style="margin-left: 5px; cursor: pointer"></i>
-                            </h4>
-                            {% render_field form.periodo %}
-                        </div>
-                        <div class="field">
-                            <h4>Polo</h4>
-                            {% render_field form.polo %}
-                        </div>
-                        <div class="field">
-                            <h4>Curso</h4>
-                            {% render_field form.curso %}
-                        </div>
-                        <div class="field">
-                            <h4>Marketing</h4>
-                            {% render_field form.marketing %}
-                        </div>
-                    </div>
-
-                    <div class="fields">
-                        <div class="field">
-                            <h4>Nome</h4>
-                            {% render_field form.nome %}
-                        </div>
-                        <div class="field">
-                            <h4>Email</h4>
-                            {% render_field form.email %}
-                        </div>
-                    </div>
-
-                    <div class="fields">
-                        <div class="field">
-                            <h4>Telefone 1</h4>
-                            {% render_field form.telefone1 %}
-                        </div>
-                        <div class="field">
-                            <h4>Telefone 2</h4>
-                            {% render_field form.telefone2 %}
-                        </div>
-                        <div class="field">
-                            <h4>Data do contato</h4>
-                            {% render_field form.data_contato %}
-                        </div>
-                    </div>
-
-                    <div class="fields">
-                        <div class="field">
-                            <h4>Atendente</h4>
-                            {% render_field form.atendente %}
-                        </div>
-                        <div class="field">
-                            <h4>Status</h4>
-                            {% render_field form.status %}
-                        </div>
-                    </div>
-
-                    <div class="fields">
-                        <div class="field">
-                            <h4>Observações</h4>
-                            {% render_field form.observacoes %}
-                        </div>
-                    </div>
-                    <div class="actions">
-                        <button type="submit" class="ui floated button primary">
-                            <i class="thumbs up icon"></i>
-                            Salvar
-                        </button>
-                        <div class="ui blue deny button">
-                            <i class="thumbs down icon"></i>
-                            Cancelar
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="actions">
-            <div class="ui blue deny button">
-                <i class="close icon"></i>
-                Fechar
-            </div>
-        </div>
-
-    </div>
-
-    <div class="ui info event-modal modal periodo" data-object="trigger1">
-        <div class="header">
-            <h1 class="ui left floated blue_color">Adicionar novo período MESMO HTML</h1>
-        </div>
-        <div class="content">
-            <form class="ui form" id="form-periodo" action="" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="ui equal width form form-ref">
-                    <div class="fields">
-                        <div class="field">
-                            {% render_field form2.nome %}
-
-                            <label for="novo">Novo Período</label>
-                            <input type="text" id="novo" name="novo">
-                            <button type="button" id="botao">Incluir</button>
-
-                        </div>
-                    </div>
-
-                    <div class="actions">
-                        <button type="submit" id="botao" class="ui floated button primary">
-                            <i class="thumbs up icon"></i>
-                            Salvar
-                        </button>
-                        <div class="ui blue deny button">
-                            <i class="thumbs down icon"></i>
-                            Cancelar
-                        </div>
-                    </div>
-
-                </div>
-            </form>
-        </div>
-    </div>{% endcomment %}
-
-
+</div>
 
 <script>
     function open_modal(url) {
@@ -307,42 +138,6 @@
             $(this).modal('show');
         });
     }
-
-    {% comment %}$('.event-modal').modal({
-        allowMultiple: true
-    });
-
-    $('#trigger1').click(function () {
-        $('.periodo.modal').modal('show');
-    });
-
-    $('.event-modal.info').each(function (idx, elem) {
-        $(elem).modal('attach events', '#' + $(elem).attr('data-object'));
-    });
-
-
-    $(document).ready(function () {
-        $("#botao").click(function () {
-            $.ajax({
-                url: '{% url 'crud_ajax_create' %}',
-                type: 'get',
-                data: {
-                    novo_periodo: $('input[name=novo]').val().trim()
-                },
-                success: function (response) {
-                    console.log(response)
-                    $("#id_periodo").append($("<option></option>").attr("value", response.id).text(response.nome));
-                    {#closeModal()#}
-                },
-                error: function () {
-                    console.log("ERROR")
-                }
-            });
-            $('form#add_categoria').trigger("reset");
-            return false;
-        });
-    });{% endcomment %}
-
 </script>
 
 <script>
@@ -387,7 +182,6 @@
         });
     });
 </script>
-
 
 {% block extrajs %}{% endblock %}
 

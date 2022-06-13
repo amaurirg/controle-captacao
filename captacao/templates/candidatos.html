@@ -195,26 +195,28 @@
         </div>
     </div>
 
-    <!-- Criar novo período -->
-    <div id="criar-novo" class="ui info event-modal modal"> <!-- data-object="trigger1">-->
-        <div class="header titulo"></div>
+    <!-- Criar novo nome -->
+    <div id="criar-novo" class="ui info event-modal modal tiny"> <!-- data-object="trigger1">-->
+        <div class="header">
+            <h2 class="ui left floated blue_color title-header"></h2>
+        </div>
+
         <div class="content">
-            <form class="ui form" action="" method="post" enctype="multipart/form-data">
+            <form class="ui form" action="" onsubmit="salvar_novo(event)" method="post"
+                  enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="ui equal width form-ref">
                     <div class="fields">
-                        <div class="field">
-                            {% comment %}<label for="novo-periodo">Criar novo período</label>{% endcomment %}
+                        <div class="field sixteen column wide">
                             <input type="text" name="novo-nome" id="novo-nome" placeholder="Novo">
                         </div>
                     </div>
 
                     <div class="actions">
-                        {% comment %}<button type="submit" id="botao" class="ui floated button primary">
+                        <button type="submit" id="salvar-novo" class="ui floated button primary actions-buttons">
                             <i class="thumbs up icon"></i>
                             Salvar
-                        </button>{% endcomment %}
-                        <div id="salvar-novo" class="ui blue button">Salvar</div>
+                        </button>
                         <div class="ui blue deny button">
                             <i class="thumbs down icon"></i>
                             Cancelar
@@ -224,40 +226,6 @@
             </form>
         </div>
     </div>
-
-    <!-- Criar novo polo -->
-    {% comment %}<div id="criar-polo" class="ui info event-modal modal" data-object="trigger2">
-        <div class="header">
-            Adicionar novo polo
-        </div>
-        <div class="content">
-            <form class="ui form" action="" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="ui equal width form-ref">
-                    <div class="fields">
-                        <div class="field">
-                            <label for="novo-polo">Criar novo polo</label>
-                            <input type="text" name="novo-polo" id="novo-polo" placeholder="Novo polo">
-                        </div>
-                    </div>
-
-                    <div class="actions">
-                        <button type="submit" id="botao" class="ui floated button primary">
-                            <i class="thumbs up icon"></i>
-                            Salvar
-                        </button>
-                        <div id="salvar-polo" class="ui blue button">Salvar</div>
-                        <div class="ui blue deny button">
-                            <i class="thumbs down icon"></i>
-                            Cancelar
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>{% endcomment %}
-
-
 
 {% endblock %}
 
@@ -281,69 +249,39 @@
             //id="trigger1"
             //elem.setAttribute('id', 'trigger1')
             h4 = $(elem).parent('h4').text().trim()
-            $('.header.titulo').text('Criar novo ' + h4)
+            $('.title-header').text('Criar novo ' + h4).addClass('blue_color')
             {% comment %}console.log('get_plus')
             console.log(h4)
             console.log('mostrou?'){% endcomment %}
             $('#criar-novo').modal('show');
         }
 
-        $(document).ready(function () {
-
-            $("#salvar-novo").click(function () {
-                console.log('get_plus')
-                console.log(h4)
-                console.log('mostrou?')
-                $.ajax({
-                    url: '{% url 'crud_ajax_create' %}',
-                    type: 'get',
-                    data: {
-                        novo_nome: $('input[name=novo-nome]').val().trim(),
-                        h4_text: h4
-                        {% comment %}h4: $("#trigger1").parent('h4').text().trim(){% endcomment %}
-                    },
-                    success: function (response) {
-                        console.log('Retorno do Django')
-                        console.log(response.novo.id)
-                        console.log(response.novo.nome)
-                        console.log(response.novo.h4_text)
-                        console.log(response.novo.select_id)
-                        $(response.novo.select_id).append($("<option></option>").attr("value", response.novo.id).text(response.novo.nome));
-                        $('#criar-novo').modal('hide');
-                        $('#novo-nome').val('');
-                    },
-                    error: function () {
-                        console.log("ERROR")
-                    }
-                });
+        function salvar_novo(event) {
+            $.ajax({
+                url: '{% url 'create_new_name' %}',
+                type: 'get',
+                data: {
+                    novo_nome: $('input[name=novo-nome]').val().trim(),
+                    h4_text: h4
+                    {% comment %}h4: $("#trigger1").parent('h4').text().trim(){% endcomment %}
+                },
+                success: function (response) {
+                    console.log('Retorno do Django')
+                    console.log(response.novo.id)
+                    console.log(response.novo.nome)
+                    console.log(response.novo.h4_text)
+                    console.log(response.novo.select_id)
+                    $(response.novo.select_id).append($("<option></option>").attr("value", response.novo.id).text(response.novo.nome));
+                    $('#criar-novo').modal('hide');
+                    $('#novo-nome').val('');
+                },
+                error: function () {
+                    console.log("ERROR")
+                }
             });
+            event.preventDefault();
 
-            $("#salvar-polo").click(function () {
-                $.ajax({
-                    url: '{% url 'ajax_create_polo' %}',
-                    type: 'get',
-                    data: {
-                        novo_nome: $('input[name=novo-polo]').val().trim()
-                    },
-                    success: function (response) {
-                        console.log(response.polo.id)
-                        console.log(response.polo.nome)
-                        $("#id_polo").append($("<option></option>").attr("value", response.polo.id).text(response.polo.nome));
-                        $('#criar-polo').modal('hide');
-                        $('#novo-polo').val('');
-                    },
-                    error: function () {
-                        console.log("ERROR")
-                    }
-                });
-            });
+        }
 
-
-        });
-
-        {% comment %}function closeModal() {
-            $('#criar').modal('hide');
-            $('#novo-nome').val('');
-        }{% endcomment %}
     </script>
 {% endblock %}

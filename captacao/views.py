@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 
-from captacao.forms import CandidatoForm, PeriodoForm
+from captacao.forms import CandidatoForm, CreateNewForm
 from captacao.models import Candidato, Periodo, Status, Marketing, Polo, Inscrito, ExAluno
 
 
@@ -17,11 +17,8 @@ def candidatos(request):
     candidatos = Candidato.objects.filter(ativo=True)
     context = {
         'candidatos': candidatos,
-        # 'periodos': Periodo.objects.all(),
-        # 'polos': Polo.objects.all(),
-        # 'marketing_list': Marketing.objects.all(),
-        # 'status_list': Status.objects.all(),
         'form': CandidatoForm(request.POST or None),
+        # 'form_create_new': CreateNewForm()
     }
     return render(request, 'candidatos.html', context)
 
@@ -31,9 +28,6 @@ def inscritos(request):
 
     context = {
         'inscritos': inscritos,
-        # 'periodos': Periodo.objects.all(),
-        # 'polos': Polo.objects.all(),
-        # 'status_list': Status.objects.all(),
         # 'form': InscritoForm(request.POST or None)
     }
     return render(request, 'inscritos.html', context)
@@ -44,9 +38,6 @@ def exalunos(request):
 
     context = {
         'ex_alunos': ex_alunos,
-        # 'periodos': Periodo.objects.all(),
-        # 'polos': Polo.objects.all(),
-        # 'status_list': Status.objects.all(),
         # 'form': ExAlunoForm(request.POST or None)
     }
     return render(request, 'ex-alunos.html', context)
@@ -72,14 +63,14 @@ def modal_atualiza_candidato(request, pk):
 def modal_remove_candidato(request, pk):
     candidato = get_object_or_404(Candidato, pk=pk)
     if request.POST:
-        candidato.delete()
+        candidato.ativo = False
+        candidato.save()
         return redirect(reverse('candidatos'))
     else:
         return render(request, 'modal_remove_candidato.html', {'candidato': candidato})
 
 
-class CreateCrudPeriodo(View):
-
+class CreateNewName(View):
     def get(self, request):
         dic_tables = {
             'Período': Periodo,
@@ -91,16 +82,6 @@ class CreateCrudPeriodo(View):
         select_id = unicodedata.normalize("NFD", h4_text.lower()).encode("ascii", "ignore").decode("utf-8")
         novo = {'id': obj.id, 'nome': obj.nome, 'h4_text': h4_text, 'select_id': f'#id_{select_id}'}
         data = {'novo': novo}
-        return JsonResponse(data)
-
-
-
-class CreateCrudPolo(View):
-    def get(self, request):
-        nome = request.GET.get('novo_nome', None)
-        obj = Polo.objects.create(nome=nome)
-        polo = {'id': obj.id, 'nome': obj.nome}
-        data = {'polo': polo}
         return JsonResponse(data)
 
 
