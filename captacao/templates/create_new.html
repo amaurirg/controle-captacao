@@ -1,0 +1,31 @@
+<!-- Criar novo nome -->
+<div id="criar-novo" class="ui info event-modal modal tiny"> <!-- data-object="trigger1">-->
+    <div class="header">
+        <h2 class="ui left floated blue_color title-header"></h2>
+    </div>
+
+    <div class="content">
+        <form class="ui form" action="" onsubmit="salvar_novo(event)" method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="ui equal width form-ref">
+                <div class="fields">
+                    <div class="field sixteen column wide">
+                        <input type="text" name="novo-nome" id="novo-nome" placeholder="Novo">
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" id="salvar-novo" class="ui floated button primary actions-buttons">
+                        <i class="thumbs up icon"></i>
+                        Salvar
+                    </button>
+                    <div class="ui blue deny button">
+                        <i class="thumbs down icon"></i>
+                        Cancelar
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

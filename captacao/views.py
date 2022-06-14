@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.views import View
 
 from captacao.forms import CandidatoForm, CreateNewForm
-from captacao.models import Candidato, Periodo, Status, Marketing, Polo, Inscrito, ExAluno
+from captacao.models import Candidato, Periodo, Status, Marketing, Polo, Inscrito, ExAluno, Curso, Atendente
 
 
 def captacao(request):
@@ -75,6 +75,10 @@ class CreateNewName(View):
         dic_tables = {
             'Período': Periodo,
             'Polo': Polo,
+            'Curso': Curso,
+            'Marketing': Marketing,
+            'Atendente': Atendente,
+            'Status': Status
         }
         nome = request.GET.get('novo_nome', None)
         h4_text = request.GET.get('h4_text', None)
