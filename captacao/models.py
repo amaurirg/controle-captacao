@@ -22,8 +22,8 @@ class SituacaoInscrito(models.Model):
         return self.nome
 
     class Meta:
-        verbose_name = 'Situação'
-        verbose_name_plural = 'Situações'
+        verbose_name = 'Situação Inscrito'
+        verbose_name_plural = 'Situação Inscritos'
 
 
 class SituacaoExAluno(models.Model):
@@ -34,8 +34,8 @@ class SituacaoExAluno(models.Model):
         return self.nome
 
     class Meta:
-        verbose_name = 'Situação'
-        verbose_name_plural = 'Situações'
+        verbose_name = 'Situação ExAluno'
+        verbose_name_plural = 'Situação ExAlunos'
 
 
 class Motivo(models.Model):

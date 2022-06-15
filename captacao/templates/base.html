@@ -59,32 +59,32 @@
             padding: 30px 0 50px 0 !important;
         }
 
-        #table_candidatos {
+        #table-geral {
             width: 100%;
             background-color: #1678C2;
             border-radius: 5px;
         }
 
-        #table_candidatos thead {
+        #table-geral thead {
             color: white;
         }
 
-        #table_candidatos th:first-child {
+        #table-geral th:first-child {
             padding-left: 10px;
             text-align: left
         }
 
-        #table_candidatos td:first-child {
+        #table-geral td:first-child {
             padding-left: 10px;
             text-align: left
         }
 
-        #table_candidatos th {
+        #table-geral th {
             padding-left: 0;
             text-align: left;
         }
 
-        #table_candidatos td {
+        #table-geral td {
             padding-left: 0;
             text-align: left;
         }
@@ -94,15 +94,15 @@
             background-color: #d7d8e0;
         }
 
-        .filter-candidatos {
+        {% comment %}.filter-candidatos {
             margin-top: 35px;
             padding-bottom: 50px;
-        }
+        }{% endcomment %}
 
-        .filter-button {
+        {% comment %}.filter-button {
             font-size: 20px;
             font-weight: bold;
-        }
+        }{% endcomment %}
 
         .actions-buttons {
             margin-left: 0 !important;
@@ -114,7 +114,8 @@
 <div class="ui icon left vertical sidebar menu blue_background">
     <a href="{% url 'candidatos' %}" class="item sidebar_toggle">Candidatos</a>
     <a href="{% url 'inscritos' %}" class="item sidebar_toggle">Inscritos</a>
-    <a href="{% url 'ex-alunos' %}" class="item sidebar_toggle">Ex alunos</a>
+    <a href="{% url 'exalunos' %}" class="item sidebar_toggle">Ex alunos</a>
+{#    <a href="{% url 'alunos' %}" class="item sidebar_toggle">Alunos</a>#}
 </div>
 <!--Inscritos: [Pré inscrição, Ins port diploma, Ins transf externa, Convocado]-->
 <!--Ex alunos: [Cancelado, Trancado, Abandono, Formado]-->
@@ -132,12 +133,25 @@
 
 </div>
 
+{% include 'create_new.html' %}
+
 <script>
+    $('.event-modal').modal({allowMultiple: true});
+
+    h4 = ''
+
     function open_modal(url) {
         $('#open-modal').focus().load(url, function () {
             $(this).modal('show');
         });
     }
+
+    function get_plus(elem) {
+        h4 = $(elem).parent('h4').text().trim()
+        $('.title-header').text('Criar novo ' + h4).addClass('blue_color')
+        $('#criar-novo').modal('show');
+    }
+
 </script>
 
 <script>
@@ -149,7 +163,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#table_candidatos').DataTable({
+        $('#table-geral').DataTable({
             initComplete: function () {
                 this.api().columns().every(function () {
                     var column = this;
@@ -181,6 +195,32 @@
             }
         });
     });
+
+    function salvar_novo(event) {
+        $.ajax({
+            url: '{% url 'create_new_name' %}',
+            type: 'get',
+            data: {
+                novo_nome: $('input[name=novo-nome]').val().trim(),
+                h4_text: h4
+            },
+            success: function (response) {
+                console.log('Retorno do Django')
+                console.log(response.novo.id)
+                console.log(response.novo.nome)
+                console.log(response.novo.h4_text)
+                console.log(response.novo.select_id)
+                $(response.novo.select_id).append($("<option></option>").attr("value", response.novo.id).attr("selected", "").text(response.novo.nome));
+                $('#criar-novo').modal('hide');
+                $('#novo-nome').val('');
+            },
+            error: function () {
+                console.log("ERROR")
+            }
+        });
+        event.preventDefault();
+
+    }
 </script>
 
 {% block extrajs %}{% endblock %}

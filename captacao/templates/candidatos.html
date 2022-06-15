@@ -6,19 +6,14 @@
         <div class="eight wide column">
             <h1 class="ui left floated blue_color">Candidatos</h1>
         </div>
-
-        {% comment %}<div class="eight wide column">
-            <a href="#" onclick="open_modal('{% url 'modal_cria_candidato' %}')">
-                <button type="submit" id="adicionar" class="ui right floated button primary">Adicionar</button>
-            </a>
-        </div>{% endcomment %}
         <div class="eight wide column">
-            <div id="showmodal" class="ui right floated button primary">
+            <div id="showmodal-candidato" class="ui right floated button primary">
                 Adicionar
             </div>
         </div>
     </div>
-    <table id="table_candidatos" class="hover">
+
+    <table id="table-geral" class="hover">
         <thead>
         <tr>
             <th>Período</th>
@@ -93,63 +88,13 @@
     </table>
 
     {% include 'modal_cria_candidato.html' %}
-    {% include 'create_new.html' %}
 
 {% endblock %}
 
 {% block extrajs %}
     <script>
-        $('.event-modal').modal({
-            allowMultiple: true
-        });
-
-        $('#showmodal').click(function () {
+        $('#showmodal-candidato').click(function () {
             $('#addCandidato').modal('show');
         });
-
-        {% comment %}$('.event-modal.info').each(function (idx, elem) {
-            $(elem).modal('attach events', '#' + $(elem).attr('data-object'));
-        });{% endcomment %}
-
-        h4 = ''
-
-        function get_plus(elem) {
-            //id="trigger1"
-            //elem.setAttribute('id', 'trigger1')
-            h4 = $(elem).parent('h4').text().trim()
-            $('.title-header').text('Criar novo ' + h4).addClass('blue_color')
-            {% comment %}console.log('get_plus')
-            console.log(h4)
-            console.log('mostrou?'){% endcomment %}
-            $('#criar-novo').modal('show');
-        }
-
-        function salvar_novo(event) {
-            $.ajax({
-                url: '{% url 'create_new_name' %}',
-                type: 'get',
-                data: {
-                    novo_nome: $('input[name=novo-nome]').val().trim(),
-                    h4_text: h4
-                    {% comment %}h4: $("#trigger1").parent('h4').text().trim(){% endcomment %}
-                },
-                success: function (response) {
-                    console.log('Retorno do Django')
-                    console.log(response.novo.id)
-                    console.log(response.novo.nome)
-                    console.log(response.novo.h4_text)
-                    console.log(response.novo.select_id)
-                    $(response.novo.select_id).append($("<option></option>").attr("value", response.novo.id).text(response.novo.nome));
-                    $('#criar-novo').modal('hide');
-                    $('#novo-nome').val('');
-                },
-                error: function () {
-                    console.log("ERROR")
-                }
-            });
-            event.preventDefault();
-
-        }
-
     </script>
 {% endblock %}

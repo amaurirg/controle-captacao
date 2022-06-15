@@ -1,0 +1,31 @@
+<div class="header">
+    <h1 class="ui left floated blue_color">Remover ex-aluno</h1>
+</div>
+<form class="ui form" action="{% url 'modal_remove_exaluno' exaluno.id %}" method="post"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="ui equal width form form-ref">
+        <div class="fields">
+            <div class="field">
+                <h4>Tem certeza que deseja excluir <span>{{ exaluno }}</span> ?</h4>
+            </div>
+        </div>
+        <div class="actions">
+            <button type="submit" class="ui floated deny button primary actions-buttons">
+                <i class="thumbs up icon"></i>
+                Sim
+            </button>
+            <div class="ui blue deny button">
+                <i class="thumbs down icon"></i>
+                Cancelar
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="actions">
+    <div class="ui blue deny button">
+        <i class="close icon"></i>
+        Fechar
+    </div>
+</div>

@@ -4,10 +4,10 @@
 {% block content %}
     <div class="ui grid grid-style">
         <div class="eight wide column">
-            <h1 class="ui left floated blue_color">Inscritos</h1>
+            <h1 class="ui left floated blue_color">Ex-Alunos</h1>
         </div>
         <div class="eight wide column">
-            <div id="showmodal-inscrito" class="ui right floated button primary">
+            <div id="showmodal-exaluno" class="ui right floated button primary">
                 Adicionar
             </div>
         </div>
@@ -24,49 +24,49 @@
             <th>Situação</th>
             <th>Status</th>
             <th>Atendente</th>
-            <th>Data do Contato</th>
+            <th>Data da saída</th>
             <th>Obs</th>
             <th>Editar</th>
             <th>Excluir</th>
         </tr>
         </thead>
         <tbody>
-        {% for inscrito in inscritos %}
+        {% for exaluno in exalunos %}
             <tr>
-                <td>{{ inscrito.periodo }}</td>
-                <td>{{ inscrito.polo }}</td>
-                <td>{{ inscrito.nome }}</td>
-                {% if inscrito.telefone1 == None %}
+                <td>{{ exaluno.periodo }}</td>
+                <td>{{ exaluno.polo }}</td>
+                <td>{{ exaluno.nome }}</td>
+                {% if exaluno.telefone1 == None %}
                     <td>Não informado</td>
                 {% else %}
-                    <td>{{ inscrito.telefone1 }}</td>
+                    <td>{{ exaluno.telefone1 }}</td>
                 {% endif %}
-                <td>{{ inscrito.curso }}</td>
-                <td>{{ inscrito.situacao }}</td>
-                <td>{{ inscrito.status }}</td>
-                {% if inscrito.atendente.first_name %}
-                    <td>{{ inscrito.atendente.first_name }}</td>
+                <td>{{ exaluno.curso }}</td>
+                <td>{{ exaluno.situacao }}</td>
+                <td>{{ exaluno.status }}</td>
+                {% if exaluno.atendente.first_name %}
+                    <td>{{ exaluno.atendente.first_name }}</td>
                 {% else %}
-                    <td>{{ inscrito.atendente }}</td>
+                    <td>{{ exaluno.atendente }}</td>
                 {% endif %}
-                <td>{{ inscrito.data_contato|date:"d/m/Y" }}</td>
+                <td>{{ exaluno.data_saida|date:"d/m/Y" }}</td>
                 <td>
                     <div class="ui accordion">
                         <div class="title">
                             <i class="plus circle icon"></i>
                         </div>
                         <div class="content">
-                            <p class="transition hidden">Observações: {{ inscrito.observacoes }}</p>
+                            <p class="transition hidden">Observações: {{ exaluno.observacoes }}</p>
                         </div>
                     </div>
                 </td>
                 <td>
-                    <a href="#" onclick="open_modal('{% url 'modal_atualiza_inscrito' inscrito.id %}')">
+                    <a href="#" onclick="open_modal('{% url 'modal_atualiza_exaluno' exaluno.id %}')">
                         <i class="edit icon black"></i>
                     </a>
                 </td>
                 <td>
-                    <a href="#" onclick="open_modal('{% url 'modal_remove_inscrito' inscrito.id %}')"
+                    <a href="#" onclick="open_modal('{% url 'modal_remove_exaluno' exaluno.id %}')"
                        type="submit" id="remover"><i class="trash icon black"></i>
                     </a>
                 </td>
@@ -87,14 +87,14 @@
         </tfoot>
     </table>
 
-    {% include 'modal_cria_inscrito.html' %}
+    {% include 'modal_cria_exaluno.html' %}
 
 {% endblock %}
 
 {% block extrajs %}
     <script>
-        $('#showmodal-inscrito').click(function () {
-            $('#addInscrito').modal('show');
+        $('#showmodal-exaluno').click(function () {
+            $('#addExAluno').modal('show');
         });
     </script>
 {% endblock %}
