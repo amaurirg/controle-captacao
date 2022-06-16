@@ -10,6 +10,10 @@ from captacao.models import Candidato, Periodo, Status, Marketing, Polo, Inscrit
     SituacaoInscrito, SituacaoExAluno, Motivo
 
 
+def login(request):
+    return render(request, 'login_semantic.html')
+
+
 def captacao(request):
     return render(request, 'base.html')
 

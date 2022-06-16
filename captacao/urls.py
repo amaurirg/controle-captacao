@@ -2,12 +2,13 @@ from django.urls import path
 from .views import (captacao, periodos, CreateNewName,
                     candidatos, modal_cria_candidato, modal_atualiza_candidato, modal_remove_candidato,
                     inscritos, modal_cria_inscrito, modal_atualiza_inscrito, modal_remove_inscrito,
-                    exalunos, modal_cria_exaluno, modal_atualiza_exaluno, modal_remove_exaluno,
+                    exalunos, modal_cria_exaluno, modal_atualiza_exaluno, modal_remove_exaluno, login,
     # alunos, modal_cria_aluno, modal_atualiza_aluno, modal_remove_aluno
                     )
 
 urlpatterns = [
     path('', captacao, name="captacao"),
+    path('login/', login, name="login"),
     path('create/name', CreateNewName.as_view(), name='create_new_name'),
     path('periodos/', periodos, name='periodos'),
 
