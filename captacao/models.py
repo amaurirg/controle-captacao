@@ -203,3 +203,60 @@ class ExAluno(models.Model):
     class Meta:
         verbose_name = 'Ex Aluno'
         verbose_name_plural = 'Ex Alunos'
+
+
+class Aluno(models.Model):
+    nom_campus = models.CharField('NomCampus', max_length=100)
+    nom_curso_grupo = models.CharField('NomCursoGrupo', max_length=100)
+    cod_curso = models.PositiveIntegerField('CodCurso')
+    tipo = models.CharField('Tipo', max_length=20)
+    dsc_modalidade = models.CharField('DscModalidade', max_length=20)
+    serie = models.PositiveSmallIntegerField('Serie')
+    semana = models.CharField('Semana', max_length=15)
+    cod_ra = models.PositiveIntegerField('CodRA')
+    nom_aluno = models.CharField('NomAluno', max_length=255)
+    dat_matr = models.DateField('DatMatr')
+    status_aluno = models.CharField('StatusAluno', max_length=30)
+    turma_ano_ingresso = models.CharField('TurmaAnoIngresso', max_length=50)
+    email = models.EmailField('Email', max_length=255, blank=True, null=True)
+    telefone1 = models.CharField('TelefoneCel1', max_length=15, blank=True, null=True)
+    telefone2 = models.CharField('TelefoneCel2', max_length=15, blank=True, null=True)
+    telefone_res = models.CharField('TelefoneRes', max_length=15, blank=True, null=True)
+    cidade = models.CharField('Cidade', max_length=255)
+    bairro = models.CharField('Bairro', max_length=255)
+    bolsista = models.CharField('Bolsista', max_length=5)
+    dat_ingresso = models.DateField('Dat_ingresso')
+    data_prev_termino = models.DateField('DataPrevTermino')
+    ativo = models.BooleanField(default=True)
+    periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos')
+
+    def __str__(self):
+        return self.nom_aluno
+
+    class Meta:
+        verbose_name = 'Aluno'
+        verbose_name_plural = 'Alunos'
+
+'''
+NomCampus
+NomCursoGrupo
+CodCurso
+Tipo
+DscModalidade
+Serie
+Semana
+CodRA
+NomAluno
+DatMatr
+StatusAluno
+TurmaAnoIngresso
+Email
+TelefoneCel1
+TelefoneCel2
+TelefoneRes
+Cidade
+Bairro
+Bolsista?
+Dat_ingresso
+DataPrevTermino
+'''

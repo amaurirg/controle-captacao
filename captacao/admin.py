@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from captacao.models import (Status, Marketing, Curso, Polo, Candidato, Periodo, Atendente, Motivo, Inscrito,
-                             ExAluno, SituacaoInscrito, SituacaoExAluno)
+                             ExAluno, SituacaoInscrito, SituacaoExAluno, Aluno)
 from core.utils import export_xlsx, export_as_csv, salva_criado_por
 
 
@@ -109,6 +109,91 @@ class ExAlunoAdmin(admin.ModelAdmin):
     search_fields = ['periodo__nome', 'polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'status__nome']
     list_filter = ['periodo', 'polo', 'status']
+
+    def save_model(self, request, obj, form, change):
+        salva_criado_por(request, obj)
+
+    # actions = export_xlsx
+    actions = (export_as_csv, export_xlsx)
+
+
+@admin.register(Aluno)
+class AlunoAdmin(admin.ModelAdmin):
+    list_display = [
+        'nom_campus',
+        'nom_curso_grupo',
+        'cod_curso',
+        'tipo',
+        'dsc_modalidade',
+        'serie',
+        'semana',
+        'cod_ra',
+        'nom_aluno',
+        'dat_matr',
+        'status_aluno',
+        'turma_ano_ingresso',
+        'email',
+        'telefone1',
+        'telefone2',
+        'telefone_res',
+        'cidade',
+        'bairro',
+        'bolsista',
+        'dat_ingresso',
+        'data_prev_termino',
+        'ativo',
+        # 'periodos',
+    ]
+    search_fields = [
+        'nom_campus',
+        'nom_curso_grupo',
+        'cod_curso',
+        'tipo',
+        'dsc_modalidade',
+        'serie',
+        'semana',
+        'cod_ra',
+        'nom_aluno',
+        'dat_matr',
+        'status_aluno',
+        'turma_ano_ingresso',
+        'email',
+        'telefone1',
+        'telefone2',
+        'telefone_res',
+        'cidade',
+        'bairro',
+        'bolsista',
+        'dat_ingresso',
+        'data_prev_termino',
+        'ativo',
+        # 'periodos',
+    ]
+    list_filter = [
+        'nom_campus',
+        'nom_curso_grupo',
+        'cod_curso',
+        'tipo',
+        'dsc_modalidade',
+        'serie',
+        'semana',
+        'cod_ra',
+        'nom_aluno',
+        'dat_matr',
+        'status_aluno',
+        'turma_ano_ingresso',
+        'email',
+        'telefone1',
+        'telefone2',
+        'telefone_res',
+        'cidade',
+        'bairro',
+        'bolsista',
+        'dat_ingresso',
+        'data_prev_termino',
+        'ativo',
+        # 'periodos',
+    ]
 
     def save_model(self, request, obj, form, change):
         salva_criado_por(request, obj)
