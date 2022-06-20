@@ -5,13 +5,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 
-from captacao.forms import CandidatoForm, CreateNewForm, InscritoForm, ExAlunoForm
+from captacao.forms import CandidatoForm, InscritoForm, ExAlunoForm
 from captacao.models import Candidato, Periodo, Status, Marketing, Polo, Inscrito, ExAluno, Curso, Atendente, \
     SituacaoInscrito, SituacaoExAluno, Motivo
 
 
 def login(request):
-    return render(request, 'login_semantic.html')
+    return render(request, 'login.html')
 
 
 def captacao(request):
