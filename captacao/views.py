@@ -5,9 +5,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 
-from captacao.forms import CandidatoForm, InscritoForm, ExAlunoForm
+from captacao.forms import CandidatoForm, InscritoForm, ExAlunoForm, AlunoForm, PeriodoForm
 from captacao.models import Candidato, Periodo, Status, Marketing, Polo, Inscrito, ExAluno, Curso, Atendente, \
-    SituacaoInscrito, SituacaoExAluno, Motivo
+    SituacaoInscrito, SituacaoExAluno, Motivo, Aluno
 
 
 def login(request):
@@ -128,32 +128,38 @@ def modal_remove_exaluno(request, pk):
         return render(request, 'modal_remove_exaluno.html', {'exaluno': exaluno})
 
 
-# def alunos(request):
-#     alunos = Aluno.objects.filter(ativo=True)
-#
-#     context = {
-#         'alunos': alunos,
-#         'form': AlunoForm(request.POST or None)
-#     }
-#     return render(request, 'alunos.html', context)
-#
+def alunos(request):
+    # alunos = Aluno.objects.filter(ativo=True)
+
+    filtro = "2022/1"
+    periodo = Periodo.objects.get(nome=filtro)
+    alunos = periodo.periodos.all()
+
+    context = {
+        'alunos': alunos,
+        'form': AlunoForm(request.POST or None),
+        'periodos': Periodo.objects.all()
+        # 'periodo_form': PeriodoForm(request.POST or None)
+    }
+    return render(request, 'alunos.html', context)
+
 # def modal_cria_aluno(request):
 #     form = AlunoForm(request.POST or None)
 #     if form.is_valid():
 #         form.save()
 #         return redirect(reverse('alunos'))
 #     return render(request, 'modal_cria_aluno.html', {'form': form})
-#
-#
-# def modal_atualiza_aluno(request, pk):
-#     aluno = get_object_or_404(Aluno, pk=pk)
-#     form = AlunoForm(request.POST or None, instance=aluno)
-#     if form.is_valid():
-#         aluno.save()
-#         return redirect(reverse('alunos'))
-#     return render(request, 'modal_atualiza_aluno.html', {'form': form})
-#
-#
+
+
+def modal_atualiza_aluno(request, pk):
+    aluno = get_object_or_404(Aluno, pk=pk)
+    form = AlunoForm(request.POST or None, instance=aluno)
+    if form.is_valid():
+        aluno.save()
+        return redirect(reverse('alunos'))
+    return render(request, 'modal_atualiza_aluno.html', {'form': form})
+
+
 # def modal_remove_aluno(request, pk):
 #     aluno = get_object_or_404(Aluno, pk=pk)
 #     if request.POST:

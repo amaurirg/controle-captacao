@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <div class="ui grid grid-style">
+    <div class="eight wide column">
+        <h1 class="ui left floated blue_color">Alunos</h1>
+    </div>
+    <div class="eight wide column">
+        <div id="showmodal-aluno" class="ui right floated button primary">
+            Adicionar
+        </div>
+
+        <div id="showmodal-filtro-periodo" class="ui right floated button primary">
+<i class="filter icon"></i>            Filtrar período
+        </div>
+    </div>
+
+    <table id="table-geral" class="hover">
+        <thead>
+        <tr>
+            <th>Polo</th>
+            <th>Curso grupo</th>
+            <th>Modalidade</th>
+            <th>Serie</th>
+            <th>RA</th>
+            <th>Nome do aluno</th>
+            <th>Status</th>
+            <th>Ano ingresso</th>
+            <th>E-mail</th>
+            <th>Telefone</th>
+            <th>Telefone res</th>
+            <th>Bolsista</th>
+            <th>Data ingresso</th>
+            <th>Previsão de término</th>
+            <th>Observações</th>
+            <th>Editar</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for aluno in alunos %}
+            <tr>
+                <td>{{ aluno.nom_campus_abrev }}</td>
+                <td>{{ aluno.nom_curso_grupo_abrev }}</td>
+                <td>{{ aluno.dsc_modalidade }}</td>
+                <td>{{ aluno.serie }}</td>
+                <td>{{ aluno.cod_ra }}</td>
+                <td>{{ aluno.nom_aluno }}</td>
+                <td>{{ aluno.status_aluno }}</td>
+                <td>{{ aluno.turma_ano_ingresso_abrev }}</td>
+                <td>{{ aluno.email }}</td>
+                {% if aluno.telefone1 == None %}
+                    <td>Não informado</td>
+                {% else %}
+                    <td>{{ aluno.telefone1 }}</td>
+                {% endif %}
+                {% if aluno.telefone_res == None %}
+                    <td>Não informado</td>
+                {% else %}
+                    <td>{{ aluno.telefone_res }}</td>
+                {% endif %}
+                <td>{{ aluno.bolsista }}</td>
+                <td>{{ aluno.dat_ingresso }}</td>
+                <td>{{ aluno.data_prev_termino }}</td>
+                <td>
+                    <div class="ui accordion">
+                        <div class="title">
+                            <i class="plus circle icon"></i>
+                        </div>
+                        <div class="content">
+                            <p class="transition hidden">Observações: {{ aluno.observacoes }}</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <a href="#" onclick="open_modal('{% url 'modal_atualiza_aluno' aluno.id %}')">
+                        <i class="edit icon black"></i>
+                    </a>
+                </td>
+                {% comment %}<td>
+                    <a href="#" onclick="open_modal('{% url 'modal_remove_aluno' aluno.id %}')"
+                       type="submit" id="remover"><i class="trash icon black"></i>
+                    </a>
+                </td>{% endcomment %}
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <th>Polo</th>
+            <th>Curso grupo</th>
+            <th>Modalidade</th>
+            <th>Serie</th>
+            <th>Código RA</th>
+            <th>Nome do aluno</th>
+            <th>Status do aluno</th>
+            <th>Ano ingresso</th>
+            <th>E-mail</th>
+            <th>Telefone</th>
+            <th>Telefone res</th>
+            <th>Bolsista</th>
+            <th>Data ingresso</th>
+            <th>Previsão de término</th>
+        </tr>
+        </tfoot>
+    </table>
+
+    {% comment %}{% include 'modal_cria_candidato.html' %}{% endcomment %}
+
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+        $('#showmodal-filtro-periodo').click(function () {
+            $('#addalunos').modal('show');
+        });
+    </script>
+{% endblock %}

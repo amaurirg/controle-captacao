@@ -109,7 +109,7 @@
     <a href="{% url 'candidatos' %}" class="item sidebar_toggle">Candidatos</a>
     <a href="{% url 'inscritos' %}" class="item sidebar_toggle">Inscritos</a>
     <a href="{% url 'exalunos' %}" class="item sidebar_toggle">Ex alunos</a>
-{#    <a href="{% url 'alunos' %}" class="item sidebar_toggle">Alunos</a>#}
+    <a href="{% url 'alunos' %}" class="item sidebar_toggle">Alunos</a>
 </div>
 <!--Inscritos: [Pré inscrição, Ins port diploma, Ins transf externa, Convocado]-->
 <!--Ex alunos: [Cancelado, Trancado, Abandono, Formado]-->
@@ -174,11 +174,12 @@
             },
             ordering: false,
             "language": {
-                "lengthMenu": "Listando _MENU_ registros por pagina",
+                "lengthMenu": "Listando _MENU_ registros por página",
                 "zeroRecords": "Nenhum registro localizado",
-                "info": "Pagina _PAGE_ de _PAGES_",
-                "infoEmpty": "Nenhum registro disponível",
-                "infoFiltered": "(Filtrado de _MAX_ total resultados)",
+                "info": "Página _PAGE_ de _PAGES_ - Visualizando _END_ registros nesta página",
+                "infoEmpty": "Nenhum registro localizado para essa busca",
+                "infoFiltered": "",
+                "infoPostFix": " (Total _MAX_)",
                 "search": "Buscar",
                 "paginate": {
                     "first": "Primeira",
@@ -213,7 +214,6 @@
             }
         });
         event.preventDefault();
-
     }
 </script>
 

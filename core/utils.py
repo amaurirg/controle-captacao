@@ -52,3 +52,63 @@ def export_xlsx(self, request, queryset):
 
     wb.save(response)
     return response
+
+
+cursos = {
+    # 'Administração': '',
+    # 'Arquitetura e Urbanismo': '',
+    # 'Artes Visuais': '',
+    # 'Biomedicina': '',
+    # 'Ciências Biológicas': '',
+    # 'Ciências Contábeis': '',
+    # 'Engenharia Ambiental': '',
+    # 'Educação Física': '',
+    # 'Engenharia Civil': '',
+    # 'Engenharia de Computação': '',
+    # 'Engenharia de Produção': '',
+    # 'Engenharia de Software': '',
+    # 'Engenharia Elétrica': '',
+    # 'Engenharia Mecânica': '',
+    # 'Engenharia Química': '',
+    # 'Filosofia': '',
+    # 'Fisioterapia': '',
+    # 'Geografia': '',
+    # 'História': '',
+    # 'Letras': '',
+    # 'Matemática': '',
+    # 'Nutrição': '',
+    # 'Pedagogia': '',
+    # 'Psicopedagogia': '',
+    # 'Serviço Social': '',
+    'Superior de Tecnologia em Análise e Desenvolvimento de Sistemas': 'ADS',
+    'Superior de Tecnologia em Design de Interiores': 'Design de Interiores',
+    'Superior de Tecnologia em Estética e Cosmética': 'Estética e Cosmética',
+    'Superior de Tecnologia em Gastronomia': 'Gastronomia',
+    'Superior de Tecnologia em Gestão Ambiental': 'Gestão Ambiental',
+    'Superior de Tecnologia em Gestão Comercial': 'Gestão Comercial',
+    'Superior de Tecnologia em Gestão da Qualidade': 'Gestão da Qualidade',
+    'Superior de Tecnologia em Gestão da Tecnologia da Informação': 'TI',
+    'Superior de Tecnologia em Gestão Financeira': 'Gestão Financeira',
+    'Superior de Tecnologia em Gestão de Recursos Humanos': 'Gestão de Recursos Humanos',
+    'Superior de Tecnologia em Gestão de Segurança Privada': 'Gestão de Segurança Privada',
+    'Superior de Tecnologia em Logística': 'Logística',
+    'Superior de Tecnologia em Gestão Pública': 'Gestão Pública',
+    'Superior de Tecnologia em Gestão Hospitalar': 'Gestão Hospitalar',
+    'Superior de Tecnologia em Marketing': 'Marketing',
+    'Superior de Tecnologia em Processos Escolares': 'Processos Escolares',
+    'Superior de Tecnologia em Marketing Digital': 'Marketing Digital',
+    'Superior de Tecnologia em Processos Gerenciais': 'Processos Gerenciais',
+    'Superior de Tecnologia em Segurança no Trabalho': 'Segurança no Trabalho',
+    'Superior de Tecnologia em Serviços Jurídicos, Cartorários e Notariais': 'Serv. Jur. Car. Notariais',
+}
+
+polos = {
+    'Polo Educacional de Praia Grande - SP': 'Praia Grande'
+}
+
+modalidade = {
+    'Bacharelado': 'Bac',
+    'Licenciatura': 'Lic',
+    'Tecnólogo': 'Tec',
+
+}
