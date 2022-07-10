@@ -173,13 +173,16 @@
                 });
             },
             ordering: false,
+            {% comment %}scrollCollapse: true,{% endcomment %}
+            {% comment %}scrollX: true,{% endcomment %}
             "language": {
                 "lengthMenu": "Listando _MENU_ registros por página",
                 "zeroRecords": "Nenhum registro localizado",
-                "info": "Página _PAGE_ de _PAGES_ - Visualizando _END_ registros nesta página",
+                "info": "Página _PAGE_ de _PAGES_ - Visualizando _END_ de _TOTAL_ registros nesta página",
                 "infoEmpty": "Nenhum registro localizado para essa busca",
                 "infoFiltered": "",
-                "infoPostFix": " (Total _MAX_)",
+                {% comment %}"infoPostFix": " (Total _MAX_)",{% endcomment %}
+                "thousands": ".",
                 "search": "Buscar",
                 "paginate": {
                     "first": "Primeira",
@@ -200,11 +203,11 @@
                 h4_text: h4
             },
             success: function (response) {
-                console.log('Retorno do Django')
+                {% comment %}console.log('Retorno do Django')
                 console.log(response.novo.id)
                 console.log(response.novo.nome)
                 console.log(response.novo.h4_text)
-                console.log(response.novo.select_id)
+                console.log(response.novo.select_id){% endcomment %}
                 $(response.novo.select_id).append($("<option></option>").attr("value", response.novo.id).attr("selected", "").text(response.novo.nome));
                 $('#criar-novo').modal('hide');
                 $('#novo-nome').val('');

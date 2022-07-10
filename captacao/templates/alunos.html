@@ -40,9 +40,9 @@
         <tbody>
         {% for aluno in alunos %}
             <tr>
-                <td>{{ aluno.nom_campus_abrev }}</td>
-                <td>{{ aluno.nom_curso_grupo_abrev }}</td>
-                <td>{{ aluno.dsc_modalidade }}</td>
+                <td>{{ aluno.nom_campus.nome_abrev }}</td>
+                <td>{{ aluno.nom_curso_grupo.nome_abrev }}</td>
+                <td>{{ aluno.dsc_modalidade.nome_abrev }}</td>
                 <td>{{ aluno.serie }}</td>
                 <td>{{ aluno.cod_ra }}</td>
                 <td>{{ aluno.nom_aluno }}</td>
@@ -60,8 +60,8 @@
                     <td>{{ aluno.telefone_res }}</td>
                 {% endif %}
                 <td>{{ aluno.bolsista }}</td>
-                <td>{{ aluno.dat_ingresso }}</td>
-                <td>{{ aluno.data_prev_termino }}</td>
+                <td>{{ aluno.dat_ingresso|date:"d/m/Y" }}</td>
+                <td>{{ aluno.data_prev_termino|date:"d/m/Y" }}</td>
                 <td>
                     <div class="ui accordion">
                         <div class="title">

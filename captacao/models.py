@@ -221,14 +221,17 @@ class ExAluno(models.Model):
 
 
 class Aluno(models.Model):
-    nom_campus = models.CharField('NomCampus', max_length=150)
-    nom_campus_abrev = models.ForeignKey(Polo, verbose_name='NomCampusAbrev', on_delete=models.PROTECT)
-    nom_curso_grupo = models.CharField('NomCursoGrupo', max_length=100)
-    nom_curso_grupo_abrev = models.ForeignKey(Curso, verbose_name='NomCursoGrupoAbrev', on_delete=models.PROTECT)
+    # nom_campus = models.CharField('NomCampus', max_length=150)
+    nom_campus = models.ForeignKey(Polo, verbose_name='NomCampus', related_name='campus', on_delete=models.PROTECT)
+    # nom_campus_abrev = models.ForeignKey(Polo, verbose_name='NomCampusAbrev', related_name='campus_abrev', on_delete=models.PROTECT)
+    # nom_curso_grupo = models.CharField('NomCursoGrupo', max_length=100)
+    nom_curso_grupo = models.ForeignKey(Curso, verbose_name='NomCursoGrupo', related_name='curso', on_delete=models.PROTECT)
+    # nom_curso_grupo_abrev = models.ForeignKey(Curso, verbose_name='NomCursoGrupoAbrev', related_name='curso_abrev', on_delete=models.PROTECT)
     cod_curso = models.PositiveIntegerField('CodCurso')
     tipo = models.CharField('Tipo', max_length=20)
-    dsc_modalidade = models.CharField('DscModalidade', max_length=20)
-    dsc_modalidade_abrev = models.ForeignKey(Modalidade, verbose_name='DscModalidadeAbrev', on_delete=models.PROTECT)
+    # dsc_modalidade = models.CharField('DscModalidade', max_length=20)
+    dsc_modalidade = models.ForeignKey(Modalidade, verbose_name='DscModalidade', related_name='modalidade', on_delete=models.PROTECT)
+    # dsc_modalidade_abrev = models.ForeignKey(Modalidade, verbose_name='DscModalidadeAbrev', related_name='modalidade_abrev', on_delete=models.PROTECT)
     serie = models.PositiveSmallIntegerField('Serie')
     semana = models.CharField('Semana', max_length=15)
     cod_ra = models.PositiveIntegerField('CodRA')
@@ -257,26 +260,43 @@ class Aluno(models.Model):
         verbose_name = 'Aluno'
         verbose_name_plural = 'Alunos'
 
-    def save(self, *args, **kwargs):
+    # def save(self, *args, **kwargs):
+        # if self.nom_campus:
+        #     obj_nom_campus, created = Polo.objects.get_or_create(
+        #         nome=self.nom_campus, defaults={self.nom_campus_abrev: self.nom_campus}
+        #     )
+        #     self.nom_campus = obj_nom_campus.nome
+        #     self.nom_campus_abrev = obj_nom_campus.nome_abrev
 
-        campus = Polo.objects.filter(nome=self.nom_campus).first()
-        if campus:
-            self.nom_campus_abrev = campus.nome_abrev
-        else:
-            self.nom_campus_abrev = self.nom_campus
+        # if self.nom_curso_grupo:
+        #     self.nom_curso_grupo, created = Curso.objects.get_or_create(
+        #         nome=self.nom_curso_grupo, defaults=self.nom_curso_grupo
+        #     )
+        #
+        # if self.dsc_modalidade:
+        #     self.dsc_modalidade, created = Modalidade.objects.get_or_create(
+        #         nome=self.dsc_modalidade, defaults=self.dsc_modalidade
+        #     )
 
-        curso_grupo = Curso.objects.filter(nome=self.nom_curso_grupo).first()
-        if curso_grupo:
-            self.nom_curso_grupo_abrev = curso_grupo.nome_abrev
-        else:
-            self.nom_curso_grupo_abrev = self.nom_curso_grupo
+        # self.turma_ano_ingresso_abrev = self.turma_ano_ingresso.split()[-1].replace('/', ' de ')
+        # super(Aluno, self).save(*args, **kwargs)
 
-        modalidade = Modalidade.objects.filter(nome=self.dsc_modalidade).first()
-        if curso_grupo:
-            self.dsc_modalidade_abrev = modalidade.nome_abrev
-        else:
-            self.dsc_modalidade_abrev = self.dsc_modalidade_abrev
+        # campus = Polo.objects.filter(nome=self.nom_campus).first()
+        # if campus:
+        #     self.nom_campus_abrev = campus.nome_abrev
+        # else:
+        #     self.nom_campus_abrev = self.nom_campus
+        # curso_grupo = Curso.objects.filter(nome=self.nom_curso_grupo).first()
+        # if curso_grupo:
+        #     self.nom_curso_grupo_abrev = curso_grupo.nome_abrev
+        # else:
+        #     self.nom_curso_grupo_abrev = self.nom_curso_grupo
+        #
+        # modalidade = Modalidade.objects.filter(nome=self.dsc_modalidade).first()
+        # if curso_grupo:
+        #     self.dsc_modalidade_abrev = modalidade.nome_abrev
+        # else:
+        #     self.dsc_modalidade_abrev = self.dsc_modalidade_abrev
 
         # self.dsc_modalidade_abrev = modalidade.get(self.dsc_modalidade)
-        self.turma_ano_ingresso_abrev = self.turma_ano_ingresso.split()[-1].replace('/', ' de ')
-        super(Aluno, self).save(*args, **kwargs)
+

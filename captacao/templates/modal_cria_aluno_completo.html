@@ -1,0 +1,118 @@
+{% load widget_tweaks %}
+<div id="addCandidato" class="ui modal event-modal">
+    <div class="header">
+        <h1 class="ui left floated blue_color">Adicionar novo candidato</h1>
+    </div>
+    <div class="content">
+        <form class="ui form" action="{% url 'modal_cria_candidato' %}" method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="ui equal width form form-ref">
+                <div class="fields">
+                    <div class="field">
+                        <h4>
+                            Período
+                            <i class="plus blue icon" onclick="get_plus(this)"
+                               style="margin-left: 5px; cursor: pointer"></i>
+                        </h4>
+                        {% render_field form.periodo %}
+                    </div>
+                    <div class="field">
+                        <h4>
+                            Polo
+                            <i class="plus blue icon" onclick="get_plus(this)"
+                               style="margin-left: 5px; cursor: pointer"></i>
+                        </h4>
+                        {% render_field form.polo %}
+                    </div>
+                    <div class="field">
+                        <h4>
+                            Curso
+                            <i class="plus blue icon" onclick="get_plus(this)"
+                               style="margin-left: 5px; cursor: pointer"></i>
+                        </h4>
+                        {% render_field form.curso %}
+                    </div>
+                    <div class="field">
+                        <h4>
+                            Marketing
+                            <i class="plus blue icon" onclick="get_plus(this)"
+                               style="margin-left: 5px; cursor: pointer"></i>
+                        </h4>
+                        {% render_field form.marketing %}
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="field">
+                        <h4>Nome</h4>
+                        {% render_field form.nome %}
+                    </div>
+                    <div class="field">
+                        <h4>Email</h4>
+                        {% render_field form.email %}
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="field">
+                        <h4>Telefone 1</h4>
+                        {% render_field form.telefone1 %}
+                    </div>
+                    <div class="field">
+                        <h4>Telefone 2</h4>
+                        {% render_field form.telefone2 %}
+                    </div>
+                    <div class="field">
+                        <h4>Data do contato</h4>
+                        {% render_field form.data_contato %}
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="field">
+                        <h4>
+                            Atendente
+                            <i class="plus blue icon" onclick="get_plus(this)"
+                               style="margin-left: 5px; cursor: pointer"></i>
+                        </h4>
+                        {% render_field form.atendente %}
+                    </div>
+                    <div class="field">
+                        <h4>
+                            Status
+                            <i class="plus blue icon" onclick="get_plus(this)"
+                               style="margin-left: 5px; cursor: pointer"></i>
+                        </h4>
+                        {% render_field form.status %}
+                    </div>
+                </div>
+
+                <div class="fields">
+                    <div class="field">
+                        <h4>Observações</h4>
+                        {% render_field form.observacoes %}
+                    </div>
+                </div>
+                <div class="actions">
+                    <button type="submit" class="ui floated button primary actions-buttons">
+                        <i class="thumbs up icon"></i>
+                        Salvar
+                    </button>
+                    <div class="ui blue deny button">
+                        <i class="thumbs down icon"></i>
+                        Cancelar
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="actions">
+        <div class="ui blue deny button">
+            <i class="close icon"></i>
+            Fechar
+        </div>
+    </div>
+</div>

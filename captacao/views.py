@@ -129,11 +129,11 @@ def modal_remove_exaluno(request, pk):
 
 
 def alunos(request):
-    # alunos = Aluno.objects.filter(ativo=True)
+    alunos = Aluno.objects.filter(ativo=True)
 
-    filtro = "2022/1"
-    periodo = Periodo.objects.get(nome=filtro)
-    alunos = periodo.periodos.all()
+    # filtro = "2022/1"
+    # periodo = Periodo.objects.all()
+    # alunos = periodo.periodos.all()
 
     context = {
         'alunos': alunos,
@@ -143,12 +143,12 @@ def alunos(request):
     }
     return render(request, 'alunos.html', context)
 
-# def modal_cria_aluno(request):
-#     form = AlunoForm(request.POST or None)
-#     if form.is_valid():
-#         form.save()
-#         return redirect(reverse('alunos'))
-#     return render(request, 'modal_cria_aluno.html', {'form': form})
+def modal_cria_aluno(request):
+    form = AlunoForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect(reverse('alunos'))
+    return render(request, 'modal_cria_aluno.html', {'form': form})
 
 
 def modal_atualiza_aluno(request, pk):
