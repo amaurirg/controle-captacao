@@ -1,11 +1,65 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" required name="files">
-        <button id="showLoading" type="submit">submit</button>
-    </form>
-{% comment %}
+
+    <div class="ui grid grid-style">
+        <div class="eight wide column">
+            <h1 class="ui left floated blue_color">Inserir arquivo</h1>
+        </div>
+        {% comment %}<div class="eight wide column">
+            <div id="showmodal-candidato" class="ui right floated button primary">
+                Adicionar
+            </div>
+        </div>{% endcomment %}
+    </div>
+
+
+    <div class="ui grid">
+        <div class="eight wide column centered">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="ui equal width form-ref">
+                    <div class="ui header">
+                        Selecione o arquivo para inserir os dados no sistema
+                    </div>
+                    <div class="fields">
+                        {% comment %}<div class="field sixteen column wide">{% endcomment %}
+                        <div class="field">
+                            <input type="file" id="geeks" required name="files"
+                                   style="
+                                    {% comment %}width: 0.1px;
+                                    height: 0.1px;{% endcomment %}
+                                    opacity: 0;
+                                    {% comment %}overflow: hidden;{% endcomment %}
+                                    {% comment %}position: absolute;{% endcomment %}
+                                    {% comment %}z-index: -1;{% endcomment %}
+                                    ">
+                            <label for="geeks" class="ui teal left floated button">
+                                <i class="ui upload icon"></i>
+                                Selecionar arquivo
+                            </label>
+                            <h4 id="text-file"></h4>
+                            <h4 id="filename" style="color: blue;"></h4>
+
+                        </div>
+                    </div>
+                    <br>
+                    <div class="actions">
+                        <button type="submit" class="ui button primary actions-buttons">
+                            <i class="thumbs up icon"></i>
+                            Carregar
+                        </button>
+                        <div class="ui blue deny button">
+                            <i class="thumbs down icon"></i>
+                            Cancelar
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    {% comment %}
     <div class="ui segment">
         <p>Inserindo ou atualizando alunos</p>
         <div class="ui active dimmer">
@@ -22,9 +76,22 @@
 
 {% block extrajs %}
     <script>
-    $('#showLoading').click(function () {
-        $('#dimmer').dimmer('show');
-    });
+        $('#showLoading').click(function () {
+            $('#dimmer').dimmer('show');
+        });
 
+    </script>
+    <script>
+        $(document).ready(function () {
+            if (!$("#filename").text()){
+            $('#text-file').text('Nenhum arquivo foi selecionado')
+            }
+            $('input[type="file"]').change(function (e) {
+                var geekss = e.target.files[0].name;
+                $('#text-file').text('Arquivo selecionado')
+                $("#filename").text(`${geekss}`);
+
+            });
+        });
     </script>
 {% endblock %}

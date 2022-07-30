@@ -1,11 +1,11 @@
 import unicodedata
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 
-from captacao.forms import CandidatoForm, InscritoForm, ExAlunoForm, AlunoForm, PeriodoForm
+from captacao.forms import CandidatoForm, InscritoForm, ExAlunoForm, AlunoForm, PeriodoForm, UploadFileForm
 from captacao.models import Candidato, Periodo, Status, Marketing, Polo, Inscrito, ExAluno, Curso, Atendente, \
     SituacaoInscrito, SituacaoExAluno, Motivo, Aluno
 
@@ -198,3 +198,21 @@ def periodos(request):
         'periodos': periodos
     }
     return render(request, 'periodos.html', context)
+
+
+# def handle_uploaded_file(f):
+#     with open('/tmp/name.xlsx', 'wb+') as destination:
+#         for chunk in f.chunks():
+#             destination.write(chunk)
+#
+#
+# def upload_file(request):
+#     if request.method == 'POST':
+#         form = UploadFileForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             handle_uploaded_file(request.FILES['file'])
+#             # return HttpResponseRedirect('/success/url/')
+#             redirect('admin:captacao_aluno_changelist')
+#     else:
+#         form = UploadFileForm()
+#     return render(request, 'upload_file.html', {'form': form})

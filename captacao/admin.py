@@ -13,77 +13,70 @@ from core.utils import export_xlsx, export_as_csv, salva_criado_por, aluno_field
 
 @admin.register(Status)
 class StatusAdmin(admin.ModelAdmin):
-    list_display = ['nome']
+    list_display = ['id', 'nome']
     search_fields = ['nome']
     list_filter = ['nome']
 
 
 @admin.register(SituacaoInscrito)
 class SituacaoInscritoAdmin(admin.ModelAdmin):
-    list_display = ['nome']
+    list_display = ['id', 'nome']
     search_fields = ['nome']
     list_filter = ['nome']
 
 
 @admin.register(SituacaoExAluno)
 class SituacaoExAlunoAdmin(admin.ModelAdmin):
-    list_display = ['nome']
+    list_display = ['id', 'nome']
     search_fields = ['nome']
     list_filter = ['nome']
 
 
 @admin.register(Motivo)
 class MotivoAdmin(admin.ModelAdmin):
-    list_display = ['nome']
+    list_display = ['id', 'nome']
     search_fields = ['nome']
     list_filter = ['nome']
 
 
 @admin.register(Marketing)
 class MarketingAdmin(admin.ModelAdmin):
-    list_display = ['nome']
+    list_display = ['id', 'nome']
     search_fields = ['nome']
     list_filter = ['nome']
 
 
 @admin.register(Curso)
 class CursoAdmin(admin.ModelAdmin):
-    list_display = ['nome', 'nome_abrev']
+    list_display = ['id', 'nome', 'nome_abrev']
     search_fields = ['nome', 'nome_abrev']
     list_filter = ['nome', 'nome_abrev']
 
 
 @admin.register(Atendente)
 class AtendenteAdmin(admin.ModelAdmin):
-    list_display = ['nome']
+    list_display = ['id', 'nome']
     search_fields = ['nome']
     list_filter = ['nome']
 
 
 @admin.register(Polo)
 class PoloAdmin(admin.ModelAdmin):
-    list_display = ['nome', 'nome_abrev']
+    list_display = ['id', 'nome', 'nome_abrev']
     search_fields = ['nome', 'nome_abrev']
     list_filter = ['nome', 'nome_abrev']
 
 
-@admin.register(Periodo)
-class PeriodoAdmin(admin.ModelAdmin):
-    list_display = ['nome']
-    search_fields = ['nome']
-    list_filter = ['nome']
-
-
 @admin.register(Modalidade)
 class ModalidadeAdmin(admin.ModelAdmin):
-    list_display = ['nome', 'nome_abrev']
+    list_display = ['id', 'nome', 'nome_abrev']
     search_fields = ['nome', 'nome_abrev']
     list_filter = ['nome', 'nome_abrev']
 
 
 @admin.register(Candidato)
 class CandidatoAdmin(admin.ModelAdmin):
-    list_display = ['periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'marketing', 'status',
+    list_display = ['id', 'periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'marketing', 'status',
                     'data_contato', 'observacoes']
     search_fields = ['periodo__nome', 'polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'marketing__nome', 'status__nome']
@@ -102,7 +95,7 @@ class CandidatoAdmin(admin.ModelAdmin):
 
 @admin.register(Inscrito)
 class InscritoAdmin(admin.ModelAdmin):
-    list_display = ['periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'status',
+    list_display = ['id', 'periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'status',
                     'data_contato', 'observacoes']
     search_fields = ['periodo__nome', 'polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'status__nome']
@@ -117,7 +110,7 @@ class InscritoAdmin(admin.ModelAdmin):
 
 @admin.register(ExAluno)
 class ExAlunoAdmin(admin.ModelAdmin):
-    list_display = ['periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'situacao', 'data_saida', 'motivo',
+    list_display = ['id', 'periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'situacao', 'data_saida', 'motivo',
                     'status', 'observacoes']
     search_fields = ['periodo__nome', 'polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'status__nome']
@@ -130,10 +123,23 @@ class ExAlunoAdmin(admin.ModelAdmin):
     actions = (export_as_csv, export_xlsx)
 
 
+class PeriodoInline(admin.TabularInline):
+    model = Aluno.periodos.through
+
+
+@admin.register(Periodo)
+class PeriodoAdmin(admin.ModelAdmin):
+    list_display = ['nome']
+    search_fields = ['nome']
+    list_filter = ['nome']
+
+    inlines = (PeriodoInline,)
+
+
 @admin.register(Aluno)
 class AlunoAdmin(admin.ModelAdmin):
     list_display = [
-        # 'nom_campus',
+        'id',
         'polo_nome_abrev',
         'nom_curso_grupo',
         'curso_nome_abrev',
@@ -211,6 +217,9 @@ class AlunoAdmin(admin.ModelAdmin):
         'ativo',
         # 'periodos',
     ]
+
+    inlines = (PeriodoInline,)
+
     # readonly_fields = ['polo__nome_abrev', 'curso__nome_abrev', 'turma_ano_ingresso_abrev']
     # readonly_fields = ['nom_campus_abrev', 'nom_curso_grupo_abrev', 'turma_ano_ingresso_abrev']
     # def save_model(self, request, obj, form, change):
@@ -230,14 +239,14 @@ class AlunoAdmin(admin.ModelAdmin):
         ]
         return my_urls + urls
 
-    def minha_funcao_category(self, request):
-        print('Ao clicar no botão, faz alguma coisa em category...')
-        messages.add_message(
-            request,
-            messages.INFO,
-            'Ação realizada com sucesso.'
-        )
-        return redirect('admin:captacao_aluno_changelist')
+    # def minha_funcao_category(self, request):
+    #     print('Ao clicar no botão, faz alguma coisa em category...')
+    #     messages.add_message(
+    #         request,
+    #         messages.INFO,
+    #         'Ação realizada com sucesso.'
+    #     )
+    #     return redirect('admin:captacao_aluno_changelist')
 
     def get_campus(self, campus):
         obj_nom_campus, created = Polo.objects.get_or_create(
@@ -276,57 +285,60 @@ class AlunoAdmin(admin.ModelAdmin):
         if request.method == 'POST':
             try:
                 meta = self.model._meta
-                field_names = [{field.verbose_name: field.name} for field in meta.fields]
+                field_names = {}
+                for field in meta.fields:
+                    field_names[field.verbose_name] = field.name
                 file = request.FILES['files']
                 df_file = pd.read_excel(file, 0, index_col=None)
                 df = df_file[aluno_fields]
-                df.columns = aluno_fields
-                replace_columns = []
-                for column in df.columns:
-                    for name in field_names:
-                        column = name.get(column.replace('?', ''), column)
-                    replace_columns.append(column)
-                df.columns = replace_columns
+                df.rename(columns={'Bolsista?': 'Bolsista'}, inplace=True)
+                df.rename(columns=field_names, inplace=True)
+
                 students = df.to_dict(orient='index')
                 for student in students.values():
-                    # TODO Ver essa lógica
-                    campus = self.get_campus(student['nom_campus'])
-                    curso = self.get_curso(student['nom_curso_grupo'])
-                    modalidade = self.get_modalidade(student['dsc_modalidade'])
-                    turma_ano_ingresso_abrev = student['turma_ano_ingresso'].split()[-1].replace('/', ' de ')
+                    campus = self.get_campus(student['nom_campus'].rstrip())
+                    curso = self.get_curso(student['nom_curso_grupo'].rstrip())
+                    modalidade = self.get_modalidade(student['dsc_modalidade'].rstrip())
 
                     student['nom_campus'] = campus
                     student['nom_curso_grupo'] = curso
                     student['dsc_modalidade'] = modalidade
-                    student['turma_ano_ingresso_abrev'] = turma_ano_ingresso_abrev
 
                     student['dat_matr'] = self.format_date(student['dat_matr'])
                     student['dat_ingresso'] = self.format_date(student['dat_ingresso'])
                     student['data_prev_termino'] = self.format_date(student['data_prev_termino'])
 
-                    # if isinstance(student['cod_curso'], int):
-                    #     student['cod_curso'] = student['cod_curso']
-                    # else:
-                    #     student['cod_curso'] = 0
+                    data = student['turma_ano_ingresso'].split()[-1]
+                    mes, ano = data.split('/')
+                    turma_ano_ingresso_abrev = f'{mes[:3]}/{ano[-2:]}'
+                    student['turma_ano_ingresso_abrev'] = turma_ano_ingresso_abrev.rstrip()
+
+                    student['status_aluno'] = student['status_aluno'].rstrip()
+                    if student['status_aluno'] == 'Transferência de out':
+                        student['status_aluno'] = 'Transf. de out'
+
+                    student['turma_ano_ingresso'] = student['turma_ano_ingresso'].rstrip()
+                    student['cidade'] = student['cidade'].rstrip()
+                    student['bairro'] = student['bairro'].rstrip()
+                    student['bolsista'] = student['bolsista'].rstrip()
+                    student['email'] = student['email'].rstrip()
+
                     Aluno.objects.update_or_create(
-                        # nom_aluno=student['nom_aluno'],
                         cod_ra=student['cod_ra'],
                         defaults=student)
-                # print(f'{settings.BASE_DIR}/{path}')
                 messages.add_message(
                     request,
                     messages.INFO,
                     'Arquivo lido com sucesso. A tabela de alunos foi atualizada.'
                 )
-            except Exception as error:
+            except Exception:
                 messages.add_message(
                     request,
                     messages.ERROR,
-                    f'Erro na leitura do arquivo. Certifique-se que o arquivo contém os dados dos alunos. {error}'
+                    f'Erro na leitura do arquivo. Certifique-se que o arquivo contém os dados dos alunos.'
                 )
 
             return redirect('admin:captacao_aluno_changelist')
-        # return render(request, 'upload_file.html')
         return render(request, 'modal_cria_aluno.html')
 
     # def read_file(filename, **kwargs):

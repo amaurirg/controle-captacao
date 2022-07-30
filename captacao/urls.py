@@ -5,6 +5,7 @@ from .views import (captacao, periodos, CreateNewName,
                     exalunos, modal_cria_exaluno, modal_atualiza_exaluno, modal_remove_exaluno, login,
                     alunos, modal_atualiza_aluno,
                     modal_cria_aluno,
+                    # upload_file,
                     # modal_remove_aluno
                     )
 
@@ -32,5 +33,6 @@ urlpatterns = [
     path('alunos/', alunos, name="alunos"),
     path('adicionar_aluno/', modal_cria_aluno, name='modal_cria_aluno'),
     path('atualizar_aluno/<int:pk>', modal_atualiza_aluno, name='modal_atualiza_aluno'),
-    # path('remover_aluno/<int:pk>', modal_remove_aluno, name='modal_remove_aluno'),
+
+    # path('upload_file/', upload_file, name='upload_file'),
 ]

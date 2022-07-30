@@ -153,6 +153,12 @@
         $('.ui.sidebar').sidebar('toggle');
     });
     $('.ui.accordion').accordion();
+
+    $('#showLoading').click(function () {
+        $('#dimmer').dimmer('show');
+        {% comment %}$('#dimmer').dimmer('hide');{% endcomment %}
+    });
+
 </script>
 
 <script>
@@ -172,11 +178,21 @@
                     });
                 });
             },
+            {% comment %}"order": [[ 0, 'dsc' ], [ 1, 'dsc' ]],{% endcomment %}
             ordering: false,
+            {% comment %}"lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],{% endcomment %}
             {% comment %}scrollCollapse: true,{% endcomment %}
             {% comment %}scrollX: true,{% endcomment %}
             "language": {
-                "lengthMenu": "Listando _MENU_ registros por página",
+                {#"lengthMenu": "Listando _MENU_ registros por página",#}
+
+                "lengthMenu": 'Listando <select>' +
+                    '<option value="10">20</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="100">100</option>' +
+                    '<option value="-1">Todos</option>' +
+                    '</select> registros por página',
+
                 "zeroRecords": "Nenhum registro localizado",
                 "info": "Página _PAGE_ de _PAGES_ - Visualizando _END_ de _TOTAL_ registros nesta página",
                 "infoEmpty": "Nenhum registro localizado para essa busca",
