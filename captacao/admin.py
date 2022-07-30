@@ -125,6 +125,7 @@ class ExAlunoAdmin(admin.ModelAdmin):
 
 class PeriodoInline(admin.TabularInline):
     model = Aluno.periodos.through
+    extra = 0
 
 
 @admin.register(Periodo)
@@ -166,6 +167,7 @@ class AlunoAdmin(admin.ModelAdmin):
         'data_prev_termino',
         'ativo',
         # 'periodos',
+        'todos_periodos'
     ]
     search_fields = [
         'nom_campus',
@@ -218,8 +220,15 @@ class AlunoAdmin(admin.ModelAdmin):
         # 'periodos',
     ]
 
-    inlines = (PeriodoInline,)
+    @admin.display
+    def todos_periodos(self, obj):
+        lista = []
+        for periodo in obj.periodos.all():
+            lista.append(periodo)
+        return lista
 
+    inlines = (PeriodoInline,)
+    readonly_fields = ['periodos']
     # readonly_fields = ['polo__nome_abrev', 'curso__nome_abrev', 'turma_ano_ingresso_abrev']
     # readonly_fields = ['nom_campus_abrev', 'nom_curso_grupo_abrev', 'turma_ano_ingresso_abrev']
     # def save_model(self, request, obj, form, change):

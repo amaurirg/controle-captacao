@@ -244,7 +244,7 @@ class Aluno(models.Model):
     dat_ingresso = models.DateField('Dat_ingresso')
     data_prev_termino = models.DateField('DataPrevTermino')
     observacoes = models.TextField('Observacoes', null=True, blank=True)
-    periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos')
+    periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos', blank=True, null=True)
     ativo = models.BooleanField(default=True)
 
     def __str__(self):

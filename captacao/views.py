@@ -5,9 +5,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 
-from captacao.forms import CandidatoForm, InscritoForm, ExAlunoForm, AlunoForm, PeriodoForm, UploadFileForm
-from captacao.models import Candidato, Periodo, Status, Marketing, Polo, Inscrito, ExAluno, Curso, Atendente, \
-    SituacaoInscrito, SituacaoExAluno, Motivo, Aluno
+from captacao.forms import CandidatoForm, InscritoForm, ExAlunoForm, AlunoForm, PeriodoForm  # , UploadFileForm
+from captacao.models import (
+    Candidato, Periodo, Status, Marketing, Polo, Inscrito, ExAluno, Curso,
+    Atendente, SituacaoInscrito, SituacaoExAluno, Motivo, Aluno
+)
 
 
 def login(request):
@@ -101,6 +103,7 @@ def exalunos(request):
     }
     return render(request, 'exalunos.html', context)
 
+
 def modal_cria_exaluno(request):
     form = ExAlunoForm(request.POST or None)
     if form.is_valid():
@@ -142,6 +145,7 @@ def alunos(request):
         # 'periodo_form': PeriodoForm(request.POST or None)
     }
     return render(request, 'alunos.html', context)
+
 
 def modal_cria_aluno(request):
     form = AlunoForm(request.POST or None)
@@ -198,7 +202,6 @@ def periodos(request):
         'periodos': periodos
     }
     return render(request, 'periodos.html', context)
-
 
 # def handle_uploaded_file(f):
 #     with open('/tmp/name.xlsx', 'wb+') as destination:
