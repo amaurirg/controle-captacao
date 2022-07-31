@@ -228,31 +228,22 @@ class ExAlunoForm(forms.ModelForm):
 class AlunoForm(forms.ModelForm):
     class Meta:
         fields = [
-            'nom_campus',
-            'nom_curso_grupo',
-            'cod_curso',
-            'tipo',
-            'dsc_modalidade',
-            'serie',
-            'semana',
-            'cod_ra',
             'nom_aluno',
-            'dat_matr',
-            'status_aluno',
-            'turma_ano_ingresso',
             'email',
             'telefone1',
             'telefone2',
             'telefone_res',
+            'cod_ra',
             'cidade',
             'bairro',
-            'bolsista',
-            'dat_ingresso',
-            'data_prev_termino',
-            'observacoes',
             'periodos',
+            'observacoes',
         ]
         model = Aluno
+        widgets = {
+            'nom_aluno': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'cod_ra': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
 
 
 class PeriodoForm(forms.ModelForm):
@@ -276,4 +267,3 @@ class CreateNewForm(forms.Form):
             }
         )
     }
-

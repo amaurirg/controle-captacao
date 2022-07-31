@@ -1,17 +1,36 @@
 {% load widget_tweaks %}
 <div class="header">
-    <h1 class="ui left floated blue_color">Editar aluno</h1>
+    <h1 class="ui left floated blue_color">Editar candidato</h1>
 </div>
 <div class="content">
-    <form class="ui form" action="{% url 'modal_atualiza_aluno' form.instance.id %}" method="post"
+    <form class="ui form" action="{% url 'modal_atualiza_candidato' form.instance.id %}" method="post"
           enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="ui equal width form form-ref">
             <div class="fields">
                 <div class="field">
+                    <h4>Período</h4>
+                    {% render_field form.periodo %}
+                </div>
+                <div class="field">
+                    <h4>Polo</h4>
+                    {% render_field form.polo %}
+                </div>
+                <div class="field">
+                    <h4>Curso</h4>
+                    {% render_field form.curso %}
+                </div>
+                <div class="field">
+                    <h4>Marketing</h4>
+                    {% render_field form.marketing %}
+                </div>
+            </div>
+
+            <div class="fields">
+                <div class="field">
                     <h4>Nome</h4>
-                    <p>{{ form.nom_aluno }}</p>
+                    {% render_field form.nome %}
                 </div>
                 <div class="field">
                     <h4>Email</h4>
@@ -29,30 +48,19 @@
                     {% render_field form.telefone2 %}
                 </div>
                 <div class="field">
-                    <h4>Telefone Residencial</h4>
-                    {% render_field form.telefone_res %}
+                    <h4>Data do contato</h4>
+                    {% render_field form.data_contato %}
                 </div>
             </div>
 
             <div class="fields">
                 <div class="field">
-                    <h4>RA</h4>
-                    {% render_field form.cod_ra %}
+                    <h4>Atendente</h4>
+                    {% render_field form.atendente %}
                 </div>
                 <div class="field">
-                    <h4>Cidade</h4>
-                    {% render_field form.cidade %}
-                </div>
-                <div class="field">
-                    <h4>Bairro</h4>
-                    {% render_field form.bairro %}
-                </div>
-            </div>
-
-            <div class="fields">
-                <div class="field">
-                    <h4>Períodos</h4>
-                    {% render_field form.periodos %}
+                    <h4>Status</h4>
+                    {% render_field form.status %}
                 </div>
             </div>
 
