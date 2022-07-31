@@ -43,8 +43,7 @@
                                 Filtrar
                             </button>
                             <a href="{% url 'alunos' %}">
-                                <div class="ui blue deny button" onclick="no_periodo_selected()"
-                                     >
+                                <div class="ui blue deny button" onclick="no_periodo_selected()">
                                     <i class="close icon"></i>
                                     Limpar filtro
                                 </div>
@@ -54,18 +53,18 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 
-    <h1 style="display: flex; justify-content: center">Período selecionado:&nbsp;
-        {% if filtro %}
-            <span id="name-periodo">{{ filtro }}</span>
-        {% else %}
-            <span id="name-periodo"></span>
-        {% endif %}
-    </h1>
-
+    <div style="display: flex; justify-content: center">
+        <h1>Período selecionado:&nbsp
+            {% if filtro %}
+                <span id="name-periodo">{{ filtro }}</span>
+            {% else %}
+                <span id="name-periodo"></span>
+            {% endif %}
+        </h1>
+    </div>
     <table id="table-geral" class="hover">
         <thead>
         <tr>
