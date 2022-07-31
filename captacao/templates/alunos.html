@@ -3,19 +3,68 @@
 
 {% block content %}
     <div class="ui grid grid-style">
-        <div class="eight wide column">
-            <h1 class="ui left floated blue_color">Alunos</h1>
-        </div>
-        <div class="eight wide column">
-            {% comment %}<div id="showmodal-aluno" class="ui right floated button primary">
-                Adicionar
-            </div>{% endcomment %}
-
-            <div id="showmodal-filtro-periodo" class="ui right floated button primary">
-                <i class="filter icon"></i> Filtrar período
+        <div class="four column row">
+            <div class="left floated column">
+                <h1 class="ui left floated blue_color">Alunos</h1>
             </div>
+
+            <div class="right floated column" style="display: flex; justify-content: right;">
+                <form class="ui form" action="{% url 'alunos' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="inline fields">
+
+                        <div style="margin: 2px">
+                            <div class="ui teal floating floated labeled icon dropdown button" id="filter-periodo">
+                                <input name="select-periodo" type="hidden">
+                                <i class="filter icon"></i>
+                                {% if filtro %}
+                                    <span id="selected-periodo" class="text">{{ filtro }}</span>
+                                {% else %}
+                                    <span id="selected-periodo" class="text">Período</span>
+                                {% endif %}
+                                <div class="menu">
+                                    <div class="header">
+                                        <i class="tags icon"></i>
+                                        Escolha um período
+                                    </div>
+                                    <div class="item" data-value="0">Período</div>
+                                    {% for periodo in periodos %}
+                                        <div class="item" data-value="{{ periodo.id }}">
+                                            {{ periodo.nome }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="actions">
+                            <button type="submit" class="ui button primary actions-buttons">
+                                <i class="thumbs up icon"></i>
+                                Filtrar
+                            </button>
+                            <a href="{% url 'alunos' %}">
+                                <div class="ui blue deny button" onclick="no_periodo_selected()"
+                                     >
+                                    <i class="close icon"></i>
+                                    Limpar filtro
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
+
+    <h1 style="display: flex; justify-content: center">Período selecionado:&nbsp;
+        {% if filtro %}
+            <span id="name-periodo">{{ filtro }}</span>
+        {% else %}
+            <span id="name-periodo"></span>
+        {% endif %}
+    </h1>
 
     <table id="table-geral" class="hover">
         <thead>
@@ -34,7 +83,6 @@
             <th>Bolsista</th>
             <th>Data ingresso</th>
             <th>Previsão de término</th>
-            <th>Observações</th>
             <th>Editar</th>
         </tr>
         </thead>
@@ -63,16 +111,6 @@
                 <td>{{ aluno.bolsista }}</td>
                 <td>{{ aluno.dat_ingresso|date:"d/m/Y" }}</td>
                 <td>{{ aluno.data_prev_termino|date:"d/m/Y" }}</td>
-                <td>
-                    <div class="ui accordion">
-                        <div class="title">
-                            <i class="plus circle icon"></i>
-                        </div>
-                        <div class="content">
-                            <p class="transition hidden">Observações: {{ aluno.observacoes }}</p>
-                        </div>
-                    </div>
-                </td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'modal_atualiza_aluno' aluno.id %}')">
                         <i class="edit icon black"></i>
@@ -106,14 +144,17 @@
         </tfoot>
     </table>
 
-    {% comment %}{% include 'modal_cria_candidato.html' %}{% endcomment %}
-
 {% endblock %}
 
 {% block extrajs %}
     <script>
-        $('#showmodal-filtro-periodo').click(function () {
-            $('#addalunos').modal('show');
-        });
+        function no_periodo_selected() {
+            $("#filter-periodo").dropdown('set selected', '0');
+        }
+
+        function selectedPeriodo() {
+            $("#name-periodo").text($("#selected-periodo").text())
+        }
+
     </script>
 {% endblock %}

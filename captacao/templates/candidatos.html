@@ -25,7 +25,6 @@
             <th>Status</th>
             <th>Atendente</th>
             <th>Data do Contato</th>
-            <th>Obs</th>
             <th>Editar</th>
             <th>Excluir</th>
         </tr>
@@ -50,16 +49,6 @@
                     <td>{{ candidato.atendente }}</td>
                 {% endif %}
                 <td>{{ candidato.data_contato|date:"d/m/Y" }}</td>
-                <td>
-                    <div class="ui accordion">
-                        <div class="title">
-                            <i class="plus circle icon"></i>
-                        </div>
-                        <div class="content">
-                            <p class="transition hidden">Observações: {{ candidato.observacoes }}</p>
-                        </div>
-                    </div>
-                </td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'modal_atualiza_candidato' candidato.id %}')">
                         <i class="edit icon black"></i>

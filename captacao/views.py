@@ -132,17 +132,19 @@ def modal_remove_exaluno(request, pk):
 
 
 def alunos(request):
-    alunos = Aluno.objects.filter(ativo=True)
-
-    # filtro = "2022/1"
-    # periodo = Periodo.objects.all()
-    # alunos = periodo.periodos.all()
+    periodo = None
+    filtro = request.POST.get('select-periodo')
+    if filtro:
+        periodo = Periodo.objects.get(pk=int(filtro))
+        alunos = Aluno.objects.filter(periodos=periodo, ativo=True)
+    else:
+        alunos = Aluno.objects.filter(ativo=True)
 
     context = {
         'alunos': alunos,
         'form': AlunoForm(request.POST or None),
-        'periodos': Periodo.objects.all()
-        # 'periodo_form': PeriodoForm(request.POST or None)
+        'periodos': Periodo.objects.all(),
+        'filtro': periodo
     }
     return render(request, 'alunos.html', context)
 

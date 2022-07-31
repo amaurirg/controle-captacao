@@ -25,7 +25,6 @@
             <th>Status</th>
             <th>Atendente</th>
             <th>Data da saída</th>
-            <th>Obs</th>
             <th>Editar</th>
             <th>Excluir</th>
         </tr>
@@ -50,16 +49,6 @@
                     <td>{{ exaluno.atendente }}</td>
                 {% endif %}
                 <td>{{ exaluno.data_saida|date:"d/m/Y" }}</td>
-                <td>
-                    <div class="ui accordion">
-                        <div class="title">
-                            <i class="plus circle icon"></i>
-                        </div>
-                        <div class="content">
-                            <p class="transition hidden">Observações: {{ exaluno.observacoes }}</p>
-                        </div>
-                    </div>
-                </td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'modal_atualiza_exaluno' exaluno.id %}')">
                         <i class="edit icon black"></i>
