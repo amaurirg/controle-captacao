@@ -89,7 +89,6 @@ class CandidatoAdmin(admin.ModelAdmin):
         # # obj.save()
         # super(CandidatoAdmin, self).save_model(request, obj, form, change)
 
-    # actions = export_xlsx
     actions = (export_as_csv, export_xlsx)
 
 
@@ -104,7 +103,6 @@ class InscritoAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         salva_criado_por(request, obj)
 
-    # actions = export_xlsx
     actions = (export_as_csv, export_xlsx)
 
 
@@ -119,7 +117,6 @@ class ExAlunoAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         salva_criado_por(request, obj)
 
-    # actions = export_xlsx
     actions = (export_as_csv, export_xlsx)
 
 
@@ -166,15 +163,14 @@ class AlunoAdmin(admin.ModelAdmin):
         'dat_ingresso',
         'data_prev_termino',
         'ativo',
-        # 'periodos',
         'todos_periodos'
     ]
     search_fields = [
-        'nom_campus',
-        'nom_curso_grupo',
+        'nom_campus__nome_abrev',
+        'nom_curso_grupo__nome_abrev',
         'cod_curso',
         'tipo',
-        'dsc_modalidade',
+        'dsc_modalidade__nome_abrev',
         'serie',
         'semana',
         'cod_ra',
@@ -192,35 +188,23 @@ class AlunoAdmin(admin.ModelAdmin):
         'dat_ingresso',
         'data_prev_termino',
         'ativo',
-        # 'periodos',
-    ]
-    list_filter = [
-        'nom_campus',
-        'nom_curso_grupo',
-        'cod_curso',
-        'tipo',
-        'dsc_modalidade',
-        'serie',
-        'semana',
-        'cod_ra',
-        'nom_aluno',
-        'dat_matr',
-        'status_aluno',
-        'turma_ano_ingresso',
-        'email',
-        'telefone1',
-        'telefone2',
-        'telefone_res',
-        'cidade',
-        'bairro',
-        'bolsista',
-        'dat_ingresso',
-        'data_prev_termino',
-        'ativo',
-        # 'periodos',
     ]
 
-    @admin.display
+    list_filter = [
+        'bolsista',
+        'ativo',
+        'tipo',
+        'nom_campus__nome_abrev',
+        'nom_curso_grupo',
+        'dsc_modalidade',
+        'serie',
+        'semana',
+        'status_aluno',
+        'turma_ano_ingresso_abrev',
+        'cidade',
+        'bairro',
+    ]
+
     def todos_periodos(self, obj):
         lista = []
         for periodo in obj.periodos.all():
@@ -229,8 +213,7 @@ class AlunoAdmin(admin.ModelAdmin):
 
     inlines = (PeriodoInline,)
     readonly_fields = ['periodos']
-    # readonly_fields = ['polo__nome_abrev', 'curso__nome_abrev', 'turma_ano_ingresso_abrev']
-    # readonly_fields = ['nom_campus_abrev', 'nom_curso_grupo_abrev', 'turma_ano_ingresso_abrev']
+
     # def save_model(self, request, obj, form, change):
     #     salva_criado_por(request, obj)
 
@@ -241,7 +224,7 @@ class AlunoAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         my_urls = [
             path(
-                'botao-da-app/',
+                'inserir-arquivo/',
                 # self.admin_site.admin_view(self.minha_funcao_category, cacheable=True)
                 self.admin_site.admin_view(self.import_xlsx, cacheable=True)
             ),
@@ -290,6 +273,7 @@ class AlunoAdmin(admin.ModelAdmin):
         except:
             return date(1111, 11, 11)
 
+
     def import_xlsx(self, request):
         if request.method == 'POST':
             try:
@@ -297,6 +281,8 @@ class AlunoAdmin(admin.ModelAdmin):
                 field_names = {}
                 for field in meta.fields:
                     field_names[field.verbose_name] = field.name
+                select_periodo = int(request.POST.get('select-periodo'))
+                periodo = Periodo.objects.get(pk=select_periodo)
                 file = request.FILES['files']
                 df_file = pd.read_excel(file, 0, index_col=None)
                 df = df_file[aluno_fields]
@@ -332,9 +318,10 @@ class AlunoAdmin(admin.ModelAdmin):
                     student['bolsista'] = student['bolsista'].rstrip()
                     student['email'] = student['email'].rstrip()
 
-                    Aluno.objects.update_or_create(
+                    aluno, created = Aluno.objects.update_or_create(
                         cod_ra=student['cod_ra'],
                         defaults=student)
+                    aluno.periodos.add(periodo)
                 messages.add_message(
                     request,
                     messages.INFO,
@@ -348,7 +335,8 @@ class AlunoAdmin(admin.ModelAdmin):
                 )
 
             return redirect('admin:captacao_aluno_changelist')
-        return render(request, 'modal_cria_aluno.html')
+        return render(request, 'modal_cria_aluno.html', {'periodos': Periodo.objects.all()})
+
 
     # def read_file(filename, **kwargs):
     #

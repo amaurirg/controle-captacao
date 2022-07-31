@@ -10,6 +10,7 @@ class Status(models.Model):
         return self.nome
 
     class Meta:
+        ordering = ['nome']
         verbose_name = 'Status'
         verbose_name_plural = 'Status'
 
@@ -22,6 +23,7 @@ class SituacaoInscrito(models.Model):
         return self.nome
 
     class Meta:
+        ordering = ['nome']
         verbose_name = 'Situação Inscrito'
         verbose_name_plural = 'Situação Inscritos'
 
@@ -34,6 +36,7 @@ class SituacaoExAluno(models.Model):
         return self.nome
 
     class Meta:
+        ordering = ['nome']
         verbose_name = 'Situação ExAluno'
         verbose_name_plural = 'Situação ExAlunos'
 
@@ -46,6 +49,7 @@ class Motivo(models.Model):
         return self.nome
 
     class Meta:
+        ordering = ['nome']
         verbose_name = 'Motivo'
         verbose_name_plural = 'Motivos'
 
@@ -58,6 +62,7 @@ class Marketing(models.Model):
         return self.nome
 
     class Meta:
+        ordering = ['nome']
         verbose_name = 'Marketing'
         verbose_name_plural = 'Marketing'
 
@@ -68,9 +73,10 @@ class Curso(models.Model):
     ativo = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.nome
+        return self.nome_abrev
 
     class Meta:
+        ordering = ['nome_abrev']
         verbose_name = 'Curso'
         verbose_name_plural = 'Cursos'
 
@@ -83,6 +89,7 @@ class Atendente(models.Model):
         return self.nome
 
     class Meta:
+        ordering = ['nome']
         verbose_name = 'Atendente'
         verbose_name_plural = 'Atendentes'
 
@@ -93,9 +100,10 @@ class Polo(models.Model):
     ativo = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.nome
+        return self.nome_abrev
 
     class Meta:
+        ordering = ['nome_abrev']
         verbose_name = 'Polo'
         verbose_name_plural = 'Polos'
 
@@ -108,6 +116,7 @@ class Periodo(models.Model):
         return self.nome
 
     class Meta:
+        ordering = ['nome']
         verbose_name = 'Período'
         verbose_name_plural = 'Períodos'
 
@@ -118,9 +127,10 @@ class Modalidade(models.Model):
     ativo = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.nome
+        return self.nome_abrev
 
     class Meta:
+        ordering = ['nome']
         verbose_name = 'Modalidade'
         verbose_name_plural = 'Modalidades'
 
@@ -152,6 +162,7 @@ class Candidato(models.Model):
         return self.nome
 
     class Meta:
+        ordering = ['nome']
         verbose_name = 'Candidato'
         verbose_name_plural = 'Candidatos'
 
@@ -183,6 +194,7 @@ class Inscrito(models.Model):
         return self.nome
 
     class Meta:
+        ordering = ['nome']
         verbose_name = 'Inscrito'
         verbose_name_plural = 'Inscritos'
 
@@ -216,6 +228,7 @@ class ExAluno(models.Model):
         return self.nome
 
     class Meta:
+        ordering = ['nome']
         verbose_name = 'Ex Aluno'
         verbose_name_plural = 'Ex Alunos'
 
@@ -251,5 +264,6 @@ class Aluno(models.Model):
         return self.nom_aluno
 
     class Meta:
+        ordering = ['nom_aluno']
         verbose_name = 'Aluno'
         verbose_name_plural = 'Alunos'
