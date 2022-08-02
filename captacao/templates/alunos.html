@@ -57,14 +57,11 @@
     </div>
 
     <div style="display: flex; justify-content: center">
-        <h1>Período selecionado:&nbsp
-            {% if filtro %}
-                <span id="name-periodo">{{ filtro }}</span>
-            {% else %}
-                <span id="name-periodo"></span>
-            {% endif %}
-        </h1>
+        {% if filtro %}
+            <h2>Período selecionado:&nbsp<span id="name-periodo">{{ filtro }}</span></h2>
+        {% endif %}
     </div>
+
     <table id="table-geral" class="hover">
         <thead>
         <tr>

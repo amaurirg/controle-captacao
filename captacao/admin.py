@@ -114,10 +114,127 @@ class ExAlunoAdmin(admin.ModelAdmin):
                      'curso__nome', 'status__nome']
     list_filter = ['periodo', 'polo', 'status']
 
-    def save_model(self, request, obj, form, change):
-        salva_criado_por(request, obj)
+    # def save_model(self, request, obj, form, change):
+    #     salva_criado_por(request, obj)
 
     actions = (export_as_csv, export_xlsx)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path(
+                'inserir-arquivo/',
+                # self.admin_site.admin_view(self.minha_funcao_category, cacheable=True)
+                self.admin_site.admin_view(self.import_xlsx, cacheable=True)
+            ),
+        ]
+        return my_urls + urls
+
+    # def minha_funcao_category(self, request):
+    #     print('Ao clicar no botão, faz alguma coisa em category...')
+    #     messages.add_message(
+    #         request,
+    #         messages.INFO,
+    #         'Ação realizada com sucesso.'
+    #     )
+    #     return redirect('admin:captacao_aluno_changelist')
+
+    def get_campus(self, campus):
+        obj_nom_campus, created = Polo.objects.get_or_create(
+            nome=campus, defaults={'nome_abrev': campus}
+        )
+        return obj_nom_campus
+
+    def polo_nome_abrev(self, obj):
+        return obj.nom_campus.nome_abrev
+
+    def curso_nome_abrev(self, obj):
+        return obj.nom_curso_grupo.nome_abrev
+
+    def modalidade_nome_abrev(self, obj):
+        return obj.dsc_modalidade.nome_abrev
+
+    def get_curso(self, curso):
+        obj_nom_curso, created = Curso.objects.get_or_create(
+            nome=curso, defaults={'nome_abrev': curso}
+        )
+        return obj_nom_curso
+
+    def get_modalidade(self, modalidade):
+        obj_modalidade, created = Modalidade.objects.get_or_create(
+            nome=modalidade, defaults={'nome_abrev': modalidade}
+        )
+        return obj_modalidade
+
+    def format_date(self, date_str):
+        try:
+            return datetime.strptime(date_str, '%d/%m/%Y').date()
+        except:
+            return date(1111, 11, 11)
+
+
+    def import_xlsx(self, request):
+        if request.method == 'POST':
+            try:
+                meta = self.model._meta
+                field_names = {}
+                for field in meta.fields:
+                    field_names[field.verbose_name] = field.name
+                select_periodo = int(request.POST.get('select-periodo'))
+                periodo = Periodo.objects.get(pk=select_periodo)
+                file = request.FILES['files']
+                df_file = pd.read_excel(file, 0, index_col=None)
+                df = df_file[aluno_fields]
+                df.rename(columns={'Bolsista?': 'Bolsista'}, inplace=True)
+                df.rename(columns=field_names, inplace=True)
+
+                students = df.to_dict(orient='index')
+                for student in students.values():
+                    campus = self.get_campus(student['nom_campus'].rstrip())
+                    curso = self.get_curso(student['nom_curso_grupo'].rstrip())
+                    modalidade = self.get_modalidade(student['dsc_modalidade'].rstrip())
+
+                    student['nom_campus'] = campus
+                    student['nom_curso_grupo'] = curso
+                    student['dsc_modalidade'] = modalidade
+
+                    student['dat_matr'] = self.format_date(student['dat_matr'])
+                    student['dat_ingresso'] = self.format_date(student['dat_ingresso'])
+                    student['data_prev_termino'] = self.format_date(student['data_prev_termino'])
+
+                    data = student['turma_ano_ingresso'].split()[-1]
+                    mes, ano = data.split('/')
+                    turma_ano_ingresso_abrev = f'{mes[:3]}/{ano[-2:]}'
+                    student['turma_ano_ingresso_abrev'] = turma_ano_ingresso_abrev.rstrip()
+
+                    student['status_aluno'] = student['status_aluno'].rstrip()
+                    if student['status_aluno'] == 'Transferência de out':
+                        student['status_aluno'] = 'Transf. de out'
+
+                    student['turma_ano_ingresso'] = student['turma_ano_ingresso'].rstrip()
+                    student['cidade'] = student['cidade'].rstrip()
+                    student['bairro'] = student['bairro'].rstrip()
+                    student['bolsista'] = student['bolsista'].rstrip()
+                    student['email'] = student['email'].rstrip()
+
+                    exaluno, created = ExAluno.objects.update_or_create(
+                        ra=student['cod_ra'],
+                        defaults=student)
+                    exaluno.periodos.add(periodo)
+                messages.add_message(
+                    request,
+                    messages.INFO,
+                    'Arquivo lido com sucesso. A tabela de alunos foi atualizada.'
+                )
+            except Exception as error:
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    f'Erro na leitura do arquivo. Certifique-se que o arquivo contém os dados dos alunos.'
+                )
+
+            return redirect('admin:captacao_exaluno_changelist')
+        return render(request, 'modal_cria_exaluno.html', {'periodos': Periodo.objects.all()})
 
 
 class PeriodoInline(admin.TabularInline):

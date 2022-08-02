@@ -1,5 +1,6 @@
 import unicodedata
 
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -11,11 +12,12 @@ from captacao.models import (
     Atendente, SituacaoInscrito, SituacaoExAluno, Motivo, Aluno
 )
 
+@login_required()
+def home(request):
+    return render(request, 'home.html')
 
-def login(request):
-    return render(request, 'login.html')
 
-
+@login_required()
 def captacao(request):
     return render(request, 'base.html')
 
@@ -95,11 +97,19 @@ def modal_remove_inscrito(request, pk):
 
 
 def exalunos(request):
-    exalunos = ExAluno.objects.filter(ativo=True)
+    periodo = None
+    filtro = request.POST.get('select-periodo')
+    if filtro and not filtro == '0':
+        periodo = Periodo.objects.get(pk=int(filtro))
+        exalunos = ExAluno.objects.filter(periodos=periodo, ativo=True)
+    else:
+        exalunos = ExAluno.objects.filter(ativo=True)
 
     context = {
         'exalunos': exalunos,
-        'form': ExAlunoForm(request.POST or None)
+        'form': ExAlunoForm(request.POST or None),
+        'periodos': Periodo.objects.all(),
+        'filtro': periodo
     }
     return render(request, 'exalunos.html', context)
 
@@ -134,7 +144,7 @@ def modal_remove_exaluno(request, pk):
 def alunos(request):
     periodo = None
     filtro = request.POST.get('select-periodo')
-    if filtro:
+    if filtro and not filtro == '0':
         periodo = Periodo.objects.get(pk=int(filtro))
         alunos = Aluno.objects.filter(periodos=periodo, ativo=True)
     else:

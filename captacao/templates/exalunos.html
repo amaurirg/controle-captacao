@@ -3,14 +3,63 @@
 
 {% block content %}
     <div class="ui grid grid-style">
-        <div class="eight wide column">
-            <h1 class="ui left floated blue_color">Ex-Alunos</h1>
-        </div>
-        <div class="eight wide column">
-            <div id="showmodal-exaluno" class="ui right floated button primary">
-                Adicionar
+        <div class="four column row">
+            <div class="left floated column">
+                <h1 class="ui left floated blue_color">Ex-Alunos</h1>
+            </div>
+
+            <div class="right floated column" style="display: flex; justify-content: right;">
+                <form class="ui form" action="{% url 'exalunos' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="inline fields">
+
+                        <div style="margin: 2px">
+                            <div class="ui teal floating floated labeled icon dropdown button" id="filter-periodo">
+                                <input name="select-periodo" type="hidden">
+                                <i class="filter icon"></i>
+                                {% if filtro %}
+                                    <span id="selected-periodo" class="text">{{ filtro }}</span>
+                                {% else %}
+                                    <span id="selected-periodo" class="text">Período</span>
+                                {% endif %}
+                                <div class="menu">
+                                    <div class="header">
+                                        <i class="tags icon"></i>
+                                        Escolha um período
+                                    </div>
+                                    <div class="item" data-value="0">Período</div>
+                                    {% for periodo in periodos %}
+                                        <div class="item" data-value="{{ periodo.id }}">
+                                            {{ periodo.nome }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="actions">
+                            <button type="submit" class="ui button primary actions-buttons">
+                                <i class="thumbs up icon"></i>
+                                Filtrar
+                            </button>
+                            <a href="{% url 'exalunos' %}">
+                                <div class="ui blue deny button" onclick="no_periodo_selected()">
+                                    <i class="close icon"></i>
+                                    Limpar filtro
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
+
+    <div style="display: flex; justify-content: center">
+        {% if filtro %}
+            <h2>Período selecionado:&nbsp<span id="name-periodo">{{ filtro }}</span></h2>
+        {% endif %}
     </div>
 
     <table id="table-geral" class="hover">
@@ -75,8 +124,6 @@
         </tr>
         </tfoot>
     </table>
-
-    {% include 'modal_cria_exaluno.html' %}
 
 {% endblock %}
 

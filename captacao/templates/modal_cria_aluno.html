@@ -39,7 +39,7 @@
                             </label>
                             <div class="ui teal floating labeled icon dropdown button" id="filter-periodo"
                                  style="margin-left: 20px;">
-                            <input name="select-periodo" type="hidden">
+                                <input name="select-periodo" type="hidden">
                                 <i class="filter icon"></i>
                                 <span id="selected-periodo" class="text">Período</span>
                                 <div class="menu">
@@ -73,7 +73,12 @@
                         </div>
                     </div>
                 </div>
-
+                <a href="{% url 'admin:captacao_aluno_changelist' %}">
+                    <div class="ui blue deny button">
+                        <i class="thumbs down icon"></i>
+                        Voltar
+                    </div>
+                </a>
             </form>
         </div>
     </div>
@@ -100,7 +105,7 @@
 
     </script>
     <script>
-        $('#filter-periodo').dropdown('setting', 'onChange', function(val){
+        $('#filter-periodo').dropdown('setting', 'onChange', function (val) {
             if ($("#selected-periodo").text() !== 'Período') {
                 $("#read_file").removeAttr('disabled');
             }

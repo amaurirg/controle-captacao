@@ -1,137 +1,137 @@
-{% load widget_tweaks %}
-<div id="addExAluno" class="ui modal event-modal">
-    <div class="header">
-        <h1 class="ui left floated blue_color">Adicionar ex-aluno</h1>
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="ui grid grid-style">
+        <div class="eight wide column">
+            <h1 class="ui left floated blue_color">Inserir arquivo</h1>
+        </div>
+        {% comment %}<div class="eight wide column">
+            <div id="showmodal-candidato" class="ui right floated button primary">
+                Adicionar
+            </div>
+        </div>{% endcomment %}
     </div>
-    <div class="content">
-        <form class="ui form" action="{% url 'modal_cria_exaluno' %}" method="post"
-              enctype="multipart/form-data">
-            {% csrf_token %}
 
-            <div class="ui equal width form form-ref">
-                <div class="fields">
-                    <div class="field">
-                        <h4>
-                            Período
-                            <i class="plus blue icon" onclick="get_plus(this)"
-                               style="margin-left: 5px; cursor: pointer"></i>
-                        </h4>
-                        {% render_field form.periodo %}
+
+    <div class="ui grid">
+        <div class="five wide column centered">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="ui equal width form-ref" style="padding: 40px;">
+                    <div class="ui header" style="margin-bottom: 30px;">
+                        Selecione o arquivo para inserir os dados no sistema
                     </div>
-                    <div class="field">
-                        <h4>
-                            Polo
-                            <i class="plus blue icon" onclick="get_plus(this)"
-                               style="margin-left: 5px; cursor: pointer"></i>
-                        </h4>
-                        {% render_field form.polo %}
+                    <div class="fields">
+                        <div class="field">
+                            <input type="file" id="geeks" required name="files"
+                                   style="
+                                           width: 0.1px;
+                                           height: 0.1px;
+                                           opacity: 0;
+                                           overflow: hidden;
+                                           position: absolute;
+                                           z-index: -1;
+                                           ">
+                            <label for="geeks" class="ui teal left floated button">
+                                <i class="ui upload icon"></i>
+                                Selecionar arquivo
+                            </label>
+                            <div class="ui teal floating labeled icon dropdown button" id="filter-periodo"
+                                 style="margin-left: 20px;">
+                                <input name="select-periodo" type="hidden">
+                                <i class="filter icon"></i>
+                                <span id="selected-periodo" class="text">Período</span>
+                                <div class="menu">
+                                    <div class="header">
+                                        <i class="tags icon"></i>
+                                        Escolha o período para inserir o arquivo
+                                    </div>
+                                    {% for periodo in periodos %}
+                                        <div class="item" data-value="{{ periodo.id }}">
+                                            {{ periodo.nome }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <h4 id="text-file"></h4>
+                            <p id="filename"
+                               style="color: black; border: 2px solid black; border-radius: 5px; height: 30px; width: 400px; padding: 5px; font-size: 1.1rem; font-weight: bold; background-color: #EDEAEA;"></p>
+                        </div>
                     </div>
-                    <div class="field">
-                        <h4>
-                            Curso
-                            <i class="plus blue icon" onclick="get_plus(this)"
-                               style="margin-left: 5px; cursor: pointer"></i>
-                        </h4>
-                        {% render_field form.curso %}
-                    </div>
-                    <div class="field">
-                        <h4>
-                            Situação do ex-aluno
-                            <i class="plus blue icon" onclick="get_plus(this)"
-                               style="margin-left: 5px; cursor: pointer"></i>
-                        </h4>
-                        {% render_field form.situacao %}
+                    <br>
+                    <div class="actions">
+                        <button id="read_file" type="submit" class="ui button primary actions-buttons" disabled
+                                onclick="check_file()">
+                            <i class="thumbs up icon"></i>
+                            Carregar
+                        </button>
+                        <div class="ui blue deny button" onclick="no_file_selected()">
+                            <i class="thumbs down icon"></i>
+                            Cancelar
+                        </div>
                     </div>
                 </div>
-
-                <div class="fields">
-                    <div class="field">
-                        <h4>Nome</h4>
-                        {% render_field form.nome %}
-                    </div>
-                    <div class="field">
-                        <h4>Email</h4>
-                        {% render_field form.email %}
-                    </div>
-                </div>
-
-                <div class="fields">
-                    <div class="field">
-                        <h4>Telefone 1</h4>
-                        {% render_field form.telefone1 %}
-                    </div>
-                    <div class="field">
-                        <h4>Telefone 2</h4>
-                        {% render_field form.telefone2 %}
-                    </div>
-                    <div class="field">
-                        <h4>Data da saída</h4>
-                        {% render_field form.data_saida %}
-                    </div>
-                </div>
-
-                <div class="fields">
-                    <div class="field">
-                        <h4>
-                            Atendente
-                            <i class="plus blue icon" onclick="get_plus(this)"
-                               style="margin-left: 5px; cursor: pointer"></i>
-                        </h4>
-                        {% render_field form.atendente %}
-                    </div>
-                    <div class="field">
-                        <h4>
-                            Status
-                            <i class="plus blue icon" onclick="get_plus(this)"
-                               style="margin-left: 5px; cursor: pointer"></i>
-                        </h4>
-                        {% render_field form.status %}
-                    </div>
-                </div>
-
-                <div class="fields">
-                    <div class="field">
-                        <h4>
-                            RA
-                            <i class="plus blue icon" onclick="get_plus(this)"
-                               style="margin-left: 5px; cursor: pointer"></i>
-                        </h4>
-                        {% render_field form.ra %}
-                    </div>
-                    <div class="field">
-                        <h4>
-                            Motivo
-                            <i class="plus blue icon" onclick="get_plus(this)"
-                               style="margin-left: 5px; cursor: pointer"></i>
-                        </h4>
-                        {% render_field form.motivo %}
-                    </div>
-                </div>
-
-                <div class="fields">
-                    <div class="field">
-                        <h4>Observações</h4>
-                        {% render_field form.observacoes %}
-                    </div>
-                </div>
-                <div class="actions">
-                    <button type="submit" class="ui floated button primary actions-buttons">
-                        <i class="thumbs up icon"></i>
-                        Salvar
-                    </button>
+                <a href="{% url 'admin:captacao_exaluno_changelist' %}">
                     <div class="ui blue deny button">
                         <i class="thumbs down icon"></i>
-                        Cancelar
+                        Voltar
                     </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div class="actions">
-        <div class="ui blue deny button">
-            <i class="close icon"></i>
-            Fechar
+                </a>
+            </form>
         </div>
     </div>
-</div>
+    {% comment %}
+    <div class="ui segment">
+        <p>Inserindo ou atualizando alunos</p>
+        <div class="ui active dimmer">
+            <div class="ui loader"></div>
+        </div>
+    </div>
+{% endcomment %}
+    {% comment %}<div class="ui dimmer" id="dimmer">
+        <div class="ui massive text loader">
+            <h3>Loading</h3>
+        </div>
+    </div>{% endcomment %}
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+        $('#showLoading').click(function () {
+            $('#dimmer').dimmer('show');
+        });
+
+    </script>
+    <script>
+        $('#filter-periodo').dropdown('setting', 'onChange', function (val) {
+            if ($("#selected-periodo").text() !== 'Período') {
+                $("#read_file").removeAttr('disabled');
+            }
+        });
+
+        function check_file() {
+            if ($("#filename").text() === '') {
+                alert('Você deve selecionar um arquivo para prosseguir')
+            }
+        }
+
+        function no_file_selected() {
+            $("#filename").text('');
+            $('#text-file').text('Nenhum arquivo foi selecionado');
+        }
+
+        $(document).ready(function () {
+            if (!$("#filename").text()) {
+                $('#text-file').text('Nenhum arquivo foi selecionado')
+            }
+            $('input[type="file"]').change(function (e) {
+                var geekss = e.target.files[0].name;
+                $('#text-file').text('Arquivo selecionado')
+                $("#filename").text(`${geekss}`);
+            });
+        });
+
+    </script>
+{% endblock %}

@@ -243,6 +243,7 @@ class AlunoForm(forms.ModelForm):
         widgets = {
             'nom_aluno': forms.TextInput(attrs={'readonly': 'readonly'}),
             'cod_ra': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'periodos': forms.SelectMultiple(attrs={'readonly': 'readonly'})
         }
 
 

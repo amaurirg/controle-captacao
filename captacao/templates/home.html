@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Essa é a Página HOME</h1>
+    {% if request.user.first_name %}
+        <h3>Boas vindas {{ request.user.first_name }}</h3>
+    {% else %}
+        <h3>Boas vindas {{ request.user.username }}</h3>
+    {% endif %}
+{% endblock %}
