@@ -200,21 +200,40 @@ class Inscrito(models.Model):
 
 
 class ExAluno(models.Model):
-    periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
-    polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
-    ra = models.CharField('RA', max_length=7)
-    nome = models.CharField('Nome', max_length=40, unique=True)
-    telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
-    telefone2 = models.CharField('Telefone 2', max_length=20, null=True, blank=True)
-    email = models.EmailField('Email', max_length=100, null=True, blank=True)
-    curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
+    # periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
+    # polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
+    # ra = models.CharField('RA', max_length=7)
+    # nome = models.CharField('Nome', max_length=40, unique=True)
+    # telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
+    # telefone2 = models.CharField('Telefone 2', max_length=20, null=True, blank=True)
+    # email = models.EmailField('Email', max_length=100, null=True, blank=True)
+    # curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
+    # situacao = models.ForeignKey(SituacaoExAluno, verbose_name='Situação', on_delete=models.PROTECT)
+    # data_saida = models.DateField('Data da saída')
+    # motivo = models.ForeignKey(Motivo, verbose_name="Motivo", on_delete=models.PROTECT)
+    # status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
+    # atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
+    # observacoes = models.TextField('Observacoes', null=True, blank=True)
+    # ativo = models.BooleanField(default=True)
+
+
+    nom_campus = models.ForeignKey(Polo, verbose_name='NomCampus', related_name='campus', on_delete=models.PROTECT)
+    cod_ra = models.PositiveIntegerField('CodRA')
+    nom_aluno = models.CharField('NomAluno', max_length=255)
+    email = models.EmailField('Email', max_length=255, blank=True, null=True)
+    telefone1 = models.CharField('TelefoneCel1', max_length=15, blank=True, null=True)
+    telefone2 = models.CharField('TelefoneCel2', max_length=15, blank=True, null=True)
+    telefone_res = models.CharField('TelefoneRes', max_length=15, blank=True, null=True)
+    nom_curso_grupo = models.ForeignKey(Curso, verbose_name='NomCursoGrupo', related_name='curso',
+                                        on_delete=models.PROTECT)
     situacao = models.ForeignKey(SituacaoExAluno, verbose_name='Situação', on_delete=models.PROTECT)
     data_saida = models.DateField('Data da saída')
     motivo = models.ForeignKey(Motivo, verbose_name="Motivo", on_delete=models.PROTECT)
-    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
     atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
     observacoes = models.TextField('Observacoes', null=True, blank=True)
+    periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos', blank=True, null=True)
     ativo = models.BooleanField(default=True)
+
     # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='exaluno_criado_por', editable=False)
     # criado_em = models.DateTimeField(auto_now_add=True)
     # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
@@ -259,6 +278,12 @@ class Aluno(models.Model):
     observacoes = models.TextField('Observacoes', null=True, blank=True)
     periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos', blank=True, null=True)
     ativo = models.BooleanField(default=True)
+
+    # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='exaluno_criado_por', editable=False)
+    # criado_em = models.DateTimeField(auto_now_add=True)
+    # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
+    #                                    related_name='exaluno_atualizado_por', editable=False, null=True, blank=True)
+    # atualizado_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.nom_aluno

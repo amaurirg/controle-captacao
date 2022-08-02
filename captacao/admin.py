@@ -172,7 +172,6 @@ class ExAlunoAdmin(admin.ModelAdmin):
         except:
             return date(1111, 11, 11)
 
-
     def import_xlsx(self, request):
         if request.method == 'POST':
             try:
@@ -217,8 +216,8 @@ class ExAlunoAdmin(admin.ModelAdmin):
                     student['bolsista'] = student['bolsista'].rstrip()
                     student['email'] = student['email'].rstrip()
 
-                    exaluno, created = ExAluno.objects.update_or_create(
-                        ra=student['cod_ra'],
+                    exaluno, created = Aluno.objects.update_or_create(
+                        cod_ra=student['cod_ra'],
                         defaults=student)
                     exaluno.periodos.add(periodo)
                 messages.add_message(
