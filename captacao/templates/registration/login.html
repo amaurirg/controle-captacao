@@ -28,7 +28,8 @@
                 Controle de Captação
             </div>
         </h2>
-        <form class="ui large form" action="">
+        <form class="ui large form" action="" method="post">
+        {% csrf_token %}
             <div class="ui segment" style="padding: 20px; border-radius: 8px">
                 <div class="field">
                     <div class="ui left icon input">

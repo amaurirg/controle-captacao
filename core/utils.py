@@ -76,7 +76,19 @@ aluno_fields = [
     'DataPrevTermino',
 ]
 
-
+exaluno_fields = [
+    'NomCampus',
+    'NomAluno',
+    'CodRA',
+    'DscModalidade',
+    'NomCursoGrupo',
+    'DscStatusMatr',
+    'TurmaAnoIngresso',
+    'Email',
+    'TelefoneCel1',
+    'TelefoneCel2',
+    'TelefoneRes',
+]
 def salva_criado_por(request, obj):
     if not obj.pk:
         obj.criado_por = request.user

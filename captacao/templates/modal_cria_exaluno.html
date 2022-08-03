@@ -67,18 +67,20 @@
                             <i class="thumbs up icon"></i>
                             Carregar
                         </button>
-                        <div class="ui blue deny button" onclick="no_file_selected()">
-                            <i class="thumbs down icon"></i>
-                            Cancelar
-                        </div>
+                        <a href=".">
+                            <div class="ui blue deny button" onclick="no_file_selected()">
+                                <i class="thumbs down icon"></i>
+                                Cancelar
+                            </div>
+                        </a>
+                        <a href="{% url 'admin:captacao_exaluno_changelist' %}">
+                            <div class="ui teal deny button">
+                                <i class="thumbs undo icon"></i>
+                                Voltar
+                            </div>
+                        </a>
                     </div>
                 </div>
-                <a href="{% url 'admin:captacao_exaluno_changelist' %}">
-                    <div class="ui blue deny button">
-                        <i class="thumbs down icon"></i>
-                        Voltar
-                    </div>
-                </a>
             </form>
         </div>
     </div>

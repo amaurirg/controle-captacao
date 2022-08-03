@@ -136,7 +136,6 @@ class Modalidade(models.Model):
 
 
 class Candidato(models.Model):
-    periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
     polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
     nome = models.CharField('Nome', max_length=40, unique=True)
     telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
@@ -149,6 +148,7 @@ class Candidato(models.Model):
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observações', null=True, blank=True)
     ativo = models.BooleanField(default=True)
+    periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
     # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='candidato_criado_por', editable=False)
     # criado_em = models.DateTimeField(auto_now_add=True)
     # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
@@ -199,7 +199,7 @@ class Inscrito(models.Model):
         verbose_name_plural = 'Inscritos'
 
 
-class ExAluno(models.Model):
+# class ExAluno(models.Model):
     # periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
     # polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
     # ra = models.CharField('RA', max_length=7)
@@ -217,21 +217,23 @@ class ExAluno(models.Model):
     # ativo = models.BooleanField(default=True)
 
 
-    nom_campus = models.ForeignKey(Polo, verbose_name='NomCampus', related_name='campus', on_delete=models.PROTECT)
-    cod_ra = models.PositiveIntegerField('CodRA')
+class ExAluno(models.Model):
+    nom_campus = models.ForeignKey(Polo, verbose_name='NomCampus', on_delete=models.PROTECT)
     nom_aluno = models.CharField('NomAluno', max_length=255)
+    cod_ra = models.PositiveIntegerField('CodRA')
+    dsc_modalidade = models.ForeignKey(Modalidade, verbose_name='DscModalidade', on_delete=models.PROTECT)
+    nom_curso_grupo = models.ForeignKey(Curso, verbose_name='NomCursoGrupo', on_delete=models.PROTECT)
+    # situacao = models.ForeignKey(SituacaoExAluno, verbose_name='Situacao', on_delete=models.PROTECT)
+    data_saida = models.DateField('DataSaida', blank=True, null=True)
+    dsc_status_matr = models.CharField('DscStatusMatr', max_length=255)
+    turma_ano_ingresso = models.CharField('TurmaAnoIngresso', max_length=50)
+    turma_ano_ingresso_abrev = models.CharField('TurmaAnoIngressoAbrev', max_length=20, editable=False)
     email = models.EmailField('Email', max_length=255, blank=True, null=True)
     telefone1 = models.CharField('TelefoneCel1', max_length=15, blank=True, null=True)
     telefone2 = models.CharField('TelefoneCel2', max_length=15, blank=True, null=True)
     telefone_res = models.CharField('TelefoneRes', max_length=15, blank=True, null=True)
-    nom_curso_grupo = models.ForeignKey(Curso, verbose_name='NomCursoGrupo', related_name='curso',
-                                        on_delete=models.PROTECT)
-    situacao = models.ForeignKey(SituacaoExAluno, verbose_name='Situação', on_delete=models.PROTECT)
-    data_saida = models.DateField('Data da saída')
-    motivo = models.ForeignKey(Motivo, verbose_name="Motivo", on_delete=models.PROTECT)
-    atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
     observacoes = models.TextField('Observacoes', null=True, blank=True)
-    periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos', blank=True, null=True)
+    periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos_exaluno', blank=True)
     ativo = models.BooleanField(default=True)
 
     # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='exaluno_criado_por', editable=False)
@@ -240,24 +242,24 @@ class ExAluno(models.Model):
     #                                    related_name='exaluno_atualizado_por', editable=False, null=True, blank=True)
     # atualizado_em = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        super(ExAluno, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     super(ExAluno, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.nome
+        return self.nom_aluno
 
     class Meta:
-        ordering = ['nome']
+        ordering = ['nom_aluno']
         verbose_name = 'Ex Aluno'
         verbose_name_plural = 'Ex Alunos'
 
 
 class Aluno(models.Model):
-    nom_campus = models.ForeignKey(Polo, verbose_name='NomCampus', related_name='campus', on_delete=models.PROTECT)
-    nom_curso_grupo = models.ForeignKey(Curso, verbose_name='NomCursoGrupo', related_name='curso', on_delete=models.PROTECT)
+    nom_campus = models.ForeignKey(Polo, verbose_name='NomCampus', on_delete=models.PROTECT)
+    nom_curso_grupo = models.ForeignKey(Curso, verbose_name='NomCursoGrupo', on_delete=models.PROTECT)
     cod_curso = models.PositiveIntegerField('CodCurso')
     tipo = models.CharField('Tipo', max_length=20)
-    dsc_modalidade = models.ForeignKey(Modalidade, verbose_name='DscModalidade', related_name='modalidade', on_delete=models.PROTECT)
+    dsc_modalidade = models.ForeignKey(Modalidade, verbose_name='DscModalidade', on_delete=models.PROTECT)
     serie = models.PositiveSmallIntegerField('Serie')
     semana = models.CharField('Semana', max_length=15)
     cod_ra = models.PositiveIntegerField('CodRA')
@@ -276,7 +278,7 @@ class Aluno(models.Model):
     dat_ingresso = models.DateField('Dat_ingresso')
     data_prev_termino = models.DateField('DataPrevTermino')
     observacoes = models.TextField('Observacoes', null=True, blank=True)
-    periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos', blank=True, null=True)
+    periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos_aluno', blank=True)
     ativo = models.BooleanField(default=True)
 
     # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='exaluno_criado_por', editable=False)

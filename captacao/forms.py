@@ -1,5 +1,5 @@
 from django import forms
-from .models import Candidato, Inscrito, ExAluno, Aluno, Periodo
+from .models import Candidato, Inscrito, Aluno, ExAluno
 
 
 class CandidatoForm(forms.ModelForm):
@@ -19,6 +19,7 @@ class CandidatoForm(forms.ModelForm):
             'observacoes',
         ]
         model = Candidato
+
         # widgets = {
         #     'periodo': forms.Select(attrs={
         #         'class': 'ui fluid dropdown',
@@ -90,6 +91,7 @@ class InscritoForm(forms.ModelForm):
             'observacoes',
         ]
         model = Inscrito
+
         # widgets = {
         #     'periodo': forms.Select(attrs={
         #         'class': 'ui fluid dropdown',
@@ -147,22 +149,25 @@ class InscritoForm(forms.ModelForm):
 class ExAlunoForm(forms.ModelForm):
     class Meta:
         fields = [
-            'periodo',
-            'polo',
-            'curso',
-            'situacao',
-            'nome',
+            'nom_aluno',
             'email',
             'telefone1',
             'telefone2',
+            'telefone_res',
+            'cod_ra',
             'data_saida',
-            'atendente',
-            'status',
-            'ra',
-            'motivo',
+            'periodos',
             'observacoes',
         ]
+
         model = ExAluno
+        widgets = {
+            'nom_aluno': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'cod_ra': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'data_saida': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'periodos': forms.SelectMultiple(attrs={'readonly': 'readonly'})
+        }
+
         # widgets = {
         #     'periodo': forms.Select(attrs={
         #         'class': 'ui fluid dropdown',
@@ -200,10 +205,6 @@ class ExAlunoForm(forms.ModelForm):
         #         'class': 'ui input focus',
         #         'placeholder': 'Data do contato',
         #     }),
-        #     'atendente': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Atendente',
-        #     }),
         #     'status': forms.Select(attrs={
         #         'class': 'ui fluid dropdown',
         #         'placeholder': 'Status',
@@ -211,10 +212,6 @@ class ExAlunoForm(forms.ModelForm):
         #     'ra': forms.TextInput(attrs={
         #         'class': 'ui input focus',
         #         'placeholder': 'RA',
-        #     }),
-        #     'motivo': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Motivo',
         #     }),
         #     'observacoes': forms.Textarea(attrs={
         #         'class': 'ui input focus',
@@ -245,17 +242,6 @@ class AlunoForm(forms.ModelForm):
             'cod_ra': forms.TextInput(attrs={'readonly': 'readonly'}),
             'periodos': forms.SelectMultiple(attrs={'readonly': 'readonly'})
         }
-
-
-class PeriodoForm(forms.ModelForm):
-    fields = ['nome']
-    model = Periodo
-    # widgets = {
-    #     'nome': forms.Select(attrs={
-    #         'class': 'ui fluid dropdown',
-    #         'placeholder': 'Nome',
-    #     }),
-    # }
 
 
 class CreateNewForm(forms.Form):
