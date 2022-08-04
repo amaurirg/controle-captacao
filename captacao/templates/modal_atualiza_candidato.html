@@ -49,7 +49,8 @@
                 </div>
                 <div class="field">
                     <h4>Data do contato</h4>
-                    {% render_field form.data_contato %}
+                    {% comment %}{% render_field form.data_contato %}{% endcomment %}
+                        {% render_field form.data_contato type="text" class="datepicker" %}
                 </div>
             </div>
 

@@ -10,27 +10,8 @@
         <div class="ui equal width form form-ref">
             <div class="fields">
                 <div class="field">
-                    <h4>Período</h4>
-                    {% render_field form.periodo %}
-                </div>
-                <div class="field">
-                    <h4>Polo</h4>
-                    {% render_field form.polo %}
-                </div>
-                <div class="field">
-                    <h4>Curso</h4>
-                    {% render_field form.curso %}
-                </div>
-                <div class="field">
-                    <h4>Situação</h4>
-                    {% render_field form.situacao %}
-                </div>
-            </div>
-
-            <div class="fields">
-                <div class="field">
                     <h4>Nome</h4>
-                    {% render_field form.nome %}
+                    <p>{{ form.nom_aluno }}</p>
                 </div>
                 <div class="field">
                     <h4>Email</h4>
@@ -48,31 +29,28 @@
                     {% render_field form.telefone2 %}
                 </div>
                 <div class="field">
-                    <h4>Data da saída</h4>
-                    {% render_field form.data_saida %}
-                </div>
-            </div>
-
-            <div class="fields">
-                <div class="field">
-                    <h4>Atendente</h4>
-                    {% render_field form.atendente %}
-                </div>
-                <div class="field">
-                    <h4>Status</h4>
-                    {% render_field form.status %}
+                    <h4>Telefone Residencial</h4>
+                    {% render_field form.telefone_res %}
                 </div>
             </div>
 
             <div class="fields">
                 <div class="field">
                     <h4>RA</h4>
-                    {% render_field form.ra %}
+                    {% render_field form.cod_ra %}
                 </div>
                 <div class="field">
+                    <h4>Data da saída</h4>
+                    {% render_field form.data_saida %}
+                </div>
+                {% comment %}<div class="field">
                     <h4>Motivo</h4>
                     {% render_field form.motivo %}
                 </div>
+                <div class="field">
+                    <h4>Situação</h4>
+                    {% render_field form.situacao %}
+                </div>{% endcomment %}
             </div>
 
             <div class="fields">

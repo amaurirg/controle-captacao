@@ -243,19 +243,21 @@ class ExAlunoAdmin(admin.ModelAdmin):
 
                 students = df.to_dict(orient='index')
                 for student in students.values():
-                    student['nom_campus'] = self.get_campus(student['nom_campus'].rstrip())
-                    student['nom_curso_grupo'] = self.get_curso(student['nom_curso_grupo'].rstrip())
-                    student['dsc_modalidade'] = self.get_modalidade(student['dsc_modalidade'].rstrip())
-
-                    student['dsc_status_matr'] = self.format_date(student['dsc_status_matr'])
+                    student['nom_campus'] = self.get_campus(student['nom_campus'].strip())
+                    student['nom_curso_grupo'] = self.get_curso(student['nom_curso_grupo'].strip())
+                    student['dsc_modalidade'] = self.get_modalidade(student['dsc_modalidade'].strip())
+                    student['dsc_status_matr'] = student['dsc_status_matr'].strip()
 
                     data = student['turma_ano_ingresso'].split()[-1]
                     mes, ano = data.split('/')
                     turma_ano_ingresso_abrev = f'{mes[:3]}/{ano[-2:]}'
-                    student['turma_ano_ingresso_abrev'] = turma_ano_ingresso_abrev.rstrip()
-                    student['turma_ano_ingresso'] = student['turma_ano_ingresso'].rstrip()
+                    student['turma_ano_ingresso_abrev'] = turma_ano_ingresso_abrev.strip()
+                    student['turma_ano_ingresso'] = student['turma_ano_ingresso'].strip()
 
-                    # student['email'] = student['email'].rstrip()
+                    for phone in ['telefone1', 'telefone2', 'telefone_res']:
+                        student[phone] = str(student[phone]).split('.')[0]
+                        if student[phone] == 'nan':
+                            student[phone] = 'Não informado'
 
                     exaluno, created = ExAluno.objects.update_or_create(
                         cod_ra=student['cod_ra'],
@@ -434,9 +436,9 @@ class AlunoAdmin(admin.ModelAdmin):
 
                 students = df.to_dict(orient='index')
                 for student in students.values():
-                    student['nom_campus'] = self.get_campus(student['nom_campus'].rstrip())
-                    student['nom_curso_grupo'] = self.get_curso(student['nom_curso_grupo'].rstrip())
-                    student['dsc_modalidade'] = self.get_modalidade(student['dsc_modalidade'].rstrip())
+                    student['nom_campus'] = self.get_campus(student['nom_campus'].strip())
+                    student['nom_curso_grupo'] = self.get_curso(student['nom_curso_grupo'].strip())
+                    student['dsc_modalidade'] = self.get_modalidade(student['dsc_modalidade'].strip())
 
                     student['dat_matr'] = self.format_date(student['dat_matr'])
                     student['dat_ingresso'] = self.format_date(student['dat_ingresso'])
@@ -445,17 +447,22 @@ class AlunoAdmin(admin.ModelAdmin):
                     data = student['turma_ano_ingresso'].split()[-1]
                     mes, ano = data.split('/')
                     turma_ano_ingresso_abrev = f'{mes[:3]}/{ano[-2:]}'
-                    student['turma_ano_ingresso_abrev'] = turma_ano_ingresso_abrev.rstrip()
+                    student['turma_ano_ingresso_abrev'] = turma_ano_ingresso_abrev.strip()
 
-                    student['status_aluno'] = student['status_aluno'].rstrip()
+                    student['status_aluno'] = student['status_aluno'].strip()
                     if student['status_aluno'] == 'Transferência de out':
                         student['status_aluno'] = 'Transf. de out'
 
-                    student['turma_ano_ingresso'] = student['turma_ano_ingresso'].rstrip()
-                    student['cidade'] = student['cidade'].rstrip()
-                    student['bairro'] = student['bairro'].rstrip()
-                    student['bolsista'] = student['bolsista'].rstrip()
-                    student['email'] = student['email'].rstrip()
+                    for phone in ['telefone1', 'telefone2', 'telefone_res']:
+                        student[phone] = str(student[phone]).split('.')[0]
+                        if student[phone] == 'nan':
+                            student[phone] = 'Não informado'
+
+                    student['turma_ano_ingresso'] = student['turma_ano_ingresso'].strip()
+                    student['cidade'] = student['cidade'].strip()
+                    student['bairro'] = student['bairro'].strip()
+                    student['bolsista'] = student['bolsista'].strip()
+                    student['email'] = student['email'].strip()
 
                     aluno, created = Aluno.objects.update_or_create(
                         cod_ra=student['cod_ra'],

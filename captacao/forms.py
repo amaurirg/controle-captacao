@@ -20,59 +20,6 @@ class CandidatoForm(forms.ModelForm):
         ]
         model = Candidato
 
-        # widgets = {
-        #     'periodo': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Período',
-        #     }),
-        #     'polo': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Polo',
-        #     }),
-        #     'curso': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Curso',
-        #     }),
-        #     'marketing': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Marketing',
-        #     }),
-        #     'nome': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Nome',
-        #     }),
-        #     'email': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Email',
-        #     }),
-        #     'telefone1': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Telefone 1',
-        #     }),
-        #     'telefone2': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Telefone 2',
-        #     }),
-        #     'data_contato': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Data do contato',
-        #     }),
-        #     'status': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Status',
-        #     }),
-        #     'atendente': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Atendente',
-        #     }),
-        #     'observacoes': forms.Textarea(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Observações',
-        #         'rows': 6
-        #     }),
-        #
-        # }
-
 
 class InscritoForm(forms.ModelForm):
     class Meta:
@@ -92,58 +39,6 @@ class InscritoForm(forms.ModelForm):
         ]
         model = Inscrito
 
-        # widgets = {
-        #     'periodo': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Período',
-        #     }),
-        #     'polo': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Polo',
-        #     }),
-        #     'curso': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Curso',
-        #     }),
-        #     'situacao': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Situacao',
-        #     }),
-        #     'nome': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Nome',
-        #     }),
-        #     'email': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Email',
-        #     }),
-        #     'telefone1': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Telefone 1',
-        #     }),
-        #     'telefone2': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Telefone 2',
-        #     }),
-        #     'data_contato': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Data do contato',
-        #     }),
-        #     'status': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Status',
-        #     }),
-        #     'atendente': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Atendente',
-        #     }),
-        #     'observacoes': forms.Textarea(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Observações',
-        #         'rows': 6
-        #     }),
-        #
-        # }
 
 
 class ExAlunoForm(forms.ModelForm):
@@ -164,62 +59,10 @@ class ExAlunoForm(forms.ModelForm):
         widgets = {
             'nom_aluno': forms.TextInput(attrs={'readonly': 'readonly'}),
             'cod_ra': forms.TextInput(attrs={'readonly': 'readonly'}),
-            'data_saida': forms.TextInput(attrs={'readonly': 'readonly'}),
+            # 'data_saida': forms.TextInput(attrs={'readonly': 'readonly'}),
             'periodos': forms.SelectMultiple(attrs={'readonly': 'readonly'})
         }
 
-        # widgets = {
-        #     'periodo': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Período',
-        #     }),
-        #     'polo': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Polo',
-        #     }),
-        #     'curso': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Curso',
-        #     }),
-        #     'situacao': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Situacao',
-        #     }),
-        #     'nome': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Nome',
-        #     }),
-        #     'email': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Email',
-        #     }),
-        #     'telefone1': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Telefone 1',
-        #     }),
-        #     'telefone2': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Telefone 2',
-        #     }),
-        #     'data_saida': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Data do contato',
-        #     }),
-        #     'status': forms.Select(attrs={
-        #         'class': 'ui fluid dropdown',
-        #         'placeholder': 'Status',
-        #     }),
-        #     'ra': forms.TextInput(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'RA',
-        #     }),
-        #     'observacoes': forms.Textarea(attrs={
-        #         'class': 'ui input focus',
-        #         'placeholder': 'Observações',
-        #         'rows': 6
-        #     }),
-        #
-        # }
 
 
 class AlunoForm(forms.ModelForm):

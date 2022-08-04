@@ -65,15 +65,16 @@
     <table id="table-geral" class="hover">
         <thead>
         <tr>
-            <th>Período</th>
+            {% comment %}<th>Período</th>{% endcomment %}
             <th>Polo</th>
             <th>Nome</th>
+            <th>RA</th>
             <th>Telefone</th>
+            <th>E-mail</th>
             <th>Curso</th>
-            <th>Situação</th>
-            <th>Status</th>
-            <th>Atendente</th>
-            <th>Data da saída</th>
+            <th>Status Matr</th>
+            <th>Ano ingresso</th>
+            <th>Saída</th>
             <th>Editar</th>
             <th>Excluir</th>
         </tr>
@@ -81,22 +82,30 @@
         <tbody>
         {% for exaluno in exalunos %}
             <tr>
-                <td>{{ exaluno.periodo }}</td>
-                <td>{{ exaluno.polo }}</td>
-                <td>{{ exaluno.nome }}</td>
-                {% if exaluno.telefone1 == None %}
-                    <td>Não informado</td>
-                {% else %}
+                {% comment %}<td>{{ exaluno.periodo }}</td>{% endcomment %}
+                <td>{{ exaluno.nom_campus.nome_abrev }}</td>
+                <td>{{ exaluno.nom_aluno }}</td>
+                <td>{{ exaluno.cod_ra }}</td>
+
+                {% if exaluno.telefone1 %}
                     <td>{{ exaluno.telefone1 }}</td>
+                {% elif exaluno.telefone2 %}
+                    <td>{{ exaluno.telefone2 }}</td>
+                {% elif exaluno.telefone_res %}
+                    <td>{{ exaluno.telefone_res }}</td>
+                {% else %}
+                    <td>Não informado</td>
                 {% endif %}
-                <td>{{ exaluno.curso }}</td>
-                <td>{{ exaluno.situacao }}</td>
-                <td>{{ exaluno.status }}</td>
-                {% if exaluno.atendente.first_name %}
+
+                <td>{{ exaluno.email }}</td>
+                <td>{{ exaluno.nom_curso_grupo.nome_abrev }}</td>
+                <td>{{ exaluno.dsc_status_matr }}</td>
+                <td>{{ exaluno.turma_ano_ingresso_abrev }}</td>
+                {% comment %}{% if exaluno.atendente.first_name %}
                     <td>{{ exaluno.atendente.first_name }}</td>
                 {% else %}
                     <td>{{ exaluno.atendente }}</td>
-                {% endif %}
+                {% endif %}{% endcomment %}
                 <td>{{ exaluno.data_saida|date:"d/m/Y" }}</td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'modal_atualiza_exaluno' exaluno.id %}')">
