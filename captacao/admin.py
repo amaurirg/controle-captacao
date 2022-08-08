@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.urls import path
 
 from captacao.models import (Status, Marketing, Curso, Polo, Candidato, Periodo, Atendente, Motivo, Inscrito,
-                             ExAluno, SituacaoInscrito, SituacaoExAluno, Aluno, Modalidade)
+                             ExAluno, SituacaoInscrito, SituacaoExAluno, Aluno, Modalidade, AtendimentosAluno)
 from core.utils import export_xlsx, export_as_csv, salva_criado_por, aluno_fields, exaluno_fields
 
 
@@ -74,6 +74,14 @@ class ModalidadeAdmin(admin.ModelAdmin):
     list_filter = ['nome', 'nome_abrev']
 
 
+class AtendimentosAlunoAdminInLine(admin.StackedInline):
+    model = AtendimentosAluno
+    extra = 0
+
+@admin.register(AtendimentosAluno)
+class AtendimentosAlunoAdmin(admin.ModelAdmin):
+    list_display = ['data', 'descricao', 'candidato']
+
 @admin.register(Candidato)
 class CandidatoAdmin(admin.ModelAdmin):
     list_display = ['id', 'periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'marketing', 'status',
@@ -81,6 +89,7 @@ class CandidatoAdmin(admin.ModelAdmin):
     search_fields = ['periodo__nome', 'polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'marketing__nome', 'status__nome']
     list_filter = ['periodo', 'polo', 'marketing', 'status']
+    inlines = (AtendimentosAlunoAdminInLine,)
 
     def save_model(self, request, obj, form, change):
         salva_criado_por(request, obj)

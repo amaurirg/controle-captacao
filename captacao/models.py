@@ -149,6 +149,7 @@ class Candidato(models.Model):
     observacoes = models.TextField('Observações', null=True, blank=True)
     ativo = models.BooleanField(default=True)
     periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
+    atendimentos = models.TextField('Atendimentos', null=True, blank=True)
     # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='candidato_criado_por', editable=False)
     # criado_em = models.DateTimeField(auto_now_add=True)
     # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
@@ -181,6 +182,7 @@ class Inscrito(models.Model):
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observacoes', null=True, blank=True)
     ativo = models.BooleanField(default=True)
+
     # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='inscrito_criado_por', editable=False)
     # criado_em = models.DateTimeField(auto_now_add=True)
     # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
@@ -200,21 +202,21 @@ class Inscrito(models.Model):
 
 
 # class ExAluno(models.Model):
-    # periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
-    # polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
-    # ra = models.CharField('RA', max_length=7)
-    # nome = models.CharField('Nome', max_length=40, unique=True)
-    # telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
-    # telefone2 = models.CharField('Telefone 2', max_length=20, null=True, blank=True)
-    # email = models.EmailField('Email', max_length=100, null=True, blank=True)
-    # curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
-    # situacao = models.ForeignKey(SituacaoExAluno, verbose_name='Situação', on_delete=models.PROTECT)
-    # data_saida = models.DateField('Data da saída')
-    # motivo = models.ForeignKey(Motivo, verbose_name="Motivo", on_delete=models.PROTECT)
-    # status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
-    # atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
-    # observacoes = models.TextField('Observacoes', null=True, blank=True)
-    # ativo = models.BooleanField(default=True)
+# periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
+# polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
+# ra = models.CharField('RA', max_length=7)
+# nome = models.CharField('Nome', max_length=40, unique=True)
+# telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
+# telefone2 = models.CharField('Telefone 2', max_length=20, null=True, blank=True)
+# email = models.EmailField('Email', max_length=100, null=True, blank=True)
+# curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
+# situacao = models.ForeignKey(SituacaoExAluno, verbose_name='Situação', on_delete=models.PROTECT)
+# data_saida = models.DateField('Data da saída')
+# motivo = models.ForeignKey(Motivo, verbose_name="Motivo", on_delete=models.PROTECT)
+# status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
+# atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
+# observacoes = models.TextField('Observacoes', null=True, blank=True)
+# ativo = models.BooleanField(default=True)
 
 
 class ExAluno(models.Model):
@@ -294,3 +296,17 @@ class Aluno(models.Model):
         ordering = ['nom_aluno']
         verbose_name = 'Aluno'
         verbose_name_plural = 'Alunos'
+
+
+class AtendimentosAluno(models.Model):
+    data = models.DateTimeField(auto_now_add=True)
+    descricao = models.TextField('Descrição')
+    candidato = models.ForeignKey(Candidato, on_delete=models.PROTECT, related_name='atendimentos_aluno')
+
+    def __str__(self):
+        return str(self.data)
+
+    class Meta:
+        ordering = ['-data']
+        verbose_name = 'Atendimentos dos Aluno'
+        verbose_name_plural = 'Atendimentos dos Alunos'

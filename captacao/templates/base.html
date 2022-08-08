@@ -25,7 +25,7 @@
     <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    {% comment %}<link rel="stylesheet" href="/resources/demos/style.css">{% endcomment %}
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
 
@@ -230,11 +230,6 @@
                 h4_text: h4
             },
             success: function (response) {
-                {% comment %}console.log('Retorno do Django')
-                console.log(response.novo.id)
-                console.log(response.novo.nome)
-                console.log(response.novo.h4_text)
-                console.log(response.novo.select_id){% endcomment %}
                 $(response.novo.select_id).append($("<option></option>").attr("value", response.novo.id).attr("selected", "").text(response.novo.nome));
                 $('#criar-novo').modal('hide');
                 $('#novo-nome').val('');

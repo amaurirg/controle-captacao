@@ -9,7 +9,7 @@ from django.views import View
 from captacao.forms import CandidatoForm, InscritoForm, AlunoForm, ExAlunoForm
 from captacao.models import (
     Candidato, Periodo, Status, Marketing, Polo, Inscrito, Curso,
-    Atendente, SituacaoInscrito, SituacaoExAluno, Motivo, Aluno, ExAluno
+    Atendente, SituacaoInscrito, SituacaoExAluno, Motivo, Aluno, ExAluno, AtendimentosAluno
 )
 
 @login_required
@@ -42,11 +42,12 @@ def modal_cria_candidato(request):
 
 def modal_atualiza_candidato(request, pk):
     candidato = get_object_or_404(Candidato, pk=pk)
+    # atendimentos = candidato.atendimentos_aluno.all()
     form = CandidatoForm(request.POST or None, instance=candidato)
     if form.is_valid():
         candidato.save()
         return redirect(reverse('candidatos'))
-    return render(request, 'modal_atualiza_candidato.html', {'form': form})
+    return render(request, 'modal_atualiza_candidato.html', {'form': form, 'candidato': candidato})
 
 
 def modal_remove_candidato(request, pk):
@@ -207,6 +208,32 @@ class CreateNewName(View):
         data = {'novo': novo}
         return JsonResponse(data)
 
+
+class CreateNewAttendance(View):
+    def get(self, request):
+        months = {
+            1: 'Janeiro',
+            2: 'Fevereiro',
+            3: 'Março',
+            4: 'Abril',
+            5: 'Maio',
+            6: 'Junho',
+            7: 'Julho',
+            8: 'Agosto',
+            9: 'Setembro',
+            10: 'Outubro',
+            11: 'Novembro',
+            12: 'Dezembro'
+        }
+        descricao = request.GET.get('descricao', None)
+        candidato_id = request.GET.get('candidato', None)
+        if descricao and candidato_id:
+            candidato = Candidato.objects.get(pk=int(candidato_id))
+            obj = AtendimentosAluno.objects.create(descricao=descricao, candidato=candidato)
+            obj_data = f'{obj.data.day} de {months[obj.data.month]} de {obj.data.year} às {obj.data.time().strftime("%H:%M")}'
+            data = {'data': obj_data, 'descricao': obj.descricao}
+            return JsonResponse(data)
+        return JsonResponse({})
 
 def periodos(request):
     periodos = Periodo.objects.filter(ativo=True)
