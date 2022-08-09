@@ -35,6 +35,7 @@ def candidatos(request):
 def modal_cria_candidato(request):
     form = CandidatoForm(request.POST or None)
     if form.is_valid():
+        form.instance.criado_por = request.user
         form.save()
         return redirect(reverse('candidatos'))
     return render(request, 'modal_cria_candidato.html', {'form': form})
@@ -45,6 +46,7 @@ def modal_atualiza_candidato(request, pk):
     # atendimentos = candidato.atendimentos_aluno.all()
     form = CandidatoForm(request.POST or None, instance=candidato)
     if form.is_valid():
+        candidato.atualizado_por = request.user
         candidato.save()
         return redirect(reverse('candidatos'))
     return render(request, 'modal_atualiza_candidato.html', {'form': form, 'estudante': candidato})
