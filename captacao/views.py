@@ -47,7 +47,7 @@ def modal_atualiza_candidato(request, pk):
     if form.is_valid():
         candidato.save()
         return redirect(reverse('candidatos'))
-    return render(request, 'modal_atualiza_candidato.html', {'form': form, 'candidato': candidato})
+    return render(request, 'modal_atualiza_candidato.html', {'form': form, 'estudante': candidato})
 
 
 def modal_remove_candidato(request, pk):
@@ -84,7 +84,7 @@ def modal_atualiza_inscrito(request, pk):
     if form.is_valid():
         inscrito.save()
         return redirect(reverse('inscritos'))
-    return render(request, 'modal_atualiza_inscrito.html', {'form': form})
+    return render(request, 'modal_atualiza_inscrito.html', {'form': form, 'estudante': inscrito})
 
 
 def modal_remove_inscrito(request, pk):
@@ -129,7 +129,7 @@ def modal_atualiza_exaluno(request, pk):
     if form.is_valid():
         exaluno.save()
         return redirect(reverse('exalunos'))
-    return render(request, 'modal_atualiza_exaluno.html', {'form': form})
+    return render(request, 'modal_atualiza_exaluno.html', {'form': form, 'estudante': exaluno})
 
 
 def modal_remove_exaluno(request, pk):
@@ -174,7 +174,7 @@ def modal_atualiza_aluno(request, pk):
     if form.is_valid():
         aluno.save()
         return redirect(reverse('alunos'))
-    return render(request, 'modal_atualiza_aluno.html', {'form': form})
+    return render(request, 'modal_atualiza_aluno.html', {'form': form, 'estudante': aluno})
 
 
 # def modal_remove_aluno(request, pk):

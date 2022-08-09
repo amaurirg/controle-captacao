@@ -114,7 +114,7 @@
                 type: 'get',
                 data: {
                     descricao: $('textarea[name=descricao]').val().trim(),
-                    candidato: {{ candidato.id }}
+                    candidato: {{ form.instance.id }}
                 },
                 success: function (response) {
                     console.log('Retorno do Django');
