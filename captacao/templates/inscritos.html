@@ -23,7 +23,6 @@
             <th>Curso</th>
             <th>Situação</th>
             <th>Status</th>
-            <th>Atendente</th>
             <th>Data do Contato</th>
             <th>Editar</th>
             <th>Excluir</th>
@@ -43,11 +42,6 @@
                 <td>{{ inscrito.curso }}</td>
                 <td>{{ inscrito.situacao }}</td>
                 <td>{{ inscrito.status }}</td>
-                {% if inscrito.atendente.first_name %}
-                    <td>{{ inscrito.atendente.first_name }}</td>
-                {% else %}
-                    <td>{{ inscrito.atendente }}</td>
-                {% endif %}
                 <td>{{ inscrito.data_contato|date:"d/m/Y" }}</td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'modal_atualiza_inscrito' inscrito.id %}')">
@@ -71,7 +65,6 @@
             <th>Curso</th>
             <th>Situação</th>
             <th>Status</th>
-            <th>Atendente</th>
         </tr>
         </tfoot>
     </table>

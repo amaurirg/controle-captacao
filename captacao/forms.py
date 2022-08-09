@@ -15,7 +15,6 @@ class CandidatoForm(forms.ModelForm):
             'telefone2',
             'data_contato',
             'status',
-            'atendente',
             'observacoes',
         ]
         model = Candidato
@@ -34,7 +33,6 @@ class InscritoForm(forms.ModelForm):
             'telefone2',
             'data_contato',
             'status',
-            'atendente',
             'observacoes',
         ]
         model = Inscrito

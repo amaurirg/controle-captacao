@@ -81,17 +81,17 @@ class Curso(models.Model):
         verbose_name_plural = 'Cursos'
 
 
-class Atendente(models.Model):
-    nome = models.CharField('Nome', max_length=40, unique=True)
-    ativo = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.nome
-
-    class Meta:
-        ordering = ['nome']
-        verbose_name = 'Atendente'
-        verbose_name_plural = 'Atendentes'
+# class Atendente(models.Model):
+#     nome = models.CharField('Nome', max_length=40, unique=True)
+#     ativo = models.BooleanField(default=True)
+#
+#     def __str__(self):
+#         return self.nome
+#
+#     class Meta:
+#         ordering = ['nome']
+#         verbose_name = 'Atendente'
+#         verbose_name_plural = 'Atendentes'
 
 
 class Polo(models.Model):
@@ -144,17 +144,17 @@ class Candidato(models.Model):
     curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
     marketing = models.ForeignKey(Marketing, verbose_name='Marketing', on_delete=models.PROTECT)
     status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
-    atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
+    # atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observações', null=True, blank=True)
     ativo = models.BooleanField(default=True)
     periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
     atendimentos = models.TextField('Atendimentos', null=True, blank=True)
-    # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='candidato_criado_por', editable=False)
-    # criado_em = models.DateTimeField(auto_now_add=True)
-    # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
-    #                                    related_name='candidato_atualizado_por', editable=False, null=True, blank=True)
-    # atualizado_em = models.DateTimeField(auto_now=True)
+    criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='candidato_criado_por', editable=False)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
+                                       related_name='candidato_atualizado_por', editable=False, null=True, blank=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         super(Candidato, self).save(*args, **kwargs)
@@ -178,16 +178,15 @@ class Inscrito(models.Model):
     curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
     situacao = models.ForeignKey(SituacaoInscrito, verbose_name='Situação', on_delete=models.PROTECT)
     status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
-    atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
+    # atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observacoes', null=True, blank=True)
     ativo = models.BooleanField(default=True)
-
-    # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='inscrito_criado_por', editable=False)
-    # criado_em = models.DateTimeField(auto_now_add=True)
-    # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
-    #                                    related_name='inscrito_atualizado_por', editable=False, null=True, blank=True)
-    # atualizado_em = models.DateTimeField(auto_now=True)
+    criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='inscrito_criado_por', editable=False)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
+                                       related_name='inscrito_atualizado_por', editable=False, null=True, blank=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         super(Inscrito, self).save(*args, **kwargs)
@@ -199,24 +198,6 @@ class Inscrito(models.Model):
         ordering = ['nome']
         verbose_name = 'Inscrito'
         verbose_name_plural = 'Inscritos'
-
-
-# class ExAluno(models.Model):
-# periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
-# polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
-# ra = models.CharField('RA', max_length=7)
-# nome = models.CharField('Nome', max_length=40, unique=True)
-# telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
-# telefone2 = models.CharField('Telefone 2', max_length=20, null=True, blank=True)
-# email = models.EmailField('Email', max_length=100, null=True, blank=True)
-# curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
-# situacao = models.ForeignKey(SituacaoExAluno, verbose_name='Situação', on_delete=models.PROTECT)
-# data_saida = models.DateField('Data da saída')
-# motivo = models.ForeignKey(Motivo, verbose_name="Motivo", on_delete=models.PROTECT)
-# status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
-# atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
-# observacoes = models.TextField('Observacoes', null=True, blank=True)
-# ativo = models.BooleanField(default=True)
 
 
 class ExAluno(models.Model):
@@ -237,15 +218,14 @@ class ExAluno(models.Model):
     observacoes = models.TextField('Observacoes', null=True, blank=True)
     periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos_exaluno', blank=True)
     ativo = models.BooleanField(default=True)
+    criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='exaluno_criado_por', editable=False)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
+                                       related_name='exaluno_atualizado_por', editable=False, null=True, blank=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
 
-    # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='exaluno_criado_por', editable=False)
-    # criado_em = models.DateTimeField(auto_now_add=True)
-    # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
-    #                                    related_name='exaluno_atualizado_por', editable=False, null=True, blank=True)
-    # atualizado_em = models.DateTimeField(auto_now=True)
-
-    # def save(self, *args, **kwargs):
-    #     super(ExAluno, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        super(ExAluno, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.nom_aluno
@@ -282,15 +262,17 @@ class Aluno(models.Model):
     observacoes = models.TextField('Observacoes', null=True, blank=True)
     periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos_aluno', blank=True)
     ativo = models.BooleanField(default=True)
-
-    # criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='exaluno_criado_por', editable=False)
-    # criado_em = models.DateTimeField(auto_now_add=True)
-    # atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
-    #                                    related_name='exaluno_atualizado_por', editable=False, null=True, blank=True)
-    # atualizado_em = models.DateTimeField(auto_now=True)
+    criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='aluno_criado_por', editable=False)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
+                                       related_name='aluno_atualizado_por', editable=False, null=True, blank=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.nom_aluno
+
+    def save(self, *args, **kwargs):
+        super(Aluno, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['nom_aluno']
@@ -298,15 +280,57 @@ class Aluno(models.Model):
         verbose_name_plural = 'Alunos'
 
 
-class AtendimentosAluno(models.Model):
+class AtendimentosCandidato(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     descricao = models.TextField('Descrição')
-    candidato = models.ForeignKey(Candidato, on_delete=models.PROTECT, related_name='atendimentos_aluno')
+    candidato = models.ForeignKey(Candidato, on_delete=models.PROTECT, related_name='atendimentos_candidato')
 
     def __str__(self):
-        return str(self.data)
+        return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
 
     class Meta:
         ordering = ['-data']
-        verbose_name = 'Atendimentos dos Aluno'
+        verbose_name = 'Atendimentos do Candidato'
+        verbose_name_plural = 'Atendimentos dos Candidatos'
+
+
+class AtendimentosInscrito(models.Model):
+    data = models.DateTimeField(auto_now_add=True)
+    descricao = models.TextField('Descrição')
+    inscrito = models.ForeignKey(Inscrito, on_delete=models.PROTECT, related_name='atendimentos_inscrito')
+
+    def __str__(self):
+        return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
+
+    class Meta:
+        ordering = ['-data']
+        verbose_name = 'Atendimentos do Inscrito'
+        verbose_name_plural = 'Atendimentos dos Inscritos'
+
+
+class AtendimentosExAluno(models.Model):
+    data = models.DateTimeField(auto_now_add=True)
+    descricao = models.TextField('Descrição')
+    exaluno = models.ForeignKey(ExAluno, on_delete=models.PROTECT, related_name='atendimentos_exaluno')
+
+    def __str__(self):
+        return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
+
+    class Meta:
+        ordering = ['-data']
+        verbose_name = 'Atendimentos do Ex-Aluno'
+        verbose_name_plural = 'Atendimentos dos Ex-Alunos'
+
+
+class AtendimentosAluno(models.Model):
+    data = models.DateTimeField(auto_now_add=True)
+    descricao = models.TextField('Descrição')
+    aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT, related_name='atendimentos_aluno')
+
+    def __str__(self):
+        return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
+
+    class Meta:
+        ordering = ['-data']
+        verbose_name = 'Atendimentos do Aluno'
         verbose_name_plural = 'Atendimentos dos Alunos'

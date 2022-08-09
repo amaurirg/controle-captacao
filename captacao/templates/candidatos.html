@@ -23,7 +23,6 @@
             <th>Curso</th>
             <th>Marketing</th>
             <th>Status</th>
-            <th>Atendente</th>
             <th>Data do Contato</th>
             <th>Editar</th>
             <th>Excluir</th>
@@ -43,11 +42,6 @@
                 <td>{{ candidato.curso }}</td>
                 <td>{{ candidato.marketing }}</td>
                 <td>{{ candidato.status }}</td>
-                {% if candidato.atendente.first_name %}
-                    <td>{{ candidato.atendente.first_name }}</td>
-                {% else %}
-                    <td>{{ candidato.atendente }}</td>
-                {% endif %}
                 <td>{{ candidato.data_contato|date:"d/m/Y" }}</td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'modal_atualiza_candidato' candidato.id %}')">
@@ -71,7 +65,6 @@
             <th>Curso</th>
             <th>Marketing</th>
             <th>Status</th>
-            <th>Atendente</th>
         </tr>
         </tfoot>
     </table>

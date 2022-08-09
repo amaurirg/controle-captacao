@@ -9,7 +9,7 @@ from django.views import View
 from captacao.forms import CandidatoForm, InscritoForm, AlunoForm, ExAlunoForm
 from captacao.models import (
     Candidato, Periodo, Status, Marketing, Polo, Inscrito, Curso,
-    Atendente, SituacaoInscrito, SituacaoExAluno, Motivo, Aluno, ExAluno, AtendimentosAluno
+    SituacaoInscrito, SituacaoExAluno, Motivo, Aluno, ExAluno, AtendimentosAluno
 )
 
 @login_required
@@ -194,7 +194,6 @@ class CreateNewName(View):
             'Polo': Polo,
             'Curso': Curso,
             'Marketing': Marketing,
-            'Atendente': Atendente,
             'Status': Status,
             'Situação do inscrito': SituacaoInscrito,
             'Situação do ex-aluno': SituacaoExAluno,

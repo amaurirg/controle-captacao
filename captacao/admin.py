@@ -1,13 +1,13 @@
 from datetime import datetime, date
 
 import pandas as pd
-from django.conf import settings
 from django.contrib import admin, messages
 from django.shortcuts import redirect, render
 from django.urls import path
 
-from captacao.models import (Status, Marketing, Curso, Polo, Candidato, Periodo, Atendente, Motivo, Inscrito,
-                             ExAluno, SituacaoInscrito, SituacaoExAluno, Aluno, Modalidade, AtendimentosAluno)
+from captacao.models import (Status, Marketing, Curso, Polo, Candidato, Periodo, Motivo, Inscrito,
+                             ExAluno, SituacaoInscrito, SituacaoExAluno, Aluno, Modalidade, AtendimentosAluno,
+                             AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno)
 from core.utils import export_xlsx, export_as_csv, salva_criado_por, aluno_fields, exaluno_fields
 
 
@@ -53,13 +53,6 @@ class CursoAdmin(admin.ModelAdmin):
     list_filter = ['nome', 'nome_abrev']
 
 
-@admin.register(Atendente)
-class AtendenteAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nome']
-    search_fields = ['nome']
-    list_filter = ['nome']
-
-
 @admin.register(Polo)
 class PoloAdmin(admin.ModelAdmin):
     list_display = ['id', 'nome', 'nome_abrev']
@@ -74,13 +67,41 @@ class ModalidadeAdmin(admin.ModelAdmin):
     list_filter = ['nome', 'nome_abrev']
 
 
-class AtendimentosAlunoAdminInLine(admin.StackedInline):
+class AtendimentosCandidatoInLine(admin.StackedInline):
+    model = AtendimentosCandidato
+    extra = 0
+
+@admin.register(AtendimentosCandidato)
+class AtendimentosCandidatoAdmin(admin.ModelAdmin):
+    list_display = ['data', 'descricao', 'candidato']
+
+
+class AtendimentosInscritoInLine(admin.StackedInline):
+    model = AtendimentosInscrito
+    extra = 0
+
+@admin.register(AtendimentosInscrito)
+class AtendimentosInscritoAdmin(admin.ModelAdmin):
+    list_display = ['data', 'descricao', 'inscrito']
+
+
+class AtendimentosExAlunoInLine(admin.StackedInline):
+    model = AtendimentosExAluno
+    extra = 0
+
+@admin.register(AtendimentosExAluno)
+class AtendimentosExAlunoAdmin(admin.ModelAdmin):
+    list_display = ['data', 'descricao', 'exaluno']
+
+
+class AtendimentosAlunoInLine(admin.StackedInline):
     model = AtendimentosAluno
     extra = 0
 
 @admin.register(AtendimentosAluno)
 class AtendimentosAlunoAdmin(admin.ModelAdmin):
-    list_display = ['data', 'descricao', 'candidato']
+    list_display = ['data', 'descricao', 'aluno']
+
 
 @admin.register(Candidato)
 class CandidatoAdmin(admin.ModelAdmin):
@@ -89,14 +110,10 @@ class CandidatoAdmin(admin.ModelAdmin):
     search_fields = ['periodo__nome', 'polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'marketing__nome', 'status__nome']
     list_filter = ['periodo', 'polo', 'marketing', 'status']
-    inlines = (AtendimentosAlunoAdminInLine,)
+    inlines = (AtendimentosCandidatoInLine,)
 
     def save_model(self, request, obj, form, change):
         salva_criado_por(request, obj)
-        # if not obj.pk:
-        #     obj.atendente = request.user
-        # # obj.save()
-        # super(CandidatoAdmin, self).save_model(request, obj, form, change)
 
     actions = (export_as_csv, export_xlsx)
 
@@ -108,6 +125,7 @@ class InscritoAdmin(admin.ModelAdmin):
     search_fields = ['periodo__nome', 'polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'status__nome']
     list_filter = ['periodo', 'polo', 'status']
+    inlines = (AtendimentosInscritoInLine,)
 
     def save_model(self, request, obj, form, change):
         salva_criado_por(request, obj)
@@ -167,11 +185,10 @@ class ExAlunoAdmin(admin.ModelAdmin):
     search_fields = ['nom_campus', 'nom_aluno', 'nom_curso_grupo', 'dsc_status_matr']
     list_filter = ['nom_curso_grupo', 'dsc_status_matr']
 
-    # def save_model(self, request, obj, form, change):
-    #     salva_criado_por(request, obj)
-
     actions = (export_as_csv, export_xlsx)
 
+    def save_model(self, request, obj, form, change):
+        salva_criado_por(request, obj)
 
     def todos_periodos(self, obj):
         lista = []
@@ -179,7 +196,7 @@ class ExAlunoAdmin(admin.ModelAdmin):
             lista.append(periodo)
         return lista
 
-    inlines = (PeriodoExAlunoInline,)
+    inlines = (PeriodoExAlunoInline, AtendimentosExAlunoInLine)
     readonly_fields = ['periodos']
 
 
@@ -267,6 +284,9 @@ class ExAlunoAdmin(admin.ModelAdmin):
                         student[phone] = str(student[phone]).split('.')[0]
                         if student[phone] == 'nan':
                             student[phone] = 'Não informado'
+
+                    student['criado_por'] = request.user
+                    student['atualizado_por'] = request.user
 
                     exaluno, created = ExAluno.objects.update_or_create(
                         cod_ra=student['cod_ra'],
@@ -359,19 +379,18 @@ class AlunoAdmin(admin.ModelAdmin):
         'bairro',
     ]
 
+    def save_model(self, request, obj, form, change):
+        salva_criado_por(request, obj)
+
     def todos_periodos(self, obj):
         lista = []
         for periodo in obj.periodos.all():
             lista.append(periodo)
         return lista
 
-    inlines = (PeriodoAlunoInline,)
+    inlines = (PeriodoAlunoInline, AtendimentosAlunoInLine)
     readonly_fields = ['periodos']
 
-    # def save_model(self, request, obj, form, change):
-    #     salva_criado_por(request, obj)
-
-    # actions = export_xlsx
     actions = (export_as_csv, export_xlsx)
 
     def get_urls(self):
@@ -384,15 +403,6 @@ class AlunoAdmin(admin.ModelAdmin):
             ),
         ]
         return my_urls + urls
-
-    # def minha_funcao_category(self, request):
-    #     print('Ao clicar no botão, faz alguma coisa em category...')
-    #     messages.add_message(
-    #         request,
-    #         messages.INFO,
-    #         'Ação realizada com sucesso.'
-    #     )
-    #     return redirect('admin:captacao_aluno_changelist')
 
     def get_campus(self, campus):
         obj_nom_campus, created = Polo.objects.get_or_create(
@@ -473,6 +483,9 @@ class AlunoAdmin(admin.ModelAdmin):
                     student['bolsista'] = student['bolsista'].strip()
                     student['email'] = student['email'].strip()
 
+                    student['criado_por'] = request.user
+                    student['atualizado_por'] = request.user
+
                     aluno, created = Aluno.objects.update_or_create(
                         cod_ra=student['cod_ra'],
                         defaults=student)
@@ -505,7 +518,6 @@ class AlunoAdmin(admin.ModelAdmin):
     #     assert os.path.isfile(filename), "File Not Found Exception '{0}'.".format(filename)
     #
     #     return read_map[ext](filename, **kwargs)
-
 
 export_xlsx.short_description = "Exportar dados em formato Excel"
 export_as_csv.short_description = "Exportar dados em formato CSV"
