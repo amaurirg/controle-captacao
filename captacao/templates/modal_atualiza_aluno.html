@@ -101,11 +101,11 @@
     $('#salvaAtendimento').click(function (event) {
         if ($('#descricao').val() !== '') {
             $.ajax({
-                url: '{% url 'create_new_attendance' %}',
+                url: '{% url 'create_aluno_attendance' %}',
                 type: 'get',
                 data: {
                     descricao: $('textarea[name=descricao]').val().trim(),
-                    candidato: {{ form.instance.id }}
+                    aluno: {{ form.instance.id }}
                 },
                 success: function (response) {
                     console.log('Retorno do Django');

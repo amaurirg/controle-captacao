@@ -9,8 +9,11 @@ from django.views import View
 from captacao.forms import CandidatoForm, InscritoForm, AlunoForm, ExAlunoForm
 from captacao.models import (
     Candidato, Periodo, Status, Marketing, Polo, Inscrito, Curso,
-    SituacaoInscrito, SituacaoExAluno, Motivo, Aluno, ExAluno, AtendimentosAluno
+    SituacaoInscrito, SituacaoExAluno, Motivo, Aluno, ExAluno, AtendimentosAluno, AtendimentosCandidato,
+    AtendimentosInscrito, AtendimentosExAluno
 )
+from core.utils import months, dic_tables
+
 
 @login_required
 def home(request):
@@ -43,13 +46,13 @@ def modal_cria_candidato(request):
 
 def modal_atualiza_candidato(request, pk):
     candidato = get_object_or_404(Candidato, pk=pk)
-    # atendimentos = candidato.atendimentos_aluno.all()
+    atendimentos = candidato.atendimentos_candidato.all()
     form = CandidatoForm(request.POST or None, instance=candidato)
     if form.is_valid():
         candidato.atualizado_por = request.user
         candidato.save()
         return redirect(reverse('candidatos'))
-    return render(request, 'modal_atualiza_candidato.html', {'form': form, 'estudante': candidato})
+    return render(request, 'modal_atualiza_candidato.html', {'form': form, 'atendimentos': atendimentos})
 
 
 def modal_remove_candidato(request, pk):
@@ -75,6 +78,7 @@ def modal_cria_inscrito(request):
     print(request)
     form = InscritoForm(request.POST or None)
     if form.is_valid():
+        form.instance.criado_por = request.user
         form.save()
         return redirect(reverse('inscritos'))
     return render(request, 'modal_cria_inscrito.html', {'form': form})
@@ -82,11 +86,13 @@ def modal_cria_inscrito(request):
 
 def modal_atualiza_inscrito(request, pk):
     inscrito = get_object_or_404(Inscrito, pk=pk)
+    atendimentos = inscrito.atendimentos_inscrito.all()
     form = InscritoForm(request.POST or None, instance=inscrito)
     if form.is_valid():
+        inscrito.atualizado_por = request.user
         inscrito.save()
         return redirect(reverse('inscritos'))
-    return render(request, 'modal_atualiza_inscrito.html', {'form': form, 'estudante': inscrito})
+    return render(request, 'modal_atualiza_inscrito.html', {'form': form, 'atendimentos': atendimentos})
 
 
 def modal_remove_inscrito(request, pk):
@@ -120,6 +126,7 @@ def exalunos(request):
 def modal_cria_exaluno(request):
     form = ExAlunoForm(request.POST or None)
     if form.is_valid():
+        form.instance.criado_por = request.user
         form.save()
         return redirect(reverse('exalunos'))
     return render(request, 'modal_cria_exaluno.html', {'form': form})
@@ -127,11 +134,13 @@ def modal_cria_exaluno(request):
 
 def modal_atualiza_exaluno(request, pk):
     exaluno = get_object_or_404(ExAluno, pk=pk)
+    atendimentos = exaluno.atendimentos_exaluno.all()
     form = ExAlunoForm(request.POST or None, instance=exaluno)
     if form.is_valid():
+        exaluno.atualizado_por = request.user
         exaluno.save()
         return redirect(reverse('exalunos'))
-    return render(request, 'modal_atualiza_exaluno.html', {'form': form, 'estudante': exaluno})
+    return render(request, 'modal_atualiza_exaluno.html', {'form': form, 'atendimentos': atendimentos})
 
 
 def modal_remove_exaluno(request, pk):
@@ -165,6 +174,7 @@ def alunos(request):
 def modal_cria_aluno(request):
     form = AlunoForm(request.POST or None)
     if form.is_valid():
+        form.instance.criado_por = request.user
         form.save()
         return redirect(reverse('alunos'))
     return render(request, 'modal_cria_aluno.html', {'form': form})
@@ -172,11 +182,13 @@ def modal_cria_aluno(request):
 
 def modal_atualiza_aluno(request, pk):
     aluno = get_object_or_404(Aluno, pk=pk)
+    atendimentos = aluno.atendimentos_aluno.all()
     form = AlunoForm(request.POST or None, instance=aluno)
     if form.is_valid():
+        aluno.atualizado_por = request.user
         aluno.save()
         return redirect(reverse('alunos'))
-    return render(request, 'modal_atualiza_aluno.html', {'form': form, 'estudante': aluno})
+    return render(request, 'modal_atualiza_aluno.html', {'form': form, 'atendimentos': atendimentos})
 
 
 # def modal_remove_aluno(request, pk):
@@ -191,16 +203,6 @@ def modal_atualiza_aluno(request, pk):
 
 class CreateNewName(View):
     def get(self, request):
-        dic_tables = {
-            'Período': Periodo,
-            'Polo': Polo,
-            'Curso': Curso,
-            'Marketing': Marketing,
-            'Status': Status,
-            'Situação do inscrito': SituacaoInscrito,
-            'Situação do ex-aluno': SituacaoExAluno,
-            'Motivo': Motivo
-        }
         nome = request.GET.get('novo_nome', None)
         h4_text = request.GET.get('h4_text', None)
         obj = dic_tables[h4_text].objects.create(nome=nome)
@@ -210,31 +212,58 @@ class CreateNewName(View):
         return JsonResponse(data)
 
 
-class CreateNewAttendance(View):
+class CreateNewCandidatoAttendance(View):
     def get(self, request):
-        months = {
-            1: 'Janeiro',
-            2: 'Fevereiro',
-            3: 'Março',
-            4: 'Abril',
-            5: 'Maio',
-            6: 'Junho',
-            7: 'Julho',
-            8: 'Agosto',
-            9: 'Setembro',
-            10: 'Outubro',
-            11: 'Novembro',
-            12: 'Dezembro'
-        }
         descricao = request.GET.get('descricao', None)
         candidato_id = request.GET.get('candidato', None)
         if descricao and candidato_id:
             candidato = Candidato.objects.get(pk=int(candidato_id))
-            obj = AtendimentosAluno.objects.create(descricao=descricao, candidato=candidato)
+            obj = AtendimentosCandidato.objects.create(descricao=descricao, candidato=candidato)
             obj_data = f'{obj.data.day} de {months[obj.data.month]} de {obj.data.year} às {obj.data.time().strftime("%H:%M")}'
             data = {'data': obj_data, 'descricao': obj.descricao}
             return JsonResponse(data)
         return JsonResponse({})
+
+
+class CreateNewInscritoAttendance(View):
+    def get(self, request):
+        descricao = request.GET.get('descricao', None)
+        inscrito_id = request.GET.get('inscrito', None)
+        if descricao and inscrito_id:
+            inscrito = Inscrito.objects.get(pk=int(inscrito_id))
+            obj = AtendimentosInscrito.objects.create(descricao=descricao, inscrito=inscrito)
+            obj_data = f'{obj.data.day} de {months[obj.data.month]} de {obj.data.year} às {obj.data.time().strftime("%H:%M")}'
+            data = {'data': obj_data, 'descricao': obj.descricao}
+            return JsonResponse(data)
+        return JsonResponse({})
+
+
+class CreateNewExalunoAttendance(View):
+    def get(self, request):
+        descricao = request.GET.get('descricao', None)
+        exaluno_id = request.GET.get('exaluno', None)
+        if descricao and exaluno_id:
+            exaluno = ExAluno.objects.get(pk=int(exaluno_id))
+            obj = AtendimentosExAluno.objects.create(descricao=descricao, exaluno=exaluno)
+            obj_data = f'{obj.data.day} de {months[obj.data.month]} de {obj.data.year} às {obj.data.time().strftime("%H:%M")}'
+            data = {'data': obj_data, 'descricao': obj.descricao}
+            return JsonResponse(data)
+        return JsonResponse({})
+
+
+class CreateNewAlunoAttendance(View):
+    def get(self, request):
+        descricao = request.GET.get('descricao', None)
+        aluno_id = request.GET.get('aluno', None)
+        if descricao and aluno_id:
+            aluno = Aluno.objects.get(pk=int(aluno_id))
+            obj = AtendimentosAluno.objects.create(descricao=descricao, aluno=aluno)
+            obj_data = f'{obj.data.day} de {months[obj.data.month]} de {obj.data.year} às {obj.data.time().strftime("%H:%M")}'
+            data = {'data': obj_data, 'descricao': obj.descricao}
+            return JsonResponse(data)
+        return JsonResponse({})
+
+
 
 def periodos(request):
     periodos = Periodo.objects.filter(ativo=True)

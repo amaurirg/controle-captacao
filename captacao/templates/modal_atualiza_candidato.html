@@ -56,10 +56,6 @@
 
             <div class="fields">
                 <div class="field">
-                    <h4>Atendente</h4>
-                    {% render_field form.atendente %}
-                </div>
-                <div class="field">
                     <h4>Status</h4>
                     {% render_field form.status %}
                 </div>
@@ -110,7 +106,7 @@
     $('#salvaAtendimento').click(function (event) {
         if ($('#descricao').val() !== '') {
             $.ajax({
-                url: '{% url 'create_new_attendance' %}',
+                url: '{% url 'create_candidato_attendance' %}',
                 type: 'get',
                 data: {
                     descricao: $('textarea[name=descricao]').val().trim(),

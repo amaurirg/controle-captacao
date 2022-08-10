@@ -4,12 +4,16 @@ from .views import (
     candidatos, modal_cria_candidato, modal_atualiza_candidato, modal_remove_candidato,
     inscritos, modal_cria_inscrito, modal_atualiza_inscrito, modal_remove_inscrito,
     exalunos, modal_cria_exaluno, modal_atualiza_exaluno, modal_remove_exaluno,
-    alunos, modal_atualiza_aluno, modal_cria_aluno, CreateNewAttendance
+    alunos, modal_atualiza_aluno, modal_cria_aluno, CreateNewCandidatoAttendance, CreateNewInscritoAttendance,
+    CreateNewExalunoAttendance, CreateNewAlunoAttendance
 )
 
 urlpatterns = [
     path('create/name', CreateNewName.as_view(), name='create_new_name'),
-    path('create/attendance', CreateNewAttendance.as_view(), name='create_new_attendance'),
+    path('create/candidato/attendance', CreateNewCandidatoAttendance.as_view(), name='create_candidato_attendance'),
+    path('create/inscrito/attendance', CreateNewInscritoAttendance.as_view(), name='create_inscrito_attendance'),
+    path('create/exaluno/attendance', CreateNewExalunoAttendance.as_view(), name='create_exaluno_attendance'),
+    path('create/aluno/attendance', CreateNewAlunoAttendance.as_view(), name='create_aluno_attendance'),
     path('periodos/', periodos, name='periodos'),
 
     path('candidatos/', candidatos, name="candidatos"),

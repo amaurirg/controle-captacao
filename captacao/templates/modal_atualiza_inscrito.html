@@ -55,10 +55,6 @@
 
             <div class="fields">
                 <div class="field">
-                    <h4>Atendente</h4>
-                    {% render_field form.atendente %}
-                </div>
-                <div class="field">
                     <h4>Status</h4>
                     {% render_field form.status %}
                 </div>
@@ -109,11 +105,11 @@
     $('#salvaAtendimento').click(function (event) {
         if ($('#descricao').val() !== '') {
             $.ajax({
-                url: '{% url 'create_new_attendance' %}',
+                url: '{% url 'create_inscrito_attendance' %}',
                 type: 'get',
                 data: {
                     descricao: $('textarea[name=descricao]').val().trim(),
-                    candidato: {{ form.instance.id }}
+                    inscrito: {{ form.instance.id }}
                 },
                 success: function (response) {
                     console.log('Retorno do Django');

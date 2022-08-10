@@ -2,6 +2,7 @@ import csv
 from django.http import HttpResponse
 import pandas as pd
 
+from captacao.models import Periodo, Polo, Curso, Marketing, Status, SituacaoInscrito, SituacaoExAluno, Motivo
 
 cursos = {
     # 'Administração': '',
@@ -31,7 +32,7 @@ cursos = {
     # 'Serviço Social': '',
     'Superior de Tecnologia em Análise e Desenvolvimento de Sistemas': 'ADS',
     'Superior de Tecnologia em Design de Interiores': 'Design de Interiores',
-        'Superior de Tecnologia em Estética e Cosmética': 'Estética e Cosmética',
+    'Superior de Tecnologia em Estética e Cosmética': 'Estética e Cosmética',
     'Superior de Tecnologia em Gastronomia': 'Gastronomia',
     'Superior de Tecnologia em Gestão Ambiental': 'Gestão Ambiental',
     'Superior de Tecnologia em Gestão Comercial': 'Gestão Comercial',
@@ -50,7 +51,6 @@ cursos = {
     'Superior de Tecnologia em Segurança no Trabalho': 'Segurança no Trabalho',
     'Superior de Tecnologia em Serviços Jurídicos, Cartorários e Notariais': 'Serv. Jur. Car. Notariais',
 }
-
 
 aluno_fields = [
     'NomCampus',
@@ -89,6 +89,34 @@ exaluno_fields = [
     'TelefoneCel2',
     'TelefoneRes',
 ]
+
+months = {
+    1: 'Janeiro',
+    2: 'Fevereiro',
+    3: 'Março',
+    4: 'Abril',
+    5: 'Maio',
+    6: 'Junho',
+    7: 'Julho',
+    8: 'Agosto',
+    9: 'Setembro',
+    10: 'Outubro',
+    11: 'Novembro',
+    12: 'Dezembro'
+}
+
+dic_tables = {
+    'Período': Periodo,
+    'Polo': Polo,
+    'Curso': Curso,
+    'Marketing': Marketing,
+    'Status': Status,
+    'Situação do inscrito': SituacaoInscrito,
+    'Situação do ex-aluno': SituacaoExAluno,
+    'Motivo': Motivo
+}
+
+
 def salva_criado_por(request, obj):
     if not obj.pk:
         obj.criado_por = request.user

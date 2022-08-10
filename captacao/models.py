@@ -80,6 +80,10 @@ class Curso(models.Model):
         verbose_name = 'Curso'
         verbose_name_plural = 'Cursos'
 
+    def save(self, *args, **kwargs):
+        if not self.nome_abrev:
+            self.nome_abrev = self.nome
+        super(Curso, self).save(*args, **kwargs)
 
 # class Atendente(models.Model):
 #     nome = models.CharField('Nome', max_length=40, unique=True)
@@ -106,6 +110,11 @@ class Polo(models.Model):
         ordering = ['nome_abrev']
         verbose_name = 'Polo'
         verbose_name_plural = 'Polos'
+
+    def save(self, *args, **kwargs):
+        if not self.nome_abrev:
+            self.nome_abrev = self.nome
+        super(Polo, self).save(*args, **kwargs)
 
 
 class Periodo(models.Model):
@@ -134,6 +143,11 @@ class Modalidade(models.Model):
         verbose_name = 'Modalidade'
         verbose_name_plural = 'Modalidades'
 
+    def save(self, *args, **kwargs):
+        if not self.nome_abrev:
+            self.nome_abrev = self.nome
+        super(Modalidade, self).save(*args, **kwargs)
+
 
 class Candidato(models.Model):
     polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
@@ -149,7 +163,6 @@ class Candidato(models.Model):
     observacoes = models.TextField('Observações', null=True, blank=True)
     ativo = models.BooleanField(default=True)
     periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
-    atendimentos = models.TextField('Atendimentos', null=True, blank=True)
     criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='candidato_criado_por', editable=False)
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
