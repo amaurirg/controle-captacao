@@ -243,6 +243,14 @@
 
     $('.ui.dropdown').dropdown();
 
+    function no_periodo_selected() {
+        $("#filter-periodo").dropdown('set selected', '0');
+    }
+
+    function selectedPeriodo() {
+        $("#name-periodo").text($("#selected-periodo").text())
+    }
+
     $(function () {
         $(".datepicker").datepicker({
             dateFormat: 'dd/mm/yy',

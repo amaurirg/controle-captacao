@@ -5,7 +5,6 @@ from .models import Candidato, Inscrito, Aluno, ExAluno
 class CandidatoForm(forms.ModelForm):
     class Meta:
         fields = [
-            'periodo',
             'polo',
             'curso',
             'marketing',
@@ -15,6 +14,7 @@ class CandidatoForm(forms.ModelForm):
             'telefone2',
             'data_contato',
             'status',
+            'periodos',
             'observacoes',
         ]
         model = Candidato
@@ -23,7 +23,6 @@ class CandidatoForm(forms.ModelForm):
 class InscritoForm(forms.ModelForm):
     class Meta:
         fields = [
-            'periodo',
             'polo',
             'curso',
             'situacao',
@@ -33,6 +32,7 @@ class InscritoForm(forms.ModelForm):
             'telefone2',
             'data_contato',
             'status',
+            'periodos',
             'observacoes',
         ]
         model = Inscrito

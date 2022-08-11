@@ -11,46 +11,7 @@
             <div class="right floated column" style="display: flex; justify-content: right;">
                 <form class="ui form" action="{% url 'alunos' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <div class="inline fields">
-
-                        <div style="margin: 2px">
-                            <div class="ui teal floating floated labeled icon dropdown button" id="filter-periodo">
-                                <input name="select-periodo" type="hidden">
-                                <i class="filter icon"></i>
-                                {% if filtro %}
-                                    <span id="selected-periodo" class="text">{{ filtro }}</span>
-                                {% else %}
-                                    <span id="selected-periodo" class="text">Período</span>
-                                {% endif %}
-                                <div class="menu">
-                                    <div class="header">
-                                        <i class="tags icon"></i>
-                                        Escolha um período
-                                    </div>
-                                    <div class="item" data-value="0">Período</div>
-                                    {% for periodo in periodos %}
-                                        <div class="item" data-value="{{ periodo.id }}">
-                                            {{ periodo.nome }}
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="actions">
-                            <button type="submit" class="ui button primary actions-buttons">
-                                <i class="thumbs up icon"></i>
-                                Filtrar
-                            </button>
-                            <a href="{% url 'alunos' %}">
-                                <div class="ui blue deny button" onclick="no_periodo_selected()">
-                                    <i class="close icon"></i>
-                                    Limpar filtro
-                                </div>
-                            </a>
-                        </div>
-
-                    </div>
+                    {% include 'filter.html' %}
                 </form>
             </div>
         </div>
@@ -144,13 +105,12 @@
 
 {% block extrajs %}
     <script>
-        function no_periodo_selected() {
+        {% comment %}function no_periodo_selected() {
             $("#filter-periodo").dropdown('set selected', '0');
         }
 
         function selectedPeriodo() {
             $("#name-periodo").text($("#selected-periodo").text())
-        }
-
+        }{% endcomment %}
     </script>
 {% endblock %}

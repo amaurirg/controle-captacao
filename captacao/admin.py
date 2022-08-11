@@ -67,6 +67,7 @@ class ModalidadeAdmin(admin.ModelAdmin):
     list_filter = ['nome', 'nome_abrev']
 
 
+# Atendimentos
 class AtendimentosCandidatoInLine(admin.StackedInline):
     model = AtendimentosCandidato
     extra = 0
@@ -103,14 +104,73 @@ class AtendimentosAlunoAdmin(admin.ModelAdmin):
     list_display = ['data', 'descricao', 'aluno']
 
 
+# Períodos
+class PeriodoCandidatoInline(admin.TabularInline):
+    model = Candidato.periodos.through
+    extra = 0
+
+
+@admin.register(Periodo)
+class PeriodoCandidatoAdmin(admin.ModelAdmin):
+    list_display = ['nome']
+    search_fields = ['nome']
+    list_filter = ['nome']
+
+    inlines = (PeriodoCandidatoInline,)
+
+
+class PeriodoInscritoInline(admin.TabularInline):
+    model = Inscrito.periodos.through
+    extra = 0
+
+
+class PeriodoInscritoAdmin(admin.ModelAdmin):
+    list_display = ['nome']
+    search_fields = ['nome']
+    list_filter = ['nome']
+
+    inlines = (PeriodoInscritoInline,)
+
+
+class PeriodoExAlunoInline(admin.TabularInline):
+    model = ExAluno.periodos.through
+    extra = 0
+
+class PeriodoExAlunoAdmin(admin.ModelAdmin):
+    list_display = ['nome']
+    search_fields = ['nome']
+    list_filter = ['nome']
+
+    inlines = (PeriodoExAlunoInline,)
+
+
+class PeriodoAlunoInline(admin.TabularInline):
+    model = Aluno.periodos.through
+    extra = 0
+
+
+class PeriodoAlunoAdmin(admin.ModelAdmin):
+    list_display = ['nome']
+    search_fields = ['nome']
+    list_filter = ['nome']
+
+    inlines = (PeriodoAlunoInline,)
+
+
 @admin.register(Candidato)
 class CandidatoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'marketing', 'status',
-                    'data_contato', 'observacoes']
-    search_fields = ['periodo__nome', 'polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
+    list_display = ['id', 'polo', 'nome', 'telefone1', 'email', 'curso', 'marketing', 'status',
+                    'data_contato', 'observacoes', 'todos_periodos']
+    search_fields = ['polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'marketing__nome', 'status__nome']
-    list_filter = ['periodo', 'polo', 'marketing', 'status']
-    inlines = (AtendimentosCandidatoInLine,)
+    list_filter = ['polo', 'marketing', 'status']
+    inlines = (AtendimentosCandidatoInLine, PeriodoCandidatoInline)
+
+    def todos_periodos(self, obj):
+        lista = []
+        for periodo in obj.periodos.all():
+            lista.append(periodo)
+        return lista
 
     def save_model(self, request, obj, form, change):
         salva_criado_por(request, obj)
@@ -120,44 +180,25 @@ class CandidatoAdmin(admin.ModelAdmin):
 
 @admin.register(Inscrito)
 class InscritoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'status',
-                    'data_contato', 'observacoes']
-    search_fields = ['periodo__nome', 'polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
+    list_display = ['id', 'polo', 'nome', 'telefone1', 'email', 'curso', 'status',
+                    'data_contato', 'observacoes', 'todos_periodos']
+    search_fields = ['polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'status__nome']
-    list_filter = ['periodo', 'polo', 'status']
-    inlines = (AtendimentosInscritoInLine,)
+    list_filter = ['polo', 'status']
+
+    def todos_periodos(self, obj):
+        lista = []
+        for periodo in obj.periodos.all():
+            lista.append(periodo)
+        return lista
+
+    inlines = (AtendimentosInscritoInLine, PeriodoInscritoInline)
+    readonly_fields = ['periodos']
 
     def save_model(self, request, obj, form, change):
         salva_criado_por(request, obj)
 
     actions = (export_as_csv, export_xlsx)
-
-
-class PeriodoAlunoInline(admin.TabularInline):
-    model = Aluno.periodos.through
-    extra = 0
-
-
-@admin.register(Periodo)
-class PeriodoAlunoAdmin(admin.ModelAdmin):
-    list_display = ['nome']
-    search_fields = ['nome']
-    list_filter = ['nome']
-
-    inlines = (PeriodoAlunoInline,)
-
-
-class PeriodoExAlunoInline(admin.TabularInline):
-    model = ExAluno.periodos.through
-    extra = 0
-
-# @admin.register(Periodo)
-class PeriodoExAlunoAdmin(admin.ModelAdmin):
-    list_display = ['nome']
-    search_fields = ['nome']
-    list_filter = ['nome']
-
-    inlines = (PeriodoExAlunoInline,)
 
 
 @admin.register(ExAluno)
@@ -196,7 +237,7 @@ class ExAlunoAdmin(admin.ModelAdmin):
             lista.append(periodo)
         return lista
 
-    inlines = (PeriodoExAlunoInline, AtendimentosExAlunoInLine)
+    inlines = (AtendimentosExAlunoInLine, PeriodoExAlunoInline)
     readonly_fields = ['periodos']
 
 
@@ -388,7 +429,7 @@ class AlunoAdmin(admin.ModelAdmin):
             lista.append(periodo)
         return lista
 
-    inlines = (PeriodoAlunoInline, AtendimentosAlunoInLine)
+    inlines = (AtendimentosAlunoInLine, PeriodoAlunoInline)
     readonly_fields = ['periodos']
 
     actions = (export_as_csv, export_xlsx)

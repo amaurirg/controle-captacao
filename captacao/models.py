@@ -162,7 +162,8 @@ class Candidato(models.Model):
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observações', null=True, blank=True)
     ativo = models.BooleanField(default=True)
-    periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
+    # periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
+    periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos_candidato', blank=True)
     criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='candidato_criado_por', editable=False)
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
@@ -195,14 +196,12 @@ class Inscrito(models.Model):
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observacoes', null=True, blank=True)
     ativo = models.BooleanField(default=True)
+    periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos_inscrito', blank=True)
     criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='inscrito_criado_por', editable=False)
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
                                        related_name='inscrito_atualizado_por', editable=False, null=True, blank=True)
     atualizado_em = models.DateTimeField(auto_now=True)
-
-    def save(self, *args, **kwargs):
-        super(Inscrito, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.nome
@@ -211,6 +210,9 @@ class Inscrito(models.Model):
         ordering = ['nome']
         verbose_name = 'Inscrito'
         verbose_name_plural = 'Inscritos'
+
+    def save(self, *args, **kwargs):
+        super(Inscrito, self).save(*args, **kwargs)
 
 
 class ExAluno(models.Model):
@@ -237,9 +239,6 @@ class ExAluno(models.Model):
                                        related_name='exaluno_atualizado_por', editable=False, null=True, blank=True)
     atualizado_em = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        super(ExAluno, self).save(*args, **kwargs)
-
     def __str__(self):
         return self.nom_aluno
 
@@ -247,6 +246,9 @@ class ExAluno(models.Model):
         ordering = ['nom_aluno']
         verbose_name = 'Ex Aluno'
         verbose_name_plural = 'Ex Alunos'
+
+    def save(self, *args, **kwargs):
+        super(ExAluno, self).save(*args, **kwargs)
 
 
 class Aluno(models.Model):
@@ -284,13 +286,12 @@ class Aluno(models.Model):
     def __str__(self):
         return self.nom_aluno
 
-    def save(self, *args, **kwargs):
-        super(Aluno, self).save(*args, **kwargs)
-
     class Meta:
         ordering = ['nom_aluno']
         verbose_name = 'Aluno'
         verbose_name_plural = 'Alunos'
+    def save(self, *args, **kwargs):
+        super(Aluno, self).save(*args, **kwargs)
 
 
 class AtendimentosCandidato(models.Model):

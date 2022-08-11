@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 
 {% block content %}
-    <div class="ui grid grid-style">
+    {% comment %}<div class="ui grid grid-style">
         <div class="eight wide column">
             <h1 class="ui left floated blue_color">Candidatos</h1>
         </div>
@@ -11,6 +11,27 @@
                 Adicionar
             </div>
         </div>
+    </div>{% endcomment %}
+
+    <div class="ui grid grid-style">
+        <div class="four column row">
+            <div class="left floated column">
+                <h1 class="ui left floated blue_color">Candidatos</h1>
+            </div>
+
+            <div class="right floated column" style="display: flex; justify-content: right;">
+                <form class="ui form" action="{% url 'candidatos' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% include 'filter.html' %}
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: center">
+        {% if filtro %}
+            <h2>Período selecionado:&nbsp<span id="name-periodo">{{ filtro }}</span></h2>
+        {% endif %}
     </div>
 
     <table id="table-geral" class="hover">
