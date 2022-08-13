@@ -60,6 +60,18 @@
                 </div>
             </div>
 
+            <div class="fields">
+                <div class="field">
+                    <h4>Períodos</h4>
+                    <p style="background-color: white; padding: 10px; border-radius: 3px">
+                        {% for periodo in periodos %}
+                            {{ periodo }}
+                            <br>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+
             {% include 'attendances.html' %}
 
             <div class="fields">

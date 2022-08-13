@@ -52,7 +52,12 @@
             <div class="fields">
                 <div class="field">
                     <h4>Períodos</h4>
-                    {% render_field form.periodos %}
+                    <p style="background-color: white; padding: 10px; border-radius: 3px">
+                        {% for periodo in periodos %}
+                            {{ periodo }}
+                            <br>
+                        {% endfor %}
+                    </p>
                 </div>
             </div>
 

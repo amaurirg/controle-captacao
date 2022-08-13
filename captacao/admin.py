@@ -165,6 +165,7 @@ class CandidatoAdmin(admin.ModelAdmin):
                      'curso__nome', 'marketing__nome', 'status__nome']
     list_filter = ['polo', 'marketing', 'status']
     inlines = (AtendimentosCandidatoInLine, PeriodoCandidatoInline)
+    readonly_fields = ['periodos']
 
     def todos_periodos(self, obj):
         lista = []

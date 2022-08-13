@@ -3,9 +3,9 @@ from .views import (
     periodos, CreateNewName,
     candidatos, modal_cria_candidato, modal_atualiza_candidato, modal_remove_candidato,
     inscritos, modal_cria_inscrito, modal_atualiza_inscrito, modal_remove_inscrito,
-    exalunos, modal_cria_exaluno, modal_atualiza_exaluno, modal_remove_exaluno,
-    alunos, modal_atualiza_aluno, modal_cria_aluno, CreateNewCandidatoAttendance, CreateNewInscritoAttendance,
-    CreateNewExalunoAttendance, CreateNewAlunoAttendance
+    exalunos, modal_atualiza_exaluno, modal_remove_exaluno, alunos, modal_atualiza_aluno,
+    CreateNewCandidatoAttendance, CreateNewInscritoAttendance, CreateNewExalunoAttendance,
+    CreateNewAlunoAttendance
 )
 
 urlpatterns = [
@@ -27,11 +27,9 @@ urlpatterns = [
     path('remover_inscrito/<int:pk>', modal_remove_inscrito, name='modal_remove_inscrito'),
 
     path('exalunos/', exalunos, name="exalunos"),
-    path('adicionar_exaluno/', modal_cria_exaluno, name='modal_cria_exaluno'),
     path('atualizar_exaluno/<int:pk>', modal_atualiza_exaluno, name='modal_atualiza_exaluno'),
     path('remover_exaluno/<int:pk>', modal_remove_exaluno, name='modal_remove_exaluno'),
 
     path('alunos/', alunos, name="alunos"),
-    path('adicionar_aluno/', modal_cria_aluno, name='modal_cria_aluno'),
     path('atualizar_aluno/<int:pk>', modal_atualiza_aluno, name='modal_atualiza_aluno'),
 ]

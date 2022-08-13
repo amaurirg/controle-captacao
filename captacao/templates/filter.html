@@ -11,7 +11,8 @@
             {% endif %}
             <div class="menu">
                 <div class="header">
-                    <i class="tags icon"></i>
+                    {% comment %}<i class="calendar check outline icon"></i>{% endcomment %}
+                    <i class="calendar alternate outline icon"></i>
                     Escolha um período
                 </div>
                 <div class="item" data-value="0">Período</div>
@@ -29,7 +30,7 @@
             <i class="thumbs up icon"></i>
             Filtrar
         </button>
-        <a href="{% url 'alunos' %}">
+        <a href="{% url url_redirect %}">
             <div class="ui blue deny button" onclick="no_periodo_selected()">
                 <i class="close icon"></i>
                 Limpar filtro

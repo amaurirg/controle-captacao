@@ -16,7 +16,12 @@
                             <i class="plus blue icon" onclick="get_plus(this)"
                                style="margin-left: 5px; cursor: pointer"></i>
                         </h4>
-                        {% render_field form.periodo %}
+                        <select name="periodo" id="id_periodo">
+                            <option value selected>---------</option>
+                            {% for periodo in form.periodos %}
+                                {{ periodo }}
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="field">
                         <h4>
@@ -71,14 +76,6 @@
                 </div>
 
                 <div class="fields">
-                    <div class="field">
-                        <h4>
-                            Atendente
-                            <i class="plus blue icon" onclick="get_plus(this)"
-                               style="margin-left: 5px; cursor: pointer"></i>
-                        </h4>
-                        {% render_field form.atendente %}
-                    </div>
                     <div class="field">
                         <h4>
                             Status

@@ -22,9 +22,13 @@
             <div class="right floated column" style="display: flex; justify-content: right;">
                 <form class="ui form" action="{% url 'candidatos' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {% include 'filter.html' %}
+                    {% include 'filter.html' with url_redirect='candidatos' %}
+                    <div id="showmodal-candidato" class="ui right floated button primary">
+                        Adicionar novo candidato
+                    </div>
                 </form>
             </div>
+
         </div>
     </div>
 
@@ -37,7 +41,6 @@
     <table id="table-geral" class="hover">
         <thead>
         <tr>
-            <th>Período</th>
             <th>Polo</th>
             <th>Nome</th>
             <th>Telefone</th>
@@ -52,7 +55,6 @@
         <tbody>
         {% for candidato in candidatos %}
             <tr>
-                <td>{{ candidato.periodo }}</td>
                 <td>{{ candidato.polo }}</td>
                 <td>{{ candidato.nome }}</td>
                 {% if candidato.telefone1 == None %}
@@ -79,7 +81,6 @@
         </tbody>
         <tfoot>
         <tr>
-            <th>Período</th>
             <th>Polo</th>
             <th>Nome</th>
             <th>Telefone</th>

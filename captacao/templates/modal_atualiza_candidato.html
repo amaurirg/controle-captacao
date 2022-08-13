@@ -10,10 +10,6 @@
         <div class="ui equal width form form-ref">
             <div class="fields">
                 <div class="field">
-                    <h4>Período</h4>
-                    {% render_field form.periodo %}
-                </div>
-                <div class="field">
                     <h4>Polo</h4>
                     {% render_field form.polo %}
                 </div>
@@ -58,6 +54,18 @@
                 <div class="field">
                     <h4>Status</h4>
                     {% render_field form.status %}
+                </div>
+            </div>
+
+            <div class="fields">
+                <div class="field">
+                    <h4>Períodos</h4>
+                    <p style="background-color: white; padding: 10px; border-radius: 3px">
+                        {% for periodo in periodos %}
+                            {{ periodo }}
+                            <br>
+                        {% endfor %}
+                    </p>
                 </div>
             </div>
 

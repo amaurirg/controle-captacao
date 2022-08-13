@@ -3,14 +3,28 @@
 
 {% block content %}
     <div class="ui grid grid-style">
-        <div class="eight wide column">
-            <h1 class="ui left floated blue_color">Inscritos</h1>
-        </div>
-        <div class="eight wide column">
-            <div id="showmodal-inscrito" class="ui right floated button primary">
-                Adicionar
+        <div class="four column row">
+            <div class="left floated column">
+                <h1 class="ui left floated blue_color">Inscritos</h1>
             </div>
+
+            <div class="right floated column" style="display: flex; justify-content: right;">
+                <form class="ui form" action="{% url 'inscritos' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% include 'filter.html' with url_redirect='inscritos' %}
+                    <div id="showmodal-inscrito" class="ui right floated button primary">
+                        Adicionar novo inscrito
+                    </div>
+                </form>
+            </div>
+
         </div>
+    </div>
+
+    <div style="display: flex; justify-content: center">
+        {% if filtro %}
+            <h2>Período selecionado:&nbsp<span id="name-periodo">{{ filtro }}</span></h2>
+        {% endif %}
     </div>
 
     <table id="table-geral" class="hover">
