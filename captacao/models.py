@@ -158,11 +158,9 @@ class Candidato(models.Model):
     curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
     marketing = models.ForeignKey(Marketing, verbose_name='Marketing', on_delete=models.PROTECT)
     status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
-    # atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observações', null=True, blank=True)
     ativo = models.BooleanField(default=True)
-    # periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
     periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos_candidato', blank=True)
     criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='candidato_criado_por', editable=False)
     criado_em = models.DateTimeField(auto_now_add=True)
@@ -183,7 +181,6 @@ class Candidato(models.Model):
 
 
 class Inscrito(models.Model):
-    periodo = models.ForeignKey(Periodo, verbose_name='Período', on_delete=models.PROTECT)
     polo = models.ForeignKey(Polo, verbose_name='Polo', on_delete=models.PROTECT)
     nome = models.CharField('Nome', max_length=40, unique=True)
     telefone1 = models.CharField('Telefone 1', max_length=20, null=True, blank=True)
@@ -192,7 +189,6 @@ class Inscrito(models.Model):
     curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
     situacao = models.ForeignKey(SituacaoInscrito, verbose_name='Situação', on_delete=models.PROTECT)
     status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
-    # atendente = models.ForeignKey(Atendente, verbose_name='Atendente', on_delete=models.PROTECT)
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observacoes', null=True, blank=True)
     ativo = models.BooleanField(default=True)
