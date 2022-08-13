@@ -294,6 +294,11 @@ class AtendimentosCandidato(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     descricao = models.TextField('Descrição')
     candidato = models.ForeignKey(Candidato, on_delete=models.PROTECT, related_name='atendimentos_candidato')
+    criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='atendimento_candidato_criado_por', editable=False)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
+                                       related_name='atendimento_candidato_atualizado_por', editable=False, null=True, blank=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))

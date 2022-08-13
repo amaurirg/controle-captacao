@@ -160,6 +160,7 @@ class PeriodoAlunoAdmin(admin.ModelAdmin):
 @admin.register(Candidato)
 class CandidatoAdmin(admin.ModelAdmin):
     list_display = ['id', 'polo', 'nome', 'telefone1', 'email', 'curso', 'marketing', 'status',
+                    'criado_por', 'criado_em', 'atualizado_por', 'atualizado_em',
                     'data_contato', 'observacoes', 'todos_periodos']
     search_fields = ['polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'marketing__nome', 'status__nome']

@@ -257,7 +257,14 @@ class CreateNewCandidatoAttendance(View):
             candidato = Candidato.objects.get(pk=int(candidato_id))
             obj = AtendimentosCandidato.objects.create(descricao=descricao, candidato=candidato)
             obj_data = f'{obj.data.day} de {months[obj.data.month]} de {obj.data.year} às {obj.data.time().strftime("%H:%M")}'
-            data = {'data': obj_data, 'descricao': obj.descricao}
+            data = {
+                'data': obj_data,
+                'descricao': obj.descricao,
+                # 'obj': obj
+                # 'obj_cand': obj.candidato
+                # 'criado_por': obj.candidato.criado_por,
+                # 'atualizado_por': obj.candidato.atualizado_por
+            }
             return JsonResponse(data)
         return JsonResponse({})
 
