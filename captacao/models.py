@@ -294,11 +294,7 @@ class AtendimentosCandidato(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     descricao = models.TextField('Descrição')
     candidato = models.ForeignKey(Candidato, on_delete=models.PROTECT, related_name='atendimentos_candidato')
-    criado_por = models.ForeignKey(User, on_delete=models.PROTECT, related_name='atendimento_candidato_criado_por', editable=False)
-    criado_em = models.DateTimeField(auto_now_add=True)
-    atualizado_por = models.ForeignKey(User, on_delete=models.PROTECT,
-                                       related_name='atendimento_candidato_atualizado_por', editable=False, null=True, blank=True)
-    atualizado_em = models.DateTimeField(auto_now=True)
+    atendente = models.ForeignKey(User, on_delete=models.PROTECT, related_name='atendente_candidato', editable=False)
 
     def __str__(self):
         return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
@@ -313,6 +309,7 @@ class AtendimentosInscrito(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     descricao = models.TextField('Descrição')
     inscrito = models.ForeignKey(Inscrito, on_delete=models.PROTECT, related_name='atendimentos_inscrito')
+    atendente = models.ForeignKey(User, on_delete=models.PROTECT, related_name='atendente_inscrito', editable=False)
 
     def __str__(self):
         return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
@@ -327,6 +324,7 @@ class AtendimentosExAluno(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     descricao = models.TextField('Descrição')
     exaluno = models.ForeignKey(ExAluno, on_delete=models.PROTECT, related_name='atendimentos_exaluno')
+    atendente = models.ForeignKey(User, on_delete=models.PROTECT, related_name='atendente_exaluno', editable=False)
 
     def __str__(self):
         return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
@@ -341,6 +339,7 @@ class AtendimentosAluno(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     descricao = models.TextField('Descrição')
     aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT, related_name='atendimentos_aluno')
+    atendente = models.ForeignKey(User, on_delete=models.PROTECT, related_name='atendente_aluno', editable=False)
 
     def __str__(self):
         return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))

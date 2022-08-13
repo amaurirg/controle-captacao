@@ -74,7 +74,7 @@ class AtendimentosCandidatoInLine(admin.StackedInline):
 
 @admin.register(AtendimentosCandidato)
 class AtendimentosCandidatoAdmin(admin.ModelAdmin):
-    list_display = ['data', 'descricao', 'candidato']
+    list_display = ['data', 'descricao', 'candidato', 'atendente']
 
 
 class AtendimentosInscritoInLine(admin.StackedInline):
@@ -83,7 +83,7 @@ class AtendimentosInscritoInLine(admin.StackedInline):
 
 @admin.register(AtendimentosInscrito)
 class AtendimentosInscritoAdmin(admin.ModelAdmin):
-    list_display = ['data', 'descricao', 'inscrito']
+    list_display = ['data', 'descricao', 'inscrito', 'atendente']
 
 
 class AtendimentosExAlunoInLine(admin.StackedInline):
@@ -92,7 +92,7 @@ class AtendimentosExAlunoInLine(admin.StackedInline):
 
 @admin.register(AtendimentosExAluno)
 class AtendimentosExAlunoAdmin(admin.ModelAdmin):
-    list_display = ['data', 'descricao', 'exaluno']
+    list_display = ['data', 'descricao', 'exaluno', 'atendente']
 
 
 class AtendimentosAlunoInLine(admin.StackedInline):
@@ -101,7 +101,7 @@ class AtendimentosAlunoInLine(admin.StackedInline):
 
 @admin.register(AtendimentosAluno)
 class AtendimentosAlunoAdmin(admin.ModelAdmin):
-    list_display = ['data', 'descricao', 'aluno']
+    list_display = ['data', 'descricao', 'aluno', 'atendente']
 
 
 # Períodos
