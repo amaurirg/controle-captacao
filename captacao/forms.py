@@ -13,7 +13,6 @@ class CandidatoForm(forms.ModelForm):
             'telefone1',
             'telefone2',
             'data_contato',
-            'status',
             'periodos',
             'observacoes',
         ]
@@ -31,7 +30,6 @@ class InscritoForm(forms.ModelForm):
             'telefone1',
             'telefone2',
             'data_contato',
-            'status',
             'periodos',
             'observacoes',
         ]

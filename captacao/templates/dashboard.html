@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="ui grid grid-style">
+        <div class="four column row">
+            <div class="left floated column">
+                <h1 class="ui left floated blue_color">Dashboard</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui eight cards" style="display: flex; justify-content: center; margin-bottom: 50px">
+        <div class="ui card">
+            <div class="content">
+                <div class="center aligned header"><h2>Candidatos</h2></div>
+                <div class="center aligned description">
+                    <h3>{{ qtd_candidatos }}</h3>
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="center aligned author">
+                    <img class="ui avatar image" src="https://semantic-ui.com/images/avatar/small/jenny.jpg"> Jenny
+                </div>
+            </div>
+        </div>
+
+        <div class="ui card">
+            <div class="content">
+                <div class="center aligned header"><h2>Inscritos</h2></div>
+                <div class="center aligned description">
+                    <h3>{{ qtd_inscritos }}</h3>
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="center aligned author">
+                    <img class="ui avatar image" src="https://semantic-ui.com/images/avatar/small/jenny.jpg"> Jenny
+                </div>
+            </div>
+        </div>
+
+        <div class="ui card">
+            <div class="content">
+                <div class="center aligned header"><h2>Alunos</h2></div>
+                <div class="center aligned description">
+                    <h3>{{ qtd_alunos }}</h3>
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="center aligned author">
+                    <img class="ui avatar image" src="https://semantic-ui.com/images/avatar/small/jenny.jpg"> Jenny
+                </div>
+            </div>
+        </div>
+
+        <div class="ui card">
+            <div class="content">
+                <div class="center aligned header"><h2>Ex-Alunos</h2></div>
+                <div class="center aligned description">
+                    <h3>{{ qtd_exalunos }}</h3>
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="center aligned author">
+                    <img class="ui avatar image" src="https://semantic-ui.com/images/avatar/small/jenny.jpg"> Jenny
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui grid" style="display: flex; justify-content: center">
+        <div class="four column row">
+            <div class="column">
+                <canvas id="myChart" width="200" height="150"></canvas>
+            </div>
+            <div class="column">
+                <canvas id="myChart2" width="200" height="150"></canvas>
+            </div>
+            <div class="column">
+                <canvas id="myChart3" width="200" height="150"></canvas>
+            </div>
+            <div class="column">
+                <canvas id="myChart4" width="200" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+        const labels = [
+            'Janeiro',
+            'Fevereiro',
+            'Março',
+            'Abril',
+            'Maio',
+            'Junho',
+        ];
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Alunos',
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    'rgb(244, 99, 132)',
+                    'rgb(154, 162, 235)',
+                    'rgb(255, 205, 186)'
+                ],
+                borderColor: 'rgb(255, 99, 132)',
+                data: [0, 10, 5, 2, 20, 30, 45],
+            }],
+            hoverOffset: 4
+
+        };
+
+
+        const config = {
+            type: 'doughnut',
+            data: data,
+        };
+
+        const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+
+    <script>
+        const labels2 = [
+            'Janeiro',
+            'Fevereiro',
+            'Março',
+            'Abril',
+            'Maio',
+            'Junho',
+        ];
+
+        const data2 = {
+            labels: labels2,
+            datasets: [{
+                label: 'Alunos',
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    'rgb(244, 99, 132)',
+                    'rgb(154, 162, 235)',
+                    'rgb(255, 205, 186)'
+                ],
+                borderColor: 'rgb(255, 99, 132)',
+                data: [0, 10, 5, 2, 20, 30, 45],
+            }],
+            hoverOffset: 4
+
+        };
+
+
+        const config2 = {
+            type: 'bar',
+            data: data2,
+        };
+
+        const myChart2 = new Chart(
+            document.getElementById('myChart2'),
+            config2
+        );
+    </script>
+
+    <script>
+        const labels3 = [
+            'Janeiro',
+            'Fevereiro',
+            'Março',
+            'Abril',
+            'Maio',
+            'Junho',
+        ];
+
+        const data3 = {
+            labels: labels3,
+            datasets: [{
+                label: 'Alunos',
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    'rgb(244, 99, 132)',
+                    'rgb(154, 162, 235)',
+                    'rgb(255, 205, 186)'
+                ],
+                borderColor: 'rgb(255, 99, 132)',
+                data: [0, 10, 5, 2, 20, 30, 45],
+            }],
+            hoverOffset: 4
+
+        };
+
+
+        const config3 = {
+            type: 'polarArea',
+            data: data3,
+        };
+
+        const myChart3 = new Chart(
+            document.getElementById('myChart3'),
+            config
+        );
+    </script>
+
+    <script>
+        const labels4 = [
+            'Janeiro',
+            'Fevereiro',
+            'Março',
+            'Abril',
+            'Maio',
+            'Junho',
+        ];
+
+        const data4 = {
+            labels: labels4,
+            datasets: [{
+                label: 'Alunos',
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                    'rgb(244, 99, 132)',
+                    'rgb(154, 162, 235)',
+                    'rgb(255, 205, 186)'
+                ],
+                borderColor: 'rgb(255, 99, 132)',
+                data: [0, 10, 5, 2, 20, 30, 45],
+            }],
+            hoverOffset: 4
+
+        };
+
+
+        const config4 = {
+            type: 'line',
+            data: data4,
+        };
+
+        const myChart4 = new Chart(
+            document.getElementById('myChart4'),
+            config2
+        );
+    </script>
+
+{% endblock %}

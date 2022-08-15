@@ -2,7 +2,7 @@ import csv
 from django.http import HttpResponse
 import pandas as pd
 
-from captacao.models import Periodo, Polo, Curso, Marketing, Status, SituacaoInscrito, SituacaoExAluno, Motivo
+from captacao.models import Periodo, Polo, Curso, Marketing, StatusAtendimento, SituacaoInscrito, SituacaoExAluno, Motivo
 
 cursos = {
     # 'Administração': '',
@@ -110,7 +110,7 @@ dic_tables = {
     'Polo': Polo,
     'Curso': Curso,
     'Marketing': Marketing,
-    'Status': Status,
+    'Status': StatusAtendimento,
     'Situação do inscrito': SituacaoInscrito,
     'Situação do ex-aluno': SituacaoExAluno,
     'Motivo': Motivo

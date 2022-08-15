@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class Status(models.Model):
+class StatusAtendimento(models.Model):
     nome = models.CharField('Nome', max_length=40, unique=True)
     ativo = models.BooleanField(default=True)
 
@@ -157,7 +157,7 @@ class Candidato(models.Model):
     email = models.EmailField('Email', max_length=100, null=True, blank=True)
     curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
     marketing = models.ForeignKey(Marketing, verbose_name='Marketing', on_delete=models.PROTECT)
-    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
+    # status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observações', null=True, blank=True)
     ativo = models.BooleanField(default=True)
@@ -188,7 +188,7 @@ class Inscrito(models.Model):
     email = models.EmailField('Email', max_length=100, null=True, blank=True)
     curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
     situacao = models.ForeignKey(SituacaoInscrito, verbose_name='Situação', on_delete=models.PROTECT)
-    status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
+    # status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
     data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observacoes', null=True, blank=True)
     ativo = models.BooleanField(default=True)
@@ -295,6 +295,7 @@ class AtendimentosCandidato(models.Model):
     descricao = models.TextField('Descrição')
     candidato = models.ForeignKey(Candidato, on_delete=models.PROTECT, related_name='atendimentos_candidato')
     atendente = models.ForeignKey(User, on_delete=models.PROTECT, related_name='atendente_candidato', editable=False)
+    status = models.ForeignKey(StatusAtendimento, verbose_name='Status', on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
@@ -304,12 +305,16 @@ class AtendimentosCandidato(models.Model):
         verbose_name = 'Atendimentos do Candidato'
         verbose_name_plural = 'Atendimentos dos Candidatos'
 
+    def save(self, *args, **kwargs):
+        super(AtendimentosCandidato, self).save(*args, **kwargs)
+
 
 class AtendimentosInscrito(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     descricao = models.TextField('Descrição')
     inscrito = models.ForeignKey(Inscrito, on_delete=models.PROTECT, related_name='atendimentos_inscrito')
     atendente = models.ForeignKey(User, on_delete=models.PROTECT, related_name='atendente_inscrito', editable=False)
+    status = models.ForeignKey(StatusAtendimento, verbose_name='Status', on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
@@ -319,12 +324,16 @@ class AtendimentosInscrito(models.Model):
         verbose_name = 'Atendimentos do Inscrito'
         verbose_name_plural = 'Atendimentos dos Inscritos'
 
+    def save(self, *args, **kwargs):
+        super(AtendimentosInscrito, self).save(*args, **kwargs)
+
 
 class AtendimentosExAluno(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     descricao = models.TextField('Descrição')
     exaluno = models.ForeignKey(ExAluno, on_delete=models.PROTECT, related_name='atendimentos_exaluno')
     atendente = models.ForeignKey(User, on_delete=models.PROTECT, related_name='atendente_exaluno', editable=False)
+    status = models.ForeignKey(StatusAtendimento, verbose_name='Status', on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
@@ -334,12 +343,16 @@ class AtendimentosExAluno(models.Model):
         verbose_name = 'Atendimentos do Ex-Aluno'
         verbose_name_plural = 'Atendimentos dos Ex-Alunos'
 
+    def save(self, *args, **kwargs):
+        super(AtendimentosExAluno, self).save(*args, **kwargs)
+
 
 class AtendimentosAluno(models.Model):
     data = models.DateTimeField(auto_now_add=True)
     descricao = models.TextField('Descrição')
     aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT, related_name='atendimentos_aluno')
     atendente = models.ForeignKey(User, on_delete=models.PROTECT, related_name='atendente_aluno', editable=False)
+    status = models.ForeignKey(StatusAtendimento, verbose_name='Status', on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
@@ -348,3 +361,6 @@ class AtendimentosAluno(models.Model):
         ordering = ['-data']
         verbose_name = 'Atendimentos do Aluno'
         verbose_name_plural = 'Atendimentos dos Alunos'
+
+    def save(self, *args, **kwargs):
+        super(AtendimentosAluno, self).save(*args, **kwargs)

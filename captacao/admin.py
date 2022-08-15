@@ -5,13 +5,13 @@ from django.contrib import admin, messages
 from django.shortcuts import redirect, render
 from django.urls import path
 
-from captacao.models import (Status, Marketing, Curso, Polo, Candidato, Periodo, Motivo, Inscrito,
+from captacao.models import (StatusAtendimento, Marketing, Curso, Polo, Candidato, Periodo, Motivo, Inscrito,
                              ExAluno, SituacaoInscrito, SituacaoExAluno, Aluno, Modalidade, AtendimentosAluno,
                              AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno)
 from core.utils import export_xlsx, export_as_csv, salva_criado_por, aluno_fields, exaluno_fields
 
 
-@admin.register(Status)
+@admin.register(StatusAtendimento)
 class StatusAdmin(admin.ModelAdmin):
     list_display = ['id', 'nome']
     search_fields = ['nome']
@@ -74,8 +74,11 @@ class AtendimentosCandidatoInLine(admin.StackedInline):
 
 @admin.register(AtendimentosCandidato)
 class AtendimentosCandidatoAdmin(admin.ModelAdmin):
-    list_display = ['data', 'descricao', 'candidato', 'atendente']
+    list_display = ['data', 'descricao', 'candidato', 'status', 'atendente']
 
+    def save_model(self, request, obj, form, change):
+        obj.atendente = request.user
+        obj.save()
 
 class AtendimentosInscritoInLine(admin.StackedInline):
     model = AtendimentosInscrito
@@ -83,7 +86,11 @@ class AtendimentosInscritoInLine(admin.StackedInline):
 
 @admin.register(AtendimentosInscrito)
 class AtendimentosInscritoAdmin(admin.ModelAdmin):
-    list_display = ['data', 'descricao', 'inscrito', 'atendente']
+    list_display = ['data', 'descricao', 'inscrito', 'status', 'atendente']
+
+    def save_model(self, request, obj, form, change):
+        obj.atendente = request.user
+        obj.save()
 
 
 class AtendimentosExAlunoInLine(admin.StackedInline):
@@ -92,7 +99,11 @@ class AtendimentosExAlunoInLine(admin.StackedInline):
 
 @admin.register(AtendimentosExAluno)
 class AtendimentosExAlunoAdmin(admin.ModelAdmin):
-    list_display = ['data', 'descricao', 'exaluno', 'atendente']
+    list_display = ['data', 'descricao', 'exaluno', 'status', 'atendente']
+
+    def save_model(self, request, obj, form, change):
+        obj.atendente = request.user
+        obj.save()
 
 
 class AtendimentosAlunoInLine(admin.StackedInline):
@@ -101,7 +112,11 @@ class AtendimentosAlunoInLine(admin.StackedInline):
 
 @admin.register(AtendimentosAluno)
 class AtendimentosAlunoAdmin(admin.ModelAdmin):
-    list_display = ['data', 'descricao', 'aluno', 'atendente']
+    list_display = ['data', 'descricao', 'aluno', 'status', 'atendente']
+
+    def save_model(self, request, obj, form, change):
+        obj.atendente = request.user
+        obj.save()
 
 
 # Períodos
@@ -159,12 +174,12 @@ class PeriodoAlunoAdmin(admin.ModelAdmin):
 
 @admin.register(Candidato)
 class CandidatoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'polo', 'nome', 'telefone1', 'email', 'curso', 'marketing', 'status',
+    list_display = ['id', 'polo', 'nome', 'telefone1', 'email', 'curso', 'marketing',
                     'criado_por', 'criado_em', 'atualizado_por', 'atualizado_em',
                     'data_contato', 'observacoes', 'todos_periodos']
     search_fields = ['polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'marketing__nome', 'status__nome']
-    list_filter = ['polo', 'marketing', 'status']
+    list_filter = ['polo', 'marketing']
     inlines = (AtendimentosCandidatoInLine, PeriodoCandidatoInline)
     readonly_fields = ['periodos']
 
@@ -182,11 +197,11 @@ class CandidatoAdmin(admin.ModelAdmin):
 
 @admin.register(Inscrito)
 class InscritoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'polo', 'nome', 'telefone1', 'email', 'curso', 'status',
+    list_display = ['id', 'polo', 'nome', 'telefone1', 'email', 'curso',
                     'data_contato', 'observacoes', 'todos_periodos']
     search_fields = ['polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
                      'curso__nome', 'status__nome']
-    list_filter = ['polo', 'status']
+    list_filter = ['polo']
 
     def todos_periodos(self, obj):
         lista = []

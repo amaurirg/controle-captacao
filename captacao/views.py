@@ -9,7 +9,7 @@ from django.views import View
 from captacao.forms import CandidatoForm, InscritoForm, AlunoForm, ExAlunoForm
 from captacao.models import (
     Candidato, Periodo, Inscrito, Aluno, ExAluno, AtendimentosAluno,
-    AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno
+    AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno, StatusAtendimento
 )
 from core.utils import months, dic_tables
 
@@ -17,6 +17,20 @@ from core.utils import months, dic_tables
 @login_required
 def home(request):
     return render(request, 'home.html')
+
+
+def dashboard(request):
+    candidatos = Candidato.objects.all()
+    inscritos = Inscrito.objects.all()
+    alunos = Aluno.objects.all()
+    exalunos = ExAluno.objects.all()
+    context = {
+        'qtd_candidatos': len(candidatos),
+        'qtd_inscritos': len(inscritos),
+        'qtd_alunos': len(alunos),
+        'qtd_exalunos': len(exalunos)
+    }
+    return render(request, 'dashboard.html', context)
 
 
 @login_required
@@ -27,6 +41,7 @@ def captacao(request):
 def candidatos(request):
     periodo = None
     filtro = request.POST.get('select-periodo')
+    atendimentos = AtendimentosCandidato.objects.all()
     if filtro and not filtro == '0':
         periodo = Periodo.objects.get(pk=int(filtro))
         candidatos = Candidato.objects.filter(periodos=periodo, ativo=True)
@@ -37,7 +52,8 @@ def candidatos(request):
         'candidatos': candidatos,
         'form': CandidatoForm(request.POST or None),
         'periodos': Periodo.objects.all(),
-        'filtro': periodo
+        'filtro': periodo,
+        'atendimentos': atendimentos
     }
     return render(request, 'candidatos.html', context)
 
@@ -63,7 +79,8 @@ def modal_atualiza_candidato(request, pk):
     context = {
         'form': form,
         'atendimentos': atendimentos,
-        'periodos': candidato.periodos.all()
+        'periodos': candidato.periodos.all(),
+        # 'status_atendimento': StatusAtendimento.objects.all()
     }
     return render(request, 'modal_atualiza_candidato.html', context)
 
@@ -253,12 +270,14 @@ class CreateNewCandidatoAttendance(View):
     def get(self, request):
         descricao = request.GET.get('descricao', None)
         candidato_id = request.GET.get('candidato', None)
-        if descricao and candidato_id:
+        status = request.GET.get('status', None)
+        if descricao and candidato_id and status:
             candidato = Candidato.objects.get(pk=int(candidato_id))
             obj = AtendimentosCandidato.objects.create(
                 descricao=descricao,
                 candidato=candidato,
-                atendente=request.user
+                atendente=request.user,
+                status=status
             )
             obj_data = f'{obj.data.day} de {months[obj.data.month]} de {obj.data.year} às {obj.data.time().strftime("%H:%M")}'
             data = {

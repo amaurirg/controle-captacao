@@ -1,3 +1,4 @@
+{% load widget_tweaks %}
 <div class="fields">
     <div class="field">
         <div style="background-color: #B6B7C0; border-radius: 6px; padding: 20px;">
@@ -20,6 +21,7 @@
                          style="margin-bottom: 10px">
                         Novo atendimento
                     </div>
+                    {% render_field status %}
                 </div>
             </div>
 

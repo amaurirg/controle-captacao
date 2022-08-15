@@ -50,12 +50,12 @@
                 </div>
             </div>
 
-            <div class="fields">
+            {% comment %}<div class="fields">
                 <div class="field">
                     <h4>Status</h4>
                     {% render_field form.status %}
                 </div>
-            </div>
+            </div>{% endcomment %}
 
             <div class="fields">
                 <div class="field">
@@ -118,7 +118,8 @@
                 type: 'get',
                 data: {
                     descricao: $('textarea[name=descricao]').val().trim(),
-                    candidato: {{ form.instance.id }}
+                    candidato: {{ form.instance.id }},
+                    status: {{  }}
                 },
                 success: function (response) {
                     console.log('Retorno do Django');

@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from captacao.views import home
+from captacao.views import home, dashboard
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('captacao/', include('captacao.urls')),
-    path('accounts/', include('django.contrib.auth.urls'))
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('dashboard/', dashboard, name='dashboard')
 ]

@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     {% comment %}<link rel="stylesheet" href="/resources/demos/style.css">{% endcomment %}
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         .pusher {
@@ -115,6 +115,7 @@
 </head>
 <body>
 <div class="ui icon left vertical sidebar menu blue_background">
+    <a href="{% url 'dashboard' %}" class="item sidebar_toggle">Dashboard</a>
     <a href="{% url 'candidatos' %}" class="item sidebar_toggle">Candidatos</a>
     <a href="{% url 'inscritos' %}" class="item sidebar_toggle">Inscritos</a>
     <a href="{% url 'exalunos' %}" class="item sidebar_toggle">Ex alunos</a>
