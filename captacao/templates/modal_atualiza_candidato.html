@@ -43,19 +43,16 @@
                     <h4>Telefone 2</h4>
                     {% render_field form.telefone2 %}
                 </div>
-                <div class="field">
-                    <h4>Data do contato</h4>
-                    {% render_field form.data_contato %}
-                    {% comment %}{% render_field form.data_contato type="text" class="datepicker" %}{% endcomment %}
-                </div>
             </div>
 
-            {% comment %}<div class="fields">
+            <div class="fields">
                 <div class="field">
-                    <h4>Status</h4>
-                    {% render_field form.status %}
+                    <h4>Status do atendimento</h4>
+                    <p id="ultimo-status" style="background-color: white; padding: 10px; border-radius: 3px">
+                        {% render_field cand %}
+                    </p>
                 </div>
-            </div>{% endcomment %}
+            </div>
 
             <div class="fields">
                 <div class="field">
@@ -110,30 +107,42 @@
         $("#novoAtendimento").hide();
         $("#salvaAtendimento").show();
         $("#cancelaAtendimento").show();
+        $("#id_status").show();
     });
     $('#salvaAtendimento').click(function (event) {
-        if ($('#descricao').val() !== '') {
+        var select = document.getElementById("id_status");
+        {% comment %}var statusId = select.options[select.selectedIndex].value;{% endcomment %}
+        console.log(select.options[select.selectedIndex].value)
+
+        if (($('#descricao').val() !== '') && (select.options[select.selectedIndex].value !== '')) {
             $.ajax({
                 url: '{% url 'create_candidato_attendance' %}',
                 type: 'get',
                 data: {
                     descricao: $('textarea[name=descricao]').val().trim(),
                     candidato: {{ form.instance.id }},
-                    status: {{  }}
+                    statusId: select.options[select.selectedIndex].value
                 },
+                {% comment %}$("#name-periodo").text($("#selected-periodo").text()){% endcomment %}
+
                 success: function (response) {
-                    console.log('Retorno do Django');
-                    console.log(response.data);
-                    console.log(response.descricao);
                     if (response !== {}) {
                         $('' +
                             '<div class="ui segment">' +
-                            '<h5 class="ui left floated header">Atendente: ' + response.criado_por + '</h5>' +
+                            '<div class="ui secondary segment">' +
+                            '<h5 class="ui center aligned header">' +
+                            '<i class="phone square icon"></i>' +
+                            response.status +
+                            '</h5>' +
+                            '</div>' +
+                            '<h5 class="ui left floated header">Atendente: ' + response.atendente + '</h5>' +
                             '<h5 class="ui right floated header">' + response.data + '</h5>' +
                             '<div class="ui clearing divider"></div>' +
                             '<p>' + response.descricao + '</p>' +
                             '</div>'
                         ).prependTo("#attendances");
+                        $("#ultimo-status").text(response.status);
+                        $("#status-atend").text(response.status);
                         cleanAttendance();
                     }
                 },
@@ -150,6 +159,7 @@
         $('#descricao').val('');
         $("#cancelaAtendimento").hide();
         $("#salvaAtendimento").hide();
+        $("#id_status").hide();
         $("#novoAtendimento").show();
     }
 </script>

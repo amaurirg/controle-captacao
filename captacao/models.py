@@ -3,7 +3,7 @@ from django.db import models
 
 
 class StatusAtendimento(models.Model):
-    nome = models.CharField('Nome', max_length=40, unique=True)
+    nome = models.CharField('Nome', max_length=50, unique=True)
     ativo = models.BooleanField(default=True)
 
     def __str__(self):
@@ -85,6 +85,7 @@ class Curso(models.Model):
             self.nome_abrev = self.nome
         super(Curso, self).save(*args, **kwargs)
 
+
 # class Atendente(models.Model):
 #     nome = models.CharField('Nome', max_length=40, unique=True)
 #     ativo = models.BooleanField(default=True)
@@ -157,8 +158,8 @@ class Candidato(models.Model):
     email = models.EmailField('Email', max_length=100, null=True, blank=True)
     curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
     marketing = models.ForeignKey(Marketing, verbose_name='Marketing', on_delete=models.PROTECT)
-    # status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
-    data_contato = models.DateField('Data do contato')
+    status_atendimento = models.CharField('Status do Atendimento', max_length=50, blank=True)
+    # data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observações', null=True, blank=True)
     ativo = models.BooleanField(default=True)
     periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos_candidato', blank=True)
@@ -169,6 +170,7 @@ class Candidato(models.Model):
     atualizado_em = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+        self.status_atendimento = self.atendimentos_candidato.first().status.nome or 'Sem atendimento'
         super(Candidato, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -188,8 +190,8 @@ class Inscrito(models.Model):
     email = models.EmailField('Email', max_length=100, null=True, blank=True)
     curso = models.ForeignKey(Curso, verbose_name='Curso', on_delete=models.PROTECT)
     situacao = models.ForeignKey(SituacaoInscrito, verbose_name='Situação', on_delete=models.PROTECT)
-    # status = models.ForeignKey(Status, verbose_name='Status', on_delete=models.PROTECT)
-    data_contato = models.DateField('Data do contato')
+    status_atendimento = models.CharField('Status do Atendimento', max_length=50, blank=True)
+    # data_contato = models.DateField('Data do contato')
     observacoes = models.TextField('Observacoes', null=True, blank=True)
     ativo = models.BooleanField(default=True)
     periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos_inscrito', blank=True)
@@ -208,6 +210,7 @@ class Inscrito(models.Model):
         verbose_name_plural = 'Inscritos'
 
     def save(self, *args, **kwargs):
+        self.status_atendimento = self.atendimentos_inscrito.last() or 'Sem atendimento'
         super(Inscrito, self).save(*args, **kwargs)
 
 
@@ -226,6 +229,7 @@ class ExAluno(models.Model):
     telefone1 = models.CharField('TelefoneCel1', max_length=15, blank=True, null=True)
     telefone2 = models.CharField('TelefoneCel2', max_length=15, blank=True, null=True)
     telefone_res = models.CharField('TelefoneRes', max_length=15, blank=True, null=True)
+    status_atendimento = models.CharField('Status do Atendimento', max_length=50, blank=True)
     observacoes = models.TextField('Observacoes', null=True, blank=True)
     periodos = models.ManyToManyField(Periodo, verbose_name='Períodos', related_name='periodos_exaluno', blank=True)
     ativo = models.BooleanField(default=True)
@@ -244,6 +248,7 @@ class ExAluno(models.Model):
         verbose_name_plural = 'Ex Alunos'
 
     def save(self, *args, **kwargs):
+        self.status_atendimento = self.atendimentos_exaluno.last() or 'Sem atendimento'
         super(ExAluno, self).save(*args, **kwargs)
 
 
@@ -265,6 +270,7 @@ class Aluno(models.Model):
     telefone1 = models.CharField('TelefoneCel1', max_length=15, blank=True, null=True)
     telefone2 = models.CharField('TelefoneCel2', max_length=15, blank=True, null=True)
     telefone_res = models.CharField('TelefoneRes', max_length=15, blank=True, null=True)
+    status_atendimento = models.CharField('Status do Atendimento', max_length=50, blank=True)
     cidade = models.CharField('Cidade', max_length=255)
     bairro = models.CharField('Bairro', max_length=255)
     bolsista = models.CharField('Bolsista', max_length=5)
@@ -286,7 +292,9 @@ class Aluno(models.Model):
         ordering = ['nom_aluno']
         verbose_name = 'Aluno'
         verbose_name_plural = 'Alunos'
+
     def save(self, *args, **kwargs):
+        self.status_atendimento = self.atendimentos_aluno.last() or 'Sem atendimento'
         super(Aluno, self).save(*args, **kwargs)
 
 
@@ -298,7 +306,7 @@ class AtendimentosCandidato(models.Model):
     status = models.ForeignKey(StatusAtendimento, verbose_name='Status', on_delete=models.PROTECT)
 
     def __str__(self):
-        return str(self.data.strftime('%d/%m/%Y-%H:%Mh'))
+        return str(self.status)
 
     class Meta:
         ordering = ['-data']

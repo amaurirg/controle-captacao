@@ -176,8 +176,8 @@ class PeriodoAlunoAdmin(admin.ModelAdmin):
 class CandidatoAdmin(admin.ModelAdmin):
     list_display = ['id', 'polo', 'nome', 'telefone1', 'email', 'curso', 'marketing',
                     'criado_por', 'criado_em', 'atualizado_por', 'atualizado_em',
-                    'data_contato', 'observacoes', 'todos_periodos']
-    search_fields = ['polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
+                    'status_atendimento', 'observacoes', 'todos_periodos']
+    search_fields = ['polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'status_atendimento',
                      'curso__nome', 'marketing__nome', 'status__nome']
     list_filter = ['polo', 'marketing']
     inlines = (AtendimentosCandidatoInLine, PeriodoCandidatoInline)
@@ -198,8 +198,8 @@ class CandidatoAdmin(admin.ModelAdmin):
 @admin.register(Inscrito)
 class InscritoAdmin(admin.ModelAdmin):
     list_display = ['id', 'polo', 'nome', 'telefone1', 'email', 'curso',
-                    'data_contato', 'observacoes', 'todos_periodos']
-    search_fields = ['polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'data_contato',
+                    'status_atendimento', 'observacoes', 'todos_periodos']
+    search_fields = ['polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'status_atendimento',
                      'curso__nome', 'status__nome']
     list_filter = ['polo']
 

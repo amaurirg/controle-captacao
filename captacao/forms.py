@@ -1,5 +1,5 @@
 from django import forms
-from .models import Candidato, Inscrito, Aluno, ExAluno
+from .models import Candidato, Inscrito, Aluno, ExAluno, AtendimentosCandidato
 
 
 class CandidatoForm(forms.ModelForm):
@@ -12,11 +12,15 @@ class CandidatoForm(forms.ModelForm):
             'email',
             'telefone1',
             'telefone2',
-            'data_contato',
+            'status_atendimento',
             'periodos',
             'observacoes',
         ]
         model = Candidato
+
+        widgets = {
+            'status_atendimento': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
 
 
 class InscritoForm(forms.ModelForm):
@@ -29,12 +33,11 @@ class InscritoForm(forms.ModelForm):
             'email',
             'telefone1',
             'telefone2',
-            'data_contato',
+            'status_atendimento',
             'periodos',
             'observacoes',
         ]
         model = Inscrito
-
 
 
 class ExAlunoForm(forms.ModelForm):
@@ -58,7 +61,6 @@ class ExAlunoForm(forms.ModelForm):
             # 'data_saida': forms.TextInput(attrs={'readonly': 'readonly'}),
             'periodos': forms.SelectMultiple(attrs={'readonly': 'readonly'})
         }
-
 
 
 class AlunoForm(forms.ModelForm):

@@ -1,6 +1,7 @@
 import unicodedata
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -53,7 +54,7 @@ def candidatos(request):
         'form': CandidatoForm(request.POST or None),
         'periodos': Periodo.objects.all(),
         'filtro': periodo,
-        'atendimentos': atendimentos
+        'atendimentos': atendimentos,
     }
     return render(request, 'candidatos.html', context)
 
@@ -80,7 +81,7 @@ def modal_atualiza_candidato(request, pk):
         'form': form,
         'atendimentos': atendimentos,
         'periodos': candidato.periodos.all(),
-        # 'status_atendimento': StatusAtendimento.objects.all()
+        'cand': candidato.atendimentos_candidato.first().status.nome
     }
     return render(request, 'modal_atualiza_candidato.html', context)
 
@@ -270,9 +271,12 @@ class CreateNewCandidatoAttendance(View):
     def get(self, request):
         descricao = request.GET.get('descricao', None)
         candidato_id = request.GET.get('candidato', None)
-        status = request.GET.get('status', None)
-        if descricao and candidato_id and status:
+        status_id = request.GET.get('statusId', None)
+        if descricao and candidato_id and status_id:
             candidato = Candidato.objects.get(pk=int(candidato_id))
+            status = StatusAtendimento.objects.get(pk=int(status_id))
+            # candidato.status_atendimento = status.nome
+            # candidato.save()
             obj = AtendimentosCandidato.objects.create(
                 descricao=descricao,
                 candidato=candidato,
@@ -283,10 +287,8 @@ class CreateNewCandidatoAttendance(View):
             data = {
                 'data': obj_data,
                 'descricao': obj.descricao,
-                # 'obj': obj
-                # 'obj_cand': obj.candidato
-                'criado_por': obj.atendente.first_name,
-                # 'atualizado_por': obj.candidato.atualizado_por
+                'atendente': obj.atendente.first_name or obj.atendente.username,
+                'status': obj.status.nome
             }
             return JsonResponse(data)
         return JsonResponse({})
