@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 
-from captacao.forms import CandidatoForm, InscritoForm, AlunoForm, ExAlunoForm
+from captacao.forms import CandidatoForm, InscritoForm, AlunoForm, ExAlunoForm, AtendimentosCandidatoForm
 from captacao.models import (
     Candidato, Periodo, Inscrito, Aluno, ExAluno, AtendimentosAluno,
     AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno, StatusAtendimento
@@ -81,7 +81,8 @@ def modal_atualiza_candidato(request, pk):
         'form': form,
         'atendimentos': atendimentos,
         'periodos': candidato.periodos.all(),
-        'cand': candidato.atendimentos_candidato.first().status.nome
+
+        # 'cand': candidato.atendimentos_candidato.last().status.nome
     }
     return render(request, 'modal_atualiza_candidato.html', context)
 
@@ -275,8 +276,8 @@ class CreateNewCandidatoAttendance(View):
         if descricao and candidato_id and status_id:
             candidato = Candidato.objects.get(pk=int(candidato_id))
             status = StatusAtendimento.objects.get(pk=int(status_id))
-            # candidato.status_atendimento = status.nome
-            # candidato.save()
+            candidato.status_atendimento = status.nome
+            candidato.save()
             obj = AtendimentosCandidato.objects.create(
                 descricao=descricao,
                 candidato=candidato,
@@ -339,3 +340,23 @@ def periodos(request):
         'periodos': periodos
     }
     return render(request, 'periodos.html', context)
+
+
+def attendances(request, pk):
+    candidato = get_object_or_404(Candidato, pk=pk)
+    atendimentos = candidato.atendimentos_candidato.all()
+    form = CandidatoForm(request.POST or None, instance=candidato)
+    status_form = AtendimentosCandidatoForm()
+    if form.is_valid():
+        candidato.atualizado_por = request.user
+        candidato.save()
+        return redirect(reverse('candidatos'))
+    context = {
+        'form': form,
+        'atendimentos': atendimentos,
+        'status_form': status_form,
+
+        # 'cand': candidato.atendimentos_candidato.last().status.nome
+    }
+    return render(request, 'attendances.html', context)
+

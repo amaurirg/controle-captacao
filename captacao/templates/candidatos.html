@@ -32,24 +32,24 @@
         </div>
     </div>
 
-                            {% render_field status_form.status %}
+    {% render_field status_form.status %}
 
 
     <div class="ui eight cards" style="display: flex; justify-content: center; margin-bottom: 50px">
-    {% for each_status in status %}
-        <div class="ui card">
-            <div class="content">
-                <div class="center aligned header"><h2>{{ each_status }}</h2></div>
-                <div class="center aligned description">
-                    <h3>{{ each_status }}</h3>
+        {% for each_status in status %}
+            <div class="ui card">
+                <div class="content">
+                    <div class="center aligned header"><h2>{{ each_status }}</h2></div>
+                    <div class="center aligned description">
+                        <h3>{{ each_status }}</h3>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <div class="center aligned author">
+                        <img class="ui avatar image" src="https://semantic-ui.com/images/avatar/small/jenny.jpg"> Jenny
+                    </div>
                 </div>
             </div>
-            <div class="extra content">
-                <div class="center aligned author">
-                    <img class="ui avatar image" src="https://semantic-ui.com/images/avatar/small/jenny.jpg"> Jenny
-                </div>
-            </div>
-        </div>
         {% endfor %}
 
         {% comment %}<div class="ui card">
@@ -110,7 +110,8 @@
             <th>Telefone</th>
             <th>Curso</th>
             <th>Marketing</th>
-            <th>Status Atend</th>
+            <th>Último Atendimento</th>
+            <th>Atendimentos</th>
             <th>Editar</th>
             <th>Excluir</th>
         </tr>
@@ -127,7 +128,12 @@
                 {% endif %}
                 <td>{{ candidato.curso }}</td>
                 <td>{{ candidato.marketing }}</td>
-                <td id="status-atend">{{ candidato.atendimentos_candidato.first.status.nome}}</td>
+                <td id="status-atend">{{ candidato.status_atendimento }}</td>
+                <td>
+                    <a href="#" onclick="open_modal('{% url 'attendances' candidato.id %}')">
+                        <i class="phone square icon black"></i>
+                    </a>
+                </td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'modal_atualiza_candidato' candidato.id %}')">
                         <i class="edit icon black"></i>
@@ -148,7 +154,7 @@
             <th>Telefone</th>
             <th>Curso</th>
             <th>Marketing</th>
-            <th>Status Atend</th>
+            <th>Último Atendimento</th>
         </tr>
         </tfoot>
     </table>

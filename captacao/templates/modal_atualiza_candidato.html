@@ -48,9 +48,7 @@
             <div class="fields">
                 <div class="field">
                     <h4>Status do atendimento</h4>
-                    <p id="ultimo-status" style="background-color: white; padding: 10px; border-radius: 3px">
-                        {% render_field cand %}
-                    </p>
+                        {% render_field form.status_atendimento %}
                 </div>
             </div>
 
@@ -66,7 +64,7 @@
                 </div>
             </div>
 
-            {% include 'attendances.html' %}
+            {% comment %}{% include 'attendances.html' %}{% endcomment %}
 
             <div class="fields">
                 <div class="field">
@@ -126,6 +124,9 @@
                 {% comment %}$("#name-periodo").text($("#selected-periodo").text()){% endcomment %}
 
                 success: function (response) {
+                    console.log(response.data)
+                    console.log(response.descricao)
+                    console.log(response.status)
                     if (response !== {}) {
                         $('' +
                             '<div class="ui segment">' +

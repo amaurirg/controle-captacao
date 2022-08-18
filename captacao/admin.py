@@ -190,7 +190,14 @@ class CandidatoAdmin(admin.ModelAdmin):
         return lista
 
     def save_model(self, request, obj, form, change):
+        # obj.criado_por = request.user
+        attendance = obj.atendimentos_candidato.first()
+        if attendance:
+            obj.status_atendimento = attendance.status.nome
+        else:
+            obj.status_atendimento = 'Sem atendimento'
         salva_criado_por(request, obj)
+        # obj.save()
 
     actions = (export_as_csv, export_xlsx)
 

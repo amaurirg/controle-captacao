@@ -19,7 +19,12 @@ class CandidatoForm(forms.ModelForm):
         model = Candidato
 
         widgets = {
-            'status_atendimento': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'status_atendimento': forms.TextInput(
+                attrs={
+                    'readonly': 'readonly',
+                    'id': 'ultimo-status'
+                }
+            ),
         }
 
 
@@ -95,3 +100,10 @@ class CreateNewForm(forms.Form):
             }
         )
     }
+
+
+class AtendimentosCandidatoForm(forms.ModelForm):
+    class Meta:
+        fields = ['descricao', 'status']
+        model = AtendimentosCandidato
+

@@ -170,7 +170,11 @@ class Candidato(models.Model):
     atualizado_em = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        self.status_atendimento = self.atendimentos_candidato.first().status.nome or 'Sem atendimento'
+        attendance = self.atendimentos_candidato.first()
+        if attendance:
+            self.status_atendimento = attendance.status.nome
+        else:
+            self.status_atendimento = 'Sem atendimento'
         super(Candidato, self).save(*args, **kwargs)
 
     def __str__(self):
