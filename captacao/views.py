@@ -276,8 +276,6 @@ class CreateNewCandidatoAttendance(View):
         if descricao and candidato_id and status_id:
             candidato = Candidato.objects.get(pk=int(candidato_id))
             status = StatusAtendimento.objects.get(pk=int(status_id))
-            candidato.status_atendimento = status.nome
-            candidato.save()
             obj = AtendimentosCandidato.objects.create(
                 descricao=descricao,
                 candidato=candidato,
@@ -291,6 +289,8 @@ class CreateNewCandidatoAttendance(View):
                 'atendente': obj.atendente.first_name or obj.atendente.username,
                 'status': obj.status.nome
             }
+            candidato.status_atendimento = status.nome
+            candidato.save()
             return JsonResponse(data)
         return JsonResponse({})
 
@@ -344,16 +344,17 @@ def periodos(request):
 
 def attendances(request, pk):
     candidato = get_object_or_404(Candidato, pk=pk)
-    atendimentos = candidato.atendimentos_candidato.all()
-    form = CandidatoForm(request.POST or None, instance=candidato)
+    # atendimentos = candidato.atendimentos_candidato.all()
+    # form = CandidatoForm(request.POST or None, instance=candidato)
     status_form = AtendimentosCandidatoForm()
-    if form.is_valid():
-        candidato.atualizado_por = request.user
-        candidato.save()
-        return redirect(reverse('candidatos'))
+    # if form.is_valid():
+    #     candidato.atualizado_por = request.user
+    #     candidato.save()
+    #     return redirect(reverse('candidatos'))
     context = {
-        'form': form,
-        'atendimentos': atendimentos,
+        # 'form': form,
+        'candidato': candidato,
+        # 'atendimentos': atendimentos,
         'status_form': status_form,
 
         # 'cand': candidato.atendimentos_candidato.last().status.nome
