@@ -96,14 +96,6 @@
 
     </div>
 
-    <ul>
-    {% for cand in candidatos %}
-        {% if '*' in cand.nome %}
-        <li>{{ cand.split_name}}</li>
-        {% endif %}
-    {% endfor %}
-    </ul>
-
     <div style="display: flex; justify-content: center">
         {% if filtro %}
             <h2>Período selecionado:&nbsp<span id="name-periodo">{{ filtro }}</span></h2>

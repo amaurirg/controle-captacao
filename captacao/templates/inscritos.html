@@ -30,7 +30,6 @@
     <table id="table-geral" class="hover">
         <thead>
         <tr>
-            <th>Período</th>
             <th>Polo</th>
             <th>Nome</th>
             <th>Telefone</th>
@@ -45,7 +44,6 @@
         <tbody>
         {% for inscrito in inscritos %}
             <tr>
-                <td>{{ inscrito.periodo }}</td>
                 <td>{{ inscrito.polo }}</td>
                 <td>{{ inscrito.nome }}</td>
                 {% if inscrito.telefone1 == None %}
@@ -72,7 +70,6 @@
         </tbody>
         <tfoot>
         <tr>
-            <th>Período</th>
             <th>Polo</th>
             <th>Nome</th>
             <th>Telefone</th>
