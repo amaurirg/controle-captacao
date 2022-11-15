@@ -25,9 +25,7 @@
     <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    {% comment %}<link rel="stylesheet" href="/resources/demos/style.css">{% endcomment %}
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         .pusher {
@@ -109,6 +107,13 @@
 
         .dataTables_filter {
             margin-bottom: 10px;
+        }
+
+        .box-chart {
+            border: 1px solid gainsboro;
+            background: white;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+            padding: 20px;
         }
 
     </style>
@@ -259,6 +264,7 @@
             monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
         });
     });
+
 </script>
 
 {% block extrajs %}{% endblock %}

@@ -1,0 +1,12 @@
+from random import choice
+from faker import Faker
+
+
+fake = Faker()
+fake.name()
+fake.email()
+fake.cellphone_number()
+
+
+periodos = Periodo.objects.all()
+

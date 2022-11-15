@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     <div class="ui grid grid-style">
@@ -68,18 +69,35 @@
     </div>
 
     <div class="ui grid" style="display: flex; justify-content: center">
-        <div class="four column row">
+        <div class="two column row" style="margin-bottom: 30px">
             <div class="column">
-                <canvas id="myChart" width="200" height="150"></canvas>
+                <div class="box-chart">
+                    <canvas id="chartCandidatos" width="200" height="100"></canvas>
+                </div>
             </div>
+        </div>
+
+        <div class="two column row" style="margin-bottom: 30px">
             <div class="column">
-                <canvas id="myChart2" width="200" height="150"></canvas>
+                <div class="box-chart">
+                    <canvas id="chartInscritos" width="200" height="100"></canvas>
+                </div>
             </div>
+        </div>
+
+        <div class="two column row" style="margin-bottom: 30px">
             <div class="column">
-                <canvas id="myChart3" width="200" height="150"></canvas>
+                <div class="box-chart">
+                    <canvas id="chartAlunos" width="200" height="100"></canvas>
+                </div>
             </div>
+        </div>
+
+        <div class="two column row" style="margin-bottom: 30px">
             <div class="column">
-                <canvas id="myChart4" width="200" height="150"></canvas>
+                <div class="box-chart">
+                    <canvas id="chartExAlunos" width="200" height="100"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -88,168 +106,15 @@
 {% endblock %}
 
 {% block extrajs %}
-    <script>
-        const labels = [
-            'Janeiro',
-            'Fevereiro',
-            'Março',
-            'Abril',
-            'Maio',
-            'Junho',
-        ];
-
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'Alunos',
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)',
-                    'rgb(244, 99, 132)',
-                    'rgb(154, 162, 235)',
-                    'rgb(255, 205, 186)'
-                ],
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45],
-            }],
-            hoverOffset: 4
-
-        };
-
-
-        const config = {
-            type: 'doughnut',
-            data: data,
-        };
-
-        const myChart = new Chart(
-            document.getElementById('myChart'),
-            config
-        );
-    </script>
 
     <script>
-        const labels2 = [
-            'Janeiro',
-            'Fevereiro',
-            'Março',
-            'Abril',
-            'Maio',
-            'Junho',
-        ];
-
-        const data2 = {
-            labels: labels2,
-            datasets: [{
-                label: 'Alunos',
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)',
-                    'rgb(244, 99, 132)',
-                    'rgb(154, 162, 235)',
-                    'rgb(255, 205, 186)'
-                ],
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45],
-            }],
-            hoverOffset: 4
-
-        };
-
-
-        const config2 = {
-            type: 'bar',
-            data: data2,
-        };
-
-        const myChart2 = new Chart(
-            document.getElementById('myChart2'),
-            config2
-        );
+        window.onload = function (event) {
+            renderiza_relatorio_candidatos("{% url 'relatorio_candidatos' %}")
+            renderiza_relatorio_inscritos("{% url 'relatorio_inscritos' %}")
+            renderiza_relatorio_alunos("{% url 'relatorio_alunos' %}")
+            renderiza_relatorio_exalunos("{% url 'relatorio_exalunos' %}")
+        }
     </script>
-
-    <script>
-        const labels3 = [
-            'Janeiro',
-            'Fevereiro',
-            'Março',
-            'Abril',
-            'Maio',
-            'Junho',
-        ];
-
-        const data3 = {
-            labels: labels3,
-            datasets: [{
-                label: 'Alunos',
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)',
-                    'rgb(244, 99, 132)',
-                    'rgb(154, 162, 235)',
-                    'rgb(255, 205, 186)'
-                ],
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45],
-            }],
-            hoverOffset: 4
-
-        };
-
-
-        const config3 = {
-            type: 'polarArea',
-            data: data3,
-        };
-
-        const myChart3 = new Chart(
-            document.getElementById('myChart3'),
-            config
-        );
-    </script>
-
-    <script>
-        const labels4 = [
-            'Janeiro',
-            'Fevereiro',
-            'Março',
-            'Abril',
-            'Maio',
-            'Junho',
-        ];
-
-        const data4 = {
-            labels: labels4,
-            datasets: [{
-                label: 'Alunos',
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)',
-                    'rgb(244, 99, 132)',
-                    'rgb(154, 162, 235)',
-                    'rgb(255, 205, 186)'
-                ],
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45],
-            }],
-            hoverOffset: 4
-
-        };
-
-
-        const config4 = {
-            type: 'line',
-            data: data4,
-        };
-
-        const myChart4 = new Chart(
-            document.getElementById('myChart4'),
-            config2
-        );
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/reports.js' %}"></script>
 {% endblock %}

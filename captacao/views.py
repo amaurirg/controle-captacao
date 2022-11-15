@@ -21,17 +21,57 @@ def home(request):
 
 
 def dashboard(request):
-    candidatos = Candidato.objects.all()
-    inscritos = Inscrito.objects.all()
-    alunos = Aluno.objects.all()
-    exalunos = ExAluno.objects.all()
+    candidatos = Candidato.objects.all().count()
+    inscritos = Inscrito.objects.all().count()
+    alunos = Aluno.objects.all().count()
+    exalunos = ExAluno.objects.all().count()
     context = {
-        'qtd_candidatos': len(candidatos),
-        'qtd_inscritos': len(inscritos),
-        'qtd_alunos': len(alunos),
-        'qtd_exalunos': len(exalunos)
+        'qtd_candidatos': candidatos,
+        'qtd_inscritos': inscritos,
+        'qtd_alunos': alunos,
+        'qtd_exalunos': exalunos
     }
     return render(request, 'dashboard.html', context)
+
+
+def relatorio_candidatos(request):
+    periodos = Periodo.objects.values('nome').annotate(total=Count('periodos_candidato')).order_by('-nome')[:8][::-1]
+    data = {'data': [], 'labels': []}
+    for periodo in periodos:
+        data['data'].append(periodo['total'])
+        data['labels'].append(periodo['nome'])
+    print(data)
+    return JsonResponse(data)
+
+
+def relatorio_inscritos(request):
+    periodos = Periodo.objects.values('nome').annotate(total=Count('periodos_inscrito')).order_by('-nome')[:8][::-1]
+    data = {'data': [], 'labels': []}
+    for periodo in periodos:
+        data['data'].append(periodo['total'])
+        data['labels'].append(periodo['nome'])
+    print(data)
+    return JsonResponse(data)
+
+
+def relatorio_alunos(request):
+    periodos = Periodo.objects.values('nome').annotate(total=Count('periodos_aluno')).order_by('-nome')[:8][::-1]
+    data = {'data': [], 'labels': []}
+    for periodo in periodos:
+        data['data'].append(periodo['total'])
+        data['labels'].append(periodo['nome'])
+    print(data)
+    return JsonResponse(data)
+
+
+def relatorio_exalunos(request):
+    periodos = Periodo.objects.values('nome').annotate(total=Count('periodos_exaluno')).order_by('-nome')[:8][::-1]
+    data = {'data': [], 'labels': []}
+    for periodo in periodos:
+        data['data'].append(periodo['total'])
+        data['labels'].append(periodo['nome'])
+    print(data)
+    return JsonResponse(data)
 
 
 @login_required

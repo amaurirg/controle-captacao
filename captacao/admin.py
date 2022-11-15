@@ -230,13 +230,12 @@ class ExAlunoAdmin(admin.ModelAdmin):
     # list_display = ['id', 'periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'situacao', 'data_saida', 'motivo',
     #                 'status', 'observacoes']
     list_display = [
-        'id',
-        'nom_campus',
         'nom_aluno',
         'cod_ra',
+        'dsc_status_matr',
+        'nom_campus',
         'dsc_modalidade',
         'nom_curso_grupo',
-        'dsc_status_matr',
         'turma_ano_ingresso_abrev',
         'data_saida',
         'email',
@@ -376,7 +375,9 @@ class ExAlunoAdmin(admin.ModelAdmin):
 @admin.register(Aluno)
 class AlunoAdmin(admin.ModelAdmin):
     list_display = [
-        'id',
+        'nom_aluno',
+        'dat_matr',
+        'status_aluno',
         'polo_nome_abrev',
         'nom_curso_grupo',
         'curso_nome_abrev',
@@ -387,9 +388,6 @@ class AlunoAdmin(admin.ModelAdmin):
         'serie',
         'semana',
         'cod_ra',
-        'nom_aluno',
-        'dat_matr',
-        'status_aluno',
         'turma_ano_ingresso',
         'turma_ano_ingresso_abrev',
         'email',
