@@ -13,56 +13,56 @@ from core.utils import export_xlsx, export_as_csv, salva_criado_por, aluno_field
 
 @admin.register(StatusAtendimento)
 class StatusAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nome']
+    list_display = ['nome']
     search_fields = ['nome']
     list_filter = ['nome']
 
 
 @admin.register(SituacaoInscrito)
 class SituacaoInscritoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nome']
+    list_display = ['nome']
     search_fields = ['nome']
     list_filter = ['nome']
 
 
 @admin.register(SituacaoExAluno)
 class SituacaoExAlunoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nome']
+    list_display = ['nome']
     search_fields = ['nome']
     list_filter = ['nome']
 
 
 @admin.register(Motivo)
 class MotivoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nome']
+    list_display = ['nome']
     search_fields = ['nome']
     list_filter = ['nome']
 
 
 @admin.register(Marketing)
 class MarketingAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nome']
+    list_display = ['nome']
     search_fields = ['nome']
     list_filter = ['nome']
 
 
 @admin.register(Curso)
 class CursoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nome', 'nome_abrev']
+    list_display = ['nome', 'nome_abrev']
     search_fields = ['nome', 'nome_abrev']
     list_filter = ['nome', 'nome_abrev']
 
 
 @admin.register(Polo)
 class PoloAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nome', 'nome_abrev']
+    list_display = ['nome', 'nome_abrev']
     search_fields = ['nome', 'nome_abrev']
     list_filter = ['nome', 'nome_abrev']
 
 
 @admin.register(Modalidade)
 class ModalidadeAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nome', 'nome_abrev']
+    list_display = ['nome', 'nome_abrev']
     search_fields = ['nome', 'nome_abrev']
     list_filter = ['nome', 'nome_abrev']
 
@@ -174,9 +174,9 @@ class PeriodoAlunoAdmin(admin.ModelAdmin):
 
 @admin.register(Candidato)
 class CandidatoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'polo', 'nome', 'telefone1', 'email', 'curso', 'marketing',
+    list_display = ['nome', 'status_atendimento', 'polo', 'telefone1', 'email', 'curso', 'marketing',
                     'criado_por', 'criado_em', 'atualizado_por', 'atualizado_em',
-                    'status_atendimento', 'observacoes', 'todos_periodos']
+                    'observacoes', 'todos_periodos']
     search_fields = ['polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'status_atendimento',
                      'curso__nome', 'marketing__nome', 'status__nome']
     list_filter = ['polo', 'marketing']
@@ -204,8 +204,8 @@ class CandidatoAdmin(admin.ModelAdmin):
 
 @admin.register(Inscrito)
 class InscritoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'polo', 'nome', 'telefone1', 'email', 'curso',
-                    'status_atendimento', 'observacoes', 'todos_periodos']
+    list_display = ['nome', 'status_atendimento', 'polo', 'telefone1', 'email', 'curso',
+                    'observacoes', 'todos_periodos']
     search_fields = ['polo__nome', 'nome', 'telefone1', 'telefone2', 'email', 'status_atendimento',
                      'curso__nome', 'status__nome']
     list_filter = ['polo']
@@ -227,7 +227,7 @@ class InscritoAdmin(admin.ModelAdmin):
 
 @admin.register(ExAluno)
 class ExAlunoAdmin(admin.ModelAdmin):
-    # list_display = ['id', 'periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'situacao', 'data_saida', 'motivo',
+    # list_display = ['periodo', 'polo', 'nome', 'telefone1', 'email', 'curso', 'situacao', 'data_saida', 'motivo',
     #                 'status', 'observacoes']
     list_display = [
         'nom_aluno',
