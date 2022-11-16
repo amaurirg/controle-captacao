@@ -7,7 +7,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 
-from captacao.forms import CandidatoForm, InscritoForm, AlunoForm, ExAlunoForm, AtendimentosCandidatoForm
+from captacao.forms import CandidatoForm, InscritoForm, AlunoForm, ExAlunoForm, AtendimentosCandidatoForm, \
+    AtendimentosInscritoForm, AtendimentosAlunoForm, AtendimentosExAlunoForm
 from captacao.models import (
     Candidato, Periodo, Inscrito, Aluno, ExAluno, AtendimentosAluno,
     AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno, StatusAtendimento
@@ -339,11 +340,25 @@ class CreateNewInscritoAttendance(View):
     def get(self, request):
         descricao = request.GET.get('descricao', None)
         inscrito_id = request.GET.get('inscrito', None)
-        if descricao and inscrito_id:
+        status_id = request.GET.get('statusId', None)
+        if descricao and inscrito_id and status_id:
             inscrito = Inscrito.objects.get(pk=int(inscrito_id))
-            obj = AtendimentosInscrito.objects.create(descricao=descricao, inscrito=inscrito)
+            status = StatusAtendimento.objects.get(pk=int(status_id))
+            obj = AtendimentosInscrito.objects.create(
+                descricao=descricao,
+                inscrito=inscrito,
+                atendente=request.user,
+                status=status
+            )
             obj_data = f'{obj.data.day} de {months[obj.data.month]} de {obj.data.year} às {obj.data.time().strftime("%H:%M")}'
-            data = {'data': obj_data, 'descricao': obj.descricao}
+            data = {
+                'data': obj_data,
+                'descricao': obj.descricao,
+                'atendente': obj.atendente.first_name or obj.atendente.username,
+                'status': obj.status.nome
+            }
+            inscrito.status_atendimento = status.nome
+            inscrito.save()
             return JsonResponse(data)
         return JsonResponse({})
 
@@ -352,11 +367,25 @@ class CreateNewExalunoAttendance(View):
     def get(self, request):
         descricao = request.GET.get('descricao', None)
         exaluno_id = request.GET.get('exaluno', None)
-        if descricao and exaluno_id:
+        status_id = request.GET.get('statusId', None)
+        if descricao and exaluno_id and status_id:
             exaluno = ExAluno.objects.get(pk=int(exaluno_id))
-            obj = AtendimentosExAluno.objects.create(descricao=descricao, exaluno=exaluno)
+            status = StatusAtendimento.objects.get(pk=int(status_id))
+            obj = AtendimentosExAluno.objects.create(
+                descricao=descricao,
+                exaluno=exaluno,
+                atendente=request.user,
+                status=status
+            )
             obj_data = f'{obj.data.day} de {months[obj.data.month]} de {obj.data.year} às {obj.data.time().strftime("%H:%M")}'
-            data = {'data': obj_data, 'descricao': obj.descricao}
+            data = {
+                'data': obj_data,
+                'descricao': obj.descricao,
+                'atendente': obj.atendente.first_name or obj.atendente.username,
+                'status': obj.status.nome
+            }
+            exaluno.status_atendimento = status.nome
+            exaluno.save()
             return JsonResponse(data)
         return JsonResponse({})
 
@@ -365,11 +394,25 @@ class CreateNewAlunoAttendance(View):
     def get(self, request):
         descricao = request.GET.get('descricao', None)
         aluno_id = request.GET.get('aluno', None)
-        if descricao and aluno_id:
+        status_id = request.GET.get('statusId', None)
+        if descricao and aluno_id and status_id:
             aluno = Aluno.objects.get(pk=int(aluno_id))
-            obj = AtendimentosAluno.objects.create(descricao=descricao, aluno=aluno)
+            status = StatusAtendimento.objects.get(pk=int(status_id))
+            obj = AtendimentosAluno.objects.create(
+                descricao=descricao,
+                aluno=aluno,
+                atendente=request.user,
+                status=status
+            )
             obj_data = f'{obj.data.day} de {months[obj.data.month]} de {obj.data.year} às {obj.data.time().strftime("%H:%M")}'
-            data = {'data': obj_data, 'descricao': obj.descricao}
+            data = {
+                'data': obj_data,
+                'descricao': obj.descricao,
+                'atendente': obj.atendente.first_name or obj.atendente.username,
+                'status': obj.status.nome
+            }
+            aluno.status_atendimento = status.nome
+            aluno.save()
             return JsonResponse(data)
         return JsonResponse({})
 
@@ -382,22 +425,41 @@ def periodos(request):
     return render(request, 'periodos.html', context)
 
 
-def attendances(request, pk):
+def atendimentos_candidato(request, pk):
     candidato = get_object_or_404(Candidato, pk=pk)
-    # atendimentos = candidato.atendimentos_candidato.all()
-    # form = CandidatoForm(request.POST or None, instance=candidato)
     status_form = AtendimentosCandidatoForm()
-    # if form.is_valid():
-    #     candidato.atualizado_por = request.user
-    #     candidato.save()
-    #     return redirect(reverse('candidatos'))
     context = {
-        # 'form': form,
         'candidato': candidato,
-        # 'atendimentos': atendimentos,
         'status_form': status_form,
-
-        # 'cand': candidato.atendimentos_candidato.last().status.nome
     }
-    return render(request, 'attendances.html', context)
+    return render(request, 'atendimentos_candidato.html', context)
 
+
+def atendimentos_inscrito(request, pk):
+    inscrito = get_object_or_404(Inscrito, pk=pk)
+    status_form = AtendimentosInscritoForm()
+    context = {
+        'inscrito': inscrito,
+        'status_form': status_form,
+    }
+    return render(request, 'atendimentos_inscrito.html', context)
+
+
+def atendimentos_exaluno(request, pk):
+    exaluno = get_object_or_404(ExAluno, pk=pk)
+    status_form = AtendimentosExAlunoForm()
+    context = {
+        'exaluno': exaluno,
+        'status_form': status_form,
+    }
+    return render(request, 'atendimentos_exaluno.html', context)
+
+
+def atendimentos_aluno(request, pk):
+    aluno = get_object_or_404(Aluno, pk=pk)
+    status_form = AtendimentosAlunoForm()
+    context = {
+        'aluno': aluno,
+        'status_form': status_form,
+    }
+    return render(request, 'atendimentos_aluno.html', context)

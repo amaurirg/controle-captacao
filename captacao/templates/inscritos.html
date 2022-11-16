@@ -35,8 +35,8 @@
             <th>Telefone</th>
             <th>Curso</th>
             <th>Situação</th>
-            <th>Status</th>
-            <th>Data do Contato</th>
+            <th>Último Atendimento</th>
+            <th>Atendimentos</th>
             <th>Editar</th>
             <th>Excluir</th>
         </tr>
@@ -53,8 +53,12 @@
                 {% endif %}
                 <td>{{ inscrito.curso }}</td>
                 <td>{{ inscrito.situacao }}</td>
-                <td>{{ inscrito.status }}</td>
-                <td>{{ inscrito.data_contato|date:"d/m/Y" }}</td>
+                <td>{{ inscrito.status_atendimento }}</td>
+                <td>
+                    <a href="#" onclick="open_modal('{% url 'atendimentos_inscrito' inscrito.id %}')">
+                        <i class="phone square icon black"></i>
+                    </a>
+                </td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'modal_atualiza_inscrito' inscrito.id %}')">
                         <i class="edit icon black"></i>
@@ -75,7 +79,8 @@
             <th>Telefone</th>
             <th>Curso</th>
             <th>Situação</th>
-            <th>Status</th>
+            <th>Último Atendimento</th>
+            <th>Atendimentos</th>
         </tr>
         </tfoot>
     </table>

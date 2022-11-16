@@ -214,9 +214,12 @@ class Inscrito(models.Model):
         verbose_name_plural = 'Inscritos'
 
     def save(self, *args, **kwargs):
-        self.status_atendimento = self.atendimentos_inscrito.last() or 'Sem atendimento'
+        attendance = self.atendimentos_inscrito.first()
+        if attendance:
+            self.status_atendimento = attendance.status.nome
+        else:
+            self.status_atendimento = 'Sem atendimento'
         super(Inscrito, self).save(*args, **kwargs)
-
 
 class ExAluno(models.Model):
     nom_campus = models.ForeignKey(Polo, verbose_name='NomCampus', on_delete=models.PROTECT)
@@ -252,7 +255,11 @@ class ExAluno(models.Model):
         verbose_name_plural = 'Ex Alunos'
 
     def save(self, *args, **kwargs):
-        self.status_atendimento = self.atendimentos_exaluno.last() or 'Sem atendimento'
+        attendance = self.atendimentos_exaluno.first()
+        if attendance:
+            self.status_atendimento = attendance.status.nome
+        else:
+            self.status_atendimento = 'Sem atendimento'
         super(ExAluno, self).save(*args, **kwargs)
 
 
@@ -298,9 +305,12 @@ class Aluno(models.Model):
         verbose_name_plural = 'Alunos'
 
     def save(self, *args, **kwargs):
-        self.status_atendimento = self.atendimentos_aluno.last() or 'Sem atendimento'
+        attendance = self.atendimentos_aluno.first()
+        if attendance:
+            self.status_atendimento = attendance.status.nome
+        else:
+            self.status_atendimento = 'Sem atendimento'
         super(Aluno, self).save(*args, **kwargs)
-
 
 class AtendimentosCandidato(models.Model):
     data = models.DateTimeField(auto_now_add=True)

@@ -37,6 +37,8 @@
             <th>Status Matr</th>
             <th>Ano ingresso</th>
             <th>Saída</th>
+            <th>Último Atendimento</th>
+            <th>Atendimentos</th>
             <th>Editar</th>
             <th>Excluir</th>
         </tr>
@@ -63,12 +65,13 @@
                 <td>{{ exaluno.nom_curso_grupo.nome_abrev }}</td>
                 <td>{{ exaluno.dsc_status_matr }}</td>
                 <td>{{ exaluno.turma_ano_ingresso_abrev }}</td>
-                {% comment %}{% if exaluno.atendente.first_name %}
-                    <td>{{ exaluno.atendente.first_name }}</td>
-                {% else %}
-                    <td>{{ exaluno.atendente }}</td>
-                {% endif %}{% endcomment %}
                 <td>{{ exaluno.data_saida|date:"d/m/Y" }}</td>
+                <td>{{ exaluno.status_atendimento }}</td>
+                <td>
+                    <a href="#" onclick="open_modal('{% url 'atendimentos_exaluno' exaluno.id %}')">
+                        <i class="phone square icon black"></i>
+                    </a>
+                </td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'modal_atualiza_exaluno' exaluno.id %}')">
                         <i class="edit icon black"></i>
@@ -89,9 +92,10 @@
             <th>Nome</th>
             <th>Telefone</th>
             <th>Curso</th>
-            <th>Situação</th>
-            <th>Status</th>
-            <th>Atendente</th>
+            <th>Status Matr</th>
+            <th>Ano Ingresso</th>
+            <th>Saída</th>
+            <th>Último Atendimento</th>
         </tr>
         </tfoot>
     </table>

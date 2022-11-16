@@ -40,6 +40,8 @@
             <th>Bolsista</th>
             <th>Data ingresso</th>
             <th>Previsão de término</th>
+            <th>Último Atendimento</th>
+            <th>Atendimentos</th>
             <th>Editar</th>
         </tr>
         </thead>
@@ -68,6 +70,12 @@
                 <td>{{ aluno.bolsista }}</td>
                 <td>{{ aluno.dat_ingresso|date:"d/m/Y" }}</td>
                 <td>{{ aluno.data_prev_termino|date:"d/m/Y" }}</td>
+                <td>{{ aluno.status_atendimento }}</td>
+                <td>
+                    <a href="#" onclick="open_modal('{% url 'atendimentos_aluno' aluno.id %}')">
+                        <i class="phone square icon black"></i>
+                    </a>
+                </td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'modal_atualiza_aluno' aluno.id %}')">
                         <i class="edit icon black"></i>
@@ -97,6 +105,7 @@
             <th>Bolsista</th>
             <th>Data ingresso</th>
             <th>Previsão de término</th>
+            <th>Último Atendimento</th>
         </tr>
         </tfoot>
     </table>

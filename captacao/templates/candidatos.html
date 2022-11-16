@@ -128,9 +128,9 @@
                 {% endif %}
                 <td>{{ candidato.curso }}</td>
                 <td>{{ candidato.marketing }}</td>
-                <td id="status-atend">{{ candidato.status_atendimento }}</td>
+                <td>{{ candidato.status_atendimento }}</td>
                 <td>
-                    <a href="#" onclick="open_modal('{% url 'attendances' candidato.id %}')">
+                    <a href="#" onclick="open_modal('{% url 'atendimentos_candidato' candidato.id %}')">
                         <i class="phone square icon black"></i>
                     </a>
                 </td>

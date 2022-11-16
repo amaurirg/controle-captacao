@@ -1,5 +1,6 @@
 from django import forms
-from .models import Candidato, Inscrito, Aluno, ExAluno, AtendimentosCandidato
+from .models import Candidato, Inscrito, Aluno, ExAluno, AtendimentosCandidato, AtendimentosInscrito, \
+    AtendimentosExAluno, AtendimentosAluno
 
 
 class CandidatoForm(forms.ModelForm):
@@ -107,3 +108,20 @@ class AtendimentosCandidatoForm(forms.ModelForm):
         fields = ['descricao', 'status']
         model = AtendimentosCandidato
 
+
+class AtendimentosInscritoForm(forms.ModelForm):
+    class Meta:
+        fields = ['descricao', 'status']
+        model = AtendimentosInscrito
+
+
+class AtendimentosExAlunoForm(forms.ModelForm):
+    class Meta:
+        fields = ['descricao', 'status']
+        model = AtendimentosExAluno
+
+
+class AtendimentosAlunoForm(forms.ModelForm):
+    class Meta:
+        fields = ['descricao', 'status']
+        model = AtendimentosAluno

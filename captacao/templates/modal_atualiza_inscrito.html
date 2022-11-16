@@ -10,10 +10,6 @@
         <div class="ui equal width form form-ref">
             <div class="fields">
                 <div class="field">
-                    <h4>Período</h4>
-                    {% render_field form.periodo %}
-                </div>
-                <div class="field">
                     <h4>Polo</h4>
                     {% render_field form.polo %}
                 </div>
@@ -47,16 +43,12 @@
                     <h4>Telefone 2</h4>
                     {% render_field form.telefone2 %}
                 </div>
-                <div class="field">
-                    <h4>Data do contato</h4>
-                    {% render_field form.data_contato %}
-                </div>
             </div>
 
             <div class="fields">
                 <div class="field">
-                    <h4>Status</h4>
-                    {% render_field form.status %}
+                    <h4>Último status de atendimento</h4>
+                    {% render_field form.status_atendimento %}
                 </div>
             </div>
 
@@ -71,8 +63,6 @@
                     </p>
                 </div>
             </div>
-
-            {% include 'attendances.html' %}
 
             <div class="fields">
                 <div class="field">
