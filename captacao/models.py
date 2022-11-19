@@ -390,7 +390,7 @@ class AtendimentosAluno(models.Model):
 
 class UserProfile(models.Model):
     profile = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
-    filepath = models.ImageField()
+    filepath = models.FileField()
 
     def __str__(self):
         return self.profile
