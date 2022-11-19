@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-    <h1>Essa é a Página HOME</h1>
-    {% if request.user.first_name %}
-        <h3>Boas vindas {{ request.user.first_name }}</h3>
-    {% else %}
-        <h3>Boas vindas {{ request.user.username }}</h3>
-    {% endif %}
+    <div style="display: flex; justify-content: center; height: 800px;">
+        <img class="ui fluid image" src="{% static 'img/logo.png' %}" alt=""
+             style="width: 80vw; height: 80vh">
+    </div>
 {% endblock %}
