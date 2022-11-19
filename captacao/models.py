@@ -386,3 +386,11 @@ class AtendimentosAluno(models.Model):
 
     def save(self, *args, **kwargs):
         super(AtendimentosAluno, self).save(*args, **kwargs)
+
+
+class UserProfile(models.Model):
+    profile = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
+    filepath = models.ImageField()
+
+    def __str__(self):
+        return self.profile
