@@ -393,4 +393,4 @@ class UserProfile(models.Model):
     filepath = models.FileField()
 
     def __str__(self):
-        return self.profile
+        return str(self.profile)

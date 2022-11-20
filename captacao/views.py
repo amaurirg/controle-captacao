@@ -467,12 +467,12 @@ def atendimentos_aluno(request, pk):
 
 def upload_photo(request):
     if request.method == 'POST':
-        photo = request.FILES.get('photo-user')
+        photo = request.FILES.get('photoUser')
         new_photo, created = UserProfile.objects.update_or_create(
             profile=request.user,
             defaults={
                 'filepath': photo
             }
         )
-        return JsonResponse({'filepath': new_photo.profile.profile.filepath})
+        return JsonResponse({'filepath': str(new_photo.filepath)})
     return render(request, 'upload_photo.html')
