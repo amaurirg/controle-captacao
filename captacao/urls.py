@@ -6,7 +6,7 @@ from .views import (
     exalunos, modal_atualiza_exaluno, modal_remove_exaluno, alunos, modal_atualiza_aluno,
     CreateNewCandidatoAttendance, CreateNewInscritoAttendance, CreateNewExalunoAttendance,
     CreateNewAlunoAttendance, atendimentos_candidato, relatorio_candidatos, relatorio_inscritos, relatorio_alunos,
-    relatorio_exalunos, atendimentos_inscrito, atendimentos_exaluno, atendimentos_aluno
+    relatorio_exalunos, atendimentos_inscrito, atendimentos_exaluno, atendimentos_aluno, upload_photo
 )
 
 urlpatterns = [
@@ -15,6 +15,7 @@ urlpatterns = [
     path('create/inscrito/attendance', CreateNewInscritoAttendance.as_view(), name='create_inscrito_attendance'),
     path('create/exaluno/attendance', CreateNewExalunoAttendance.as_view(), name='create_exaluno_attendance'),
     path('create/aluno/attendance', CreateNewAlunoAttendance.as_view(), name='create_aluno_attendance'),
+    path('upload_photo/', upload_photo, name='upload_photo'),
     path('periodos/', periodos, name='periodos'),
 
     path('candidatos/', candidatos, name="candidatos"),

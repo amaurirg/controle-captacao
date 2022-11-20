@@ -11,7 +11,7 @@ from captacao.forms import CandidatoForm, InscritoForm, AlunoForm, ExAlunoForm, 
     AtendimentosInscritoForm, AtendimentosAlunoForm, AtendimentosExAlunoForm
 from captacao.models import (
     Candidato, Periodo, Inscrito, Aluno, ExAluno, AtendimentosAluno,
-    AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno, StatusAtendimento
+    AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno, StatusAtendimento, UserProfile
 )
 from core.utils import months, dic_tables
 
@@ -463,3 +463,16 @@ def atendimentos_aluno(request, pk):
         'status_form': status_form,
     }
     return render(request, 'atendimentos_aluno.html', context)
+
+
+def upload_photo(request):
+    if request.method == 'POST':
+        photo = request.FILES.get('photo-user')
+        UserProfile.objects.update_or_create(
+            profile=request.user,
+            defaults={
+                'filepath': photo
+            }
+        )
+        return JsonResponse({'message': 'success'})
+    return render(request, 'upload_photo.html')

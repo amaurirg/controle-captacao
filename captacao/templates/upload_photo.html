@@ -1,0 +1,25 @@
+<div class="content">
+    <form class="ui form" action="{% url 'upload_photo' %}" method="post"
+          enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="ui equal width form-ref">
+            <div class="fields">
+                <div class="field sixteen column wide">
+                    <label for="photo-user">Escolha uma foto</label>
+                    <input type="file" name="photo-user" required>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="submit" id="salvar-novo" class="ui floated button primary actions-buttons">
+                    <i class="thumbs up icon"></i>
+                    Salvar
+                </button>
+                <div class="ui grey deny button">
+                    <i class="thumbs down icon"></i>
+                    Cancelar
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
