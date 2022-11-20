@@ -121,7 +121,7 @@
 <body>
 <div class="context">
     <div class="ui top attached menu blue_background">
-        <a class="item"  id="menu-sidebar" style="padding: 0 30px; color: white">
+        <a class="item" id="menu-sidebar" style="padding: 0 30px; color: white">
             <i class="sidebar icon"></i>
             Menu
         </a>
@@ -134,11 +134,15 @@
                 {% endif %}
             </div>
             <div class="ui dropdown item" style="color: white">
-                <img class="ui avatar image" src="{{ user.profile.filepath.url }}" alt="">
+                {% if user.profile.filepath %}
+                    <img class="ui avatar image" src="{{ user.profile.filepath.url }}" alt="">
+                {% else %}
+                    <img class="ui avatar image" src="" alt="">
+                {% endif %}
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a href="/admin/" class="item">Administração</a>
-                    <a href="#"  class="item" onclick="open_modal('{% url 'upload_photo' %}')">
+                    <a href="#" class="item" onclick="open_modal('{% url 'upload_photo' %}')">
                         Meu Perfil
                     </a>
                     <a href="{% url 'logout' %}" class="item">Sair</a>
