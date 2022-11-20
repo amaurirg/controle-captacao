@@ -1,0 +1,25 @@
+<div id="modalUploadPhoto" class="content">
+    <form id="form-photo" class="ui form" action="{% url 'upload_photo' %}" method="post"
+          enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="ui equal width form-ref">
+            <div class="fields">
+                <div class="field sixteen column wide">
+                    <label for="photoUser">Escolha uma foto</label>
+                    <input type="file" name="photoUser" required>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="button" id="salvar-novo" class="ui floated button primary actions-buttons" onclick="uploadPhoto(event)">
+                    <i class="thumbs up icon"></i>
+                    Salvar
+                </button>
+                <div id="closeModalUploadPhoto" class="ui grey deny button">
+                    <i class="thumbs down icon"></i>
+                    Cancelar
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
