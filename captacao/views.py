@@ -1,10 +1,13 @@
 import unicodedata
-
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMultiAlternatives
 from django.db.models import Count
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils.html import strip_tags
 from django.views import View
 
 from captacao.forms import CandidatoForm, InscritoForm, AlunoForm, ExAlunoForm, AtendimentosCandidatoForm, \
@@ -210,15 +213,6 @@ def exalunos(request):
     return render(request, 'exalunos.html', context)
 
 
-# def modal_cria_exaluno(request):
-#     form = ExAlunoForm(request.POST or None)
-#     if form.is_valid():
-#         form.instance.criado_por = request.user
-#         form.save()
-#         return redirect(reverse('exalunos'))
-#     return render(request, 'modal_cria_exaluno.html', {'form': form})
-
-
 def modal_atualiza_exaluno(request, pk):
     exaluno = get_object_or_404(ExAluno, pk=pk)
     atendimentos = exaluno.atendimentos_exaluno.all()
@@ -261,15 +255,6 @@ def alunos(request):
         'filtro': periodo
     }
     return render(request, 'alunos.html', context)
-
-
-# def modal_cria_aluno(request):
-#     form = AlunoForm(request.POST or None)
-#     if form.is_valid():
-#         form.instance.criado_por = request.user
-#         form.save()
-#         return redirect(reverse('alunos'))
-#     return render(request, 'modal_cria_aluno.html', {'form': form})
 
 
 def modal_atualiza_aluno(request, pk):
@@ -476,3 +461,21 @@ def upload_photo(request):
         )
         return JsonResponse({'filepath': str(new_photo.filepath)})
     return render(request, 'upload_photo.html')
+
+
+def envia_emails(request):
+    html_content = render_to_string(
+        'emails/teste.html',
+        {'nome': request.user.get_full_name().title()}
+    )
+    text_content = strip_tags(html_content)
+    email = EmailMultiAlternatives(
+        subject='Testando o envio de emails',
+        body=text_content,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[settings.DEFAULT_FROM_EMAIL]
+    )
+
+    email.attach_alternative(html_content, 'text/html')
+    email.send()
+    return HttpResponse('Email enviado')
