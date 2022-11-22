@@ -1,5 +1,7 @@
+import json
 import unicodedata
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMultiAlternatives
 from django.db.models import Count
@@ -14,7 +16,7 @@ from captacao.forms import CandidatoForm, InscritoForm, AlunoForm, ExAlunoForm, 
     AtendimentosInscritoForm, AtendimentosAlunoForm, AtendimentosExAlunoForm
 from captacao.models import (
     Candidato, Periodo, Inscrito, Aluno, ExAluno, AtendimentosAluno,
-    AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno, StatusAtendimento, UserProfile
+    AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno, StatusAtendimento, UserProfile, EmailFile
 )
 from core.utils import months, dic_tables
 
@@ -466,7 +468,10 @@ def upload_photo(request):
 def envia_emails(request):
     html_content = render_to_string(
         'emails/teste.html',
-        {'nome': request.user.get_full_name().title()}
+        {
+            'nome': request.user.get_full_name().title() or request.user.username,
+            'texto': request.POST.get('texto')
+        }
     )
     text_content = strip_tags(html_content)
     email = EmailMultiAlternatives(
@@ -479,3 +484,16 @@ def envia_emails(request):
     email.attach_alternative(html_content, 'text/html')
     email.send()
     return HttpResponse('Email enviado')
+
+
+def create_email(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        try:
+            email = EmailFile.objects.create(filename=data['nome'], email=data['email'])
+            return JsonResponse({'create': 'success', 'id': email.pk, 'nome': email.filename, 'email': email.email})
+        except:
+            return JsonResponse({'Erro': 'Nome inválido ou arquivo já existe'})
+            # messages.error(request, {'Erro': 'Nome inválido ou arquivo já existe'})
+            # messages.add_message(request, messages.ERROR, 'Nome inválido ou arquivo já existe')
+    return render(request, 'create_email.html')

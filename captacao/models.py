@@ -394,3 +394,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return str(self.profile)
+
+
+class EmailFile(models.Model):
+    filename = models.CharField(max_length=100, unique=True)
+    email = models.TextField()
+
+    def __str__(self):
+        return self.filename

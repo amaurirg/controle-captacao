@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        {% csrf_token %}
+        <div style="margin: 50px 0; display: flex; justify-content: space-between">
+            <h2 class="blue_color">Escreva o texto para criar o email</h2>
+            <div class="ui input">
+                <input type="text" name="nome-arquivo" placeholder="Digite um nome para salvar o email"
+                       style="width: 400px; margin-right: 10px;" required>
+                <button class="ui button primary" onclick="enviaDadosEmail()">Criar email</button>
+            </div>
+        </div>
+        <div id="editor" aria-required=""></div>
+    </div>
+{% endblock %}

@@ -7,7 +7,7 @@ from django.urls import path
 
 from captacao.models import (StatusAtendimento, Marketing, Curso, Polo, Candidato, Periodo, Motivo, Inscrito,
                              ExAluno, SituacaoInscrito, SituacaoExAluno, Aluno, Modalidade, AtendimentosAluno,
-                             AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno, UserProfile)
+                             AtendimentosCandidato, AtendimentosInscrito, AtendimentosExAluno, UserProfile, EmailFile)
 from core.utils import export_xlsx, export_as_csv, salva_criado_por, aluno_fields, exaluno_fields
 
 
@@ -588,3 +588,8 @@ export_as_csv.short_description = "Exportar dados em formato CSV"
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ['profile', 'filepath']
+
+
+@admin.register(EmailFile)
+class EmailFileAdmin(admin.ModelAdmin):
+    list_display = ['filename', 'email']
