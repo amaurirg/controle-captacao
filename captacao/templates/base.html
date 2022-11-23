@@ -116,6 +116,12 @@
             box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
             padding: 20px;
         }
+
+        .ql-editor {
+            min-height: 70vh;
+            background-color: white;
+        }
+
     </style>
 </head>
 <body>
@@ -350,27 +356,29 @@
                 }
             }
         },
-        placeholder: 'Seu texto aqui ...',
+        placeholder: 'Texto do email ...',
         theme: 'snow'   // 'bubble'
     });
 
     function urlImage() {
         let selection = this.quill.getSelection()
         let prompt = window.prompt('URL da imagem')
-        if(prompt === null || prompt === '') {
+        if (prompt === null || prompt === '') {
             return
         }
         this.quill.insertEmbed(selection.index, prompt)
     }
 
-    function returnHTML() {
-        console.log(quill.root.innerHTML)
-        return quill.root.innerHTML
-    }
-
     function enviaDadosEmail() {
         csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
-        artigo = returnHTML()
+        filename = document.querySelector('input[name=nome-arquivo]')
+        editorText = quill.root.innerHTML
+
+        if (filename.value === '' || editorText === '<p><br></p>'){
+            console.log('Preencha os campos')
+
+            return
+        }
 
         fetch('/captacao/create_email', {
             method: 'POST',
@@ -378,12 +386,14 @@
                 'X-CSRFToken': csrfToken
             },
             body: JSON.stringify({
-                'nome': document.querySelector('input[name=nome-arquivo]').value,
-                'email': email
+                'nome': filename.value,
+                'email': editorText
             })
         }).then(function (result) {
+            filename.value = ""
+            editorText = ""
             return result.json()
-        })
+        }).catch((error) => console.error('ERRO'));
     }
 
 </script>

@@ -1,7 +1,6 @@
 import json
 import unicodedata
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMultiAlternatives
 from django.db.models import Count
@@ -491,9 +490,12 @@ def create_email(request):
         data = json.loads(request.body)
         try:
             email = EmailFile.objects.create(filename=data['nome'], email=data['email'])
-            return JsonResponse({'create': 'success', 'id': email.pk, 'nome': email.filename, 'email': email.email})
+            return JsonResponse({
+                'create': 'success',
+                'id': email.pk,
+                'nome': email.filename,
+                'email': email.email,
+            }, status=201)
         except:
-            return JsonResponse({'Erro': 'Nome inválido ou arquivo já existe'})
-            # messages.error(request, {'Erro': 'Nome inválido ou arquivo já existe'})
-            # messages.add_message(request, messages.ERROR, 'Nome inválido ou arquivo já existe')
+            return JsonResponse({'Erro': 'Nome inválido ou arquivo já existe'}, status=409)
     return render(request, 'create_email.html')
