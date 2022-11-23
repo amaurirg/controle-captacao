@@ -7,7 +7,7 @@ from .views import (
     CreateNewCandidatoAttendance, CreateNewInscritoAttendance, CreateNewExalunoAttendance,
     CreateNewAlunoAttendance, atendimentos_candidato, relatorio_candidatos, relatorio_inscritos, relatorio_alunos,
     relatorio_exalunos, atendimentos_inscrito, atendimentos_exaluno, atendimentos_aluno, upload_photo, envia_emails,
-    create_email
+    create_email, emails
 )
 
 urlpatterns = [
@@ -48,4 +48,5 @@ urlpatterns = [
 
     path('envia_emails', envia_emails, name='envia_emails'),
     path('create_email', create_email, name='create_email'),
+    path('emails', emails, name='emails'),
 ]

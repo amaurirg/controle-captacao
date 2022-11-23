@@ -499,3 +499,8 @@ def create_email(request):
         except:
             return JsonResponse({'Erro': 'Nome inválido ou arquivo já existe'}, status=409)
     return render(request, 'create_email.html')
+
+
+def emails(request):
+    email = EmailFile.objects.get(filename='unisa')
+    return render(request, 'emails.html', {'email': email.email})
