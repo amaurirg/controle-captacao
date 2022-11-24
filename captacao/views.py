@@ -485,7 +485,8 @@ def envia_emails(request):
     return HttpResponse('Email enviado')
 
 
-def create_email(request):
+def emails(request):
+    emails = EmailFile.objects.all()
     if request.method == 'POST':
         data = json.loads(request.body)
         try:
@@ -497,10 +498,10 @@ def create_email(request):
                 'email': email.email,
             }, status=201)
         except:
-            return JsonResponse({'Erro': 'Nome inválido ou arquivo já existe'}, status=409)
-    return render(request, 'create_email.html')
+            return JsonResponse({'erro': 'Nome inválido ou arquivo já existe'}, status=409)
+    return render(request, 'emails.html', {'emails': emails})
 
 
-def emails(request):
-    email = EmailFile.objects.get(filename='unisa')
-    return render(request, 'emails.html', {'email': email.email})
+def email_detail(request, pk):
+    email = EmailFile.objects.get(pk=pk)
+    return JsonResponse({'email': email.email})

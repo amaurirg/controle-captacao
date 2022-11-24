@@ -107,10 +107,11 @@
         <tr>
             <th>Polo</th>
             <th>Nome</th>
-            <th>Telefone</th>
             <th>Curso</th>
             <th>Marketing</th>
             <th>Último Atendimento</th>
+            <th>Telefone</th>
+            <th>Email</th>
             <th>Atendimentos</th>
             <th>Editar</th>
             <th>Excluir</th>
@@ -121,14 +122,11 @@
             <tr>
                 <td>{{ candidato.polo }}</td>
                 <td>{{ candidato.nome }}</td>
-                {% if candidato.telefone1 == None %}
-                    <td>Não informado</td>
-                {% else %}
-                    <td>{{ candidato.telefone1 }}</td>
-                {% endif %}
                 <td>{{ candidato.curso }}</td>
                 <td>{{ candidato.marketing }}</td>
                 <td>{{ candidato.status_atendimento }}</td>
+                <td>{% firstof candidato.telefone1 candidato.telefone2 'Não informado' %}</td>
+                <td>{{ candidato.email }}</td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'atendimentos_candidato' candidato.id %}')">
                         <i class="phone square icon black"></i>
@@ -151,10 +149,10 @@
         <tr>
             <th>Polo</th>
             <th>Nome</th>
-            <th>Telefone</th>
             <th>Curso</th>
             <th>Marketing</th>
             <th>Último Atendimento</th>
+            <th>Telefone</th>
         </tr>
         </tfoot>
     </table>

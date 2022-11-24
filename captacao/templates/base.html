@@ -163,7 +163,7 @@
             <a href="{% url 'inscritos' %}" class="item sidebar_toggle">Inscritos</a>
             <a href="{% url 'exalunos' %}" class="item sidebar_toggle">Ex alunos</a>
             <a href="{% url 'alunos' %}" class="item sidebar_toggle">Alunos</a>
-            <a href="{% url 'create_email' %}" class="item sidebar_toggle">Criar e-mail</a>
+            <a href="{% url 'emails' %}" class="item sidebar_toggle">E-mails</a>
             {% if request.user.is_authenticated %}
                 <a href="{% url 'logout' %}" class="item sidebar_toggle">Sair</a>
             {% endif %}
@@ -369,15 +369,37 @@
         this.quill.insertEmbed(selection.index, prompt)
     }
 
+    function showErrorMessage() {
+        $('#message-error').transition('fly left')
+    }
+
+    function showSuccessMessage() {
+        $('#message-success').transition('fly left')
+    }
+
+    function textErrorMessage(texto){
+        $('#msg-error').text(texto);
+            showErrorMessage()
+            setTimeout(showErrorMessage, 3500);
+    }
+
+    function textSuccessMessage(texto){
+        $('#msg-success').text(texto);
+            showSuccessMessage()
+            setTimeout(showSuccessMessage, 3500);
+    }
+
     function enviaDadosEmail() {
         csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
         filename = document.querySelector('input[name=nome-arquivo]')
         editorText = quill.root.innerHTML
 
-        if (filename.value === '' || editorText === '<p><br></p>'){
-            console.log('Preencha os campos')
-
-            return
+        if (filename.value === '' && editorText === '<p><br></p>') {
+            return textErrorMessage('Necessário um nome e o texto')
+        } else if (filename.value === '') {
+            return textErrorMessage('Faltando um nome para ser salvo')
+        } else if (editorText === '<p><br></p>') {
+            return textErrorMessage('Crie um texto para o email')
         }
 
         fetch('/captacao/create_email', {
@@ -390,10 +412,38 @@
                 'email': editorText
             })
         }).then(function (result) {
-            filename.value = ""
-            editorText = ""
-            return result.json()
-        }).catch((error) => console.error('ERRO'));
+            if (result.status === 201) {
+                filename.value = ""
+                quill.root.innerHTML = ""
+                textSuccessMessage('Email salvo com sucesso!')
+                return result.json()
+            }
+            else if (result.status === 409) {
+                return textErrorMessage('Já existe um email com esse nome')
+            }
+            else {
+                return textErrorMessage('Solicitação não processada')
+            }
+        })
+    }
+
+    function changedEmail() {
+        csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        const idEmail = document.getElementById("select-email").value;
+        fetch(`/captacao/email_detail/${idEmail}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                'nome': idEmail,
+            })
+        }).then(function (response) {
+            return response.json()
+
+        }).then(function (data) {
+            quill.root.innerHTML = data.email
+        })
     }
 
 </script>

@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-{{ email|safe }}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        {% csrf_token %}
+        <div class="ui right aligned grid">
+            <div class="right floated left aligned three wide column">
+                <div class="ui error message hidden" id="message-error">
+                    <div class="header">
+                        <span id="msg-error"></span>
+                    </div>
+                </div>
+                <div class="ui success message hidden" id="message-success">
+                    <div class="header">
+                        <span id="msg-success"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="max-height: 40px; margin: 50px 0; display: flex; justify-content: space-between">
+            <h2 class="blue_color" style="padding-top: 5px">Escreva o texto para criar o email</h2>
+
+            <div class="ui input">
+                <input type="text" name="nome-arquivo" placeholder="Digite um nome para salvar o email"
+                       style="width: 400px; margin-right: 10px;" required>
+                <button class="ui button primary" onclick="enviaDadosEmail()">Salvar texto do email</button>
+            </div>
+
+            <select class="ui search dropdown" id="select-email" onchange="changedEmail()">
+                <option value="">Emails salvos</option>
+                    <option value="emails-salvos">Emails salvos</option>
+                {% for email in emails %}
+                    <option value="{{ email.pk }}">{{ email }}</option>
+                {% endfor %}
+            </select>
+
+        </div>
+        <div id="editor"></div>
+    </div>
+{% endblock %}
