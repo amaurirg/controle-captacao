@@ -402,7 +402,7 @@
             return textErrorMessage('Crie um texto para o email')
         }
 
-        fetch('/captacao/create_email', {
+        fetch('/captacao/emails', {
             method: 'POST',
             headers: {
                 'X-CSRFToken': csrfToken
@@ -442,6 +442,11 @@
             return response.json()
 
         }).then(function (data) {
+
+            document.getElementById("btnSaveTextEmail").setAttribute('disabled', 'disabled')
+            document.querySelector('input[name=nome-arquivo]').setAttribute('disabled', 'disabled')
+            {#document.getElementById("btnSaveTextEmail").style.visibility = "hidden";#}
+            {#document.querySelector('input[name=nome-arquivo]').setAttribute('type', 'hidden')#}
             quill.root.innerHTML = data.email
         })
     }
