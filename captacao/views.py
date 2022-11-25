@@ -464,20 +464,25 @@ def upload_photo(request):
     return render(request, 'upload_photo.html')
 
 
-def envia_emails(request):
+def envia_email(request, pk):
+    email = EmailFile.objects.get(pk=pk)
+    data = json.loads(request.body)
     html_content = render_to_string(
-        'emails/teste.html',
+        'emails/padrao.html',
         {
-            'nome': request.user.get_full_name().title() or request.user.username,
-            'texto': request.POST.get('texto')
+            # 'nome': request.user.get_full_name().title() or request.user.username,
+            'texto': email.email
         }
     )
     text_content = strip_tags(html_content)
     email = EmailMultiAlternatives(
-        subject='Testando o envio de emails',
+        # subject='Testando o envio de emails',
+        subject=data.get('assunto'),
         body=text_content,
+        # body=html_content,
         from_email=settings.DEFAULT_FROM_EMAIL,
-        to=[settings.DEFAULT_FROM_EMAIL]
+        # to=[settings.DEFAULT_FROM_EMAIL]
+        to=data['emails']
     )
 
     email.attach_alternative(html_content, 'text/html')

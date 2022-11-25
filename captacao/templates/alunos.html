@@ -12,6 +12,8 @@
                 <form class="ui form" action="{% url 'alunos' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% include 'filter.html' with url_redirect='alunos' %}
+                    <button class="ui button primary right floated" id="btnSendEmail" onclick="sendEmail()">
+                        <i class="envelope outline icon" style="margin-right: 10px"></i>Enviar email</button>
                 </form>
             </div>
         </div>

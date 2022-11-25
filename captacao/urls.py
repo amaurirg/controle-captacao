@@ -6,8 +6,8 @@ from .views import (
     exalunos, modal_atualiza_exaluno, modal_remove_exaluno, alunos, modal_atualiza_aluno,
     CreateNewCandidatoAttendance, CreateNewInscritoAttendance, CreateNewExalunoAttendance,
     CreateNewAlunoAttendance, atendimentos_candidato, relatorio_candidatos, relatorio_inscritos, relatorio_alunos,
-    relatorio_exalunos, atendimentos_inscrito, atendimentos_exaluno, atendimentos_aluno, upload_photo, envia_emails,
-    emails, email_detail
+    relatorio_exalunos, atendimentos_inscrito, atendimentos_exaluno, atendimentos_aluno, upload_photo, emails,
+    email_detail, envia_email
 )
 
 urlpatterns = [
@@ -46,7 +46,7 @@ urlpatterns = [
     path('relatorio_alunos/', relatorio_alunos, name='relatorio_alunos'),
     path('relatorio_exalunos/', relatorio_exalunos, name='relatorio_exalunos'),
 
-    path('envia_emails', envia_emails, name='envia_emails'),
+    path('envia_email/<int:pk>', envia_email, name='envia_email'),
     path('emails', emails, name='emails'),
     path('email_detail/<int:pk>', email_detail, name='email_detail'),
 ]

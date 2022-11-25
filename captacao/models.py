@@ -402,3 +402,11 @@ class EmailFile(models.Model):
 
     def __str__(self):
         return self.filename
+
+# class EmailFile(models.Model):
+#     filename = models.CharField('Nome', max_length=100, unique=True)
+#     subject = models.CharField('Assunto', max_length=200)
+#     email = models.TextField('Email')
+#
+#     def __str__(self):
+#         return self.filename

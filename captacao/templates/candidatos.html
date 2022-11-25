@@ -14,7 +14,7 @@
     </div>{% endcomment %}
 
     <div class="ui grid grid-style">
-        <div class="four column row">
+        <div class="two column row">
             <div class="left floated column">
                 <h1 class="ui left floated blue_color">Candidatos</h1>
             </div>
@@ -23,8 +23,13 @@
                 <form class="ui form" action="{% url 'candidatos' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% include 'filter.html' with url_redirect='candidatos' %}
-                    <div id="showmodal-candidato" class="ui right floated button primary">
-                        Adicionar novo candidato
+                    <div style="display: flex; justify-content: space-between">
+                        <div id="showmodal-candidato" class="ui right floated button primary">
+                            Adicionar novo candidato
+                        </div>
+                        <button class="ui button primary" id="btnSendEmail" onclick="sendEmail()">
+                            <i class="envelope outline icon" style="margin-right: 10px"></i>Enviar email
+                        </button>
                     </div>
                 </form>
             </div>
@@ -126,7 +131,7 @@
                 <td>{{ candidato.marketing }}</td>
                 <td>{{ candidato.status_atendimento }}</td>
                 <td>{% firstof candidato.telefone1 candidato.telefone2 'Não informado' %}</td>
-                <td>{{ candidato.email }}</td>
+                <td>{% firstof candidato.email 'Não informado' %}</td>
                 <td>
                     <a href="#" onclick="open_modal('{% url 'atendimentos_candidato' candidato.id %}')">
                         <i class="phone square icon black"></i>

@@ -12,8 +12,13 @@
                 <form class="ui form" action="{% url 'inscritos' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% include 'filter.html' with url_redirect='inscritos' %}
-                    <div id="showmodal-inscrito" class="ui right floated button primary">
-                        Adicionar novo inscrito
+                    <div style="display: flex; justify-content: space-between">
+                        <div id="showmodal-inscrito" class="ui right floated button primary">
+                            Adicionar novo inscrito
+                        </div>
+                        <button class="ui button primary" id="btnSendEmail" onclick="sendEmail()">
+                            <i class="envelope outline icon" style="margin-right: 10px"></i>Enviar email
+                        </button>
                     </div>
                 </form>
             </div>

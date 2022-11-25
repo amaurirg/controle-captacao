@@ -377,16 +377,16 @@
         $('#message-success').transition('fly left')
     }
 
-    function textErrorMessage(texto){
+    function textErrorMessage(texto) {
         $('#msg-error').text(texto);
-            showErrorMessage()
-            setTimeout(showErrorMessage, 3500);
+        showErrorMessage()
+        setTimeout(showErrorMessage, 3500);
     }
 
-    function textSuccessMessage(texto){
+    function textSuccessMessage(texto) {
         $('#msg-success').text(texto);
-            showSuccessMessage()
-            setTimeout(showSuccessMessage, 3500);
+        showSuccessMessage()
+        setTimeout(showSuccessMessage, 3500);
     }
 
     function enviaDadosEmail() {
@@ -412,18 +412,21 @@
                 'email': editorText
             })
         }).then(function (result) {
+            {% comment %}console.log('result =', result.json()){% endcomment %}
             if (result.status === 201) {
                 filename.value = ""
                 quill.root.innerHTML = ""
+
                 textSuccessMessage('Email salvo com sucesso!')
                 return result.json()
-            }
-            else if (result.status === 409) {
+            } else if (result.status === 409) {
                 return textErrorMessage('Já existe um email com esse nome')
-            }
-            else {
+            } else {
                 return textErrorMessage('Solicitação não processada')
             }
+        }).then(function (data) {
+            console.log('data =', data)
+            $('#select-email').append($("<option></option>").attr("value", data.id).text(data.nome));
         })
     }
 
@@ -436,7 +439,7 @@
                 'X-CSRFToken': csrfToken
             },
             body: JSON.stringify({
-                'nome': idEmail,
+                'idEmail': idEmail,
             })
         }).then(function (response) {
             return response.json()
@@ -449,6 +452,71 @@
             {#document.querySelector('input[name=nome-arquivo]').setAttribute('type', 'hidden')#}
             quill.root.innerHTML = data.email
         })
+    }
+
+    function sendEmail() {
+        {% comment %}event.preventDefault(){% endcomment %}
+        {% comment %}const students = getStudents(){% endcomment %}
+        {% comment %}console.log('Sem email =', students.studentsWithoutEmail){% endcomment %}
+        csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        {#const idEmail = document.getElementById("select-email").value;#}
+        const idEmail = '65'
+        {% comment %}editorText = quill.root.innerHTML{% endcomment %}
+
+        {% comment %}if (filename.value === '' && editorText === '<p><br></p>') {
+            return textErrorMessage('Necessário um nome e o texto')
+        } else if (filename.value === '') {
+            return textErrorMessage('Faltando um nome para ser salvo')
+        } else if (editorText === '<p><br></p>') {
+            return textErrorMessage('Crie um texto para o email')
+        }{% endcomment %}
+
+        fetch(`/captacao/envia_email/${idEmail}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                'idEmail': idEmail,
+                {% comment %}'assunto': 'Testando o envio de emails',{% endcomment %}
+                'assunto': 'ATENÇÃO AO CALENDÁRIO DAS PROVAS DO TRIMESTRE – 2022/4 – TURMA DE SETEMBRO',
+                {% comment %}'students': students.studentsOk{% endcomment %}
+                'emails': getStudents()
+            })
+        }).then(function (result) {
+            console.log('status =', result.status)
+            if (result.status === 200) {
+                filename.value = ""
+                quill.root.innerHTML = ""
+                textSuccessMessage('Email enviado com sucesso!')
+                return result.json()
+            }
+                {% comment %}else if (result.status === 409) {
+                    return textErrorMessage('Já existe um email com esse nome')
+                }{% endcomment %}
+            else {
+                return textErrorMessage('Solicitação não processada')
+            }
+        })
+    }
+
+    function getStudents() {
+        const studentsOk = [];
+        const studentsWithoutEmail = [];
+        $('#table-geral tbody tr').each(function () {
+            if (this.cells[6].textContent.trim().includes('@')) {
+                {#studentsOk.push({nome: this.cells[1].textContent.trim(), email: this.cells[6].textContent.trim()});#}
+                studentsOk.push(this.cells[6].textContent.trim());
+            }
+            else {
+                {#studentsWithoutEmail.push({nome: this.cells[1].textContent.trim(), email: this.cells[6].textContent.trim()});#}
+                studentsWithoutEmail.push(this.cells[6].textContent.trim());
+            }
+        });
+        {% comment %}const students = [studentsOk, studentsWithoutEmail]{% endcomment %}
+        {% comment %}console.log('students =', students){% endcomment %}
+        {#return {studentsOk, studentsWithoutEmail}#}
+        return studentsOk
     }
 
 </script>
