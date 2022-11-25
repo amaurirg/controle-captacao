@@ -592,4 +592,4 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(EmailFile)
 class EmailFileAdmin(admin.ModelAdmin):
-    list_display = ['filename', 'email']
+    list_display = ['filename', 'subject', 'email']

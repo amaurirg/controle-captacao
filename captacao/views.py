@@ -495,11 +495,12 @@ def emails(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         try:
-            email = EmailFile.objects.create(filename=data['nome'], email=data['email'])
+            email = EmailFile.objects.create(filename=data['nome'], subject=data['assunto'], email=data['email'])
             return JsonResponse({
                 'create': 'success',
                 'id': email.pk,
                 'nome': email.filename,
+                'assunto': email.subject,
                 'email': email.email,
             }, status=201)
         except:

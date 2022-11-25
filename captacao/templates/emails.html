@@ -21,7 +21,9 @@
             <h2 class="blue_color" style="padding-top: 5px">Escreva o texto para criar o email</h2>
             <button class="ui button primary" id="btnSendEmail" onclick="sendEmail()">Enviar email</button>
             <div class="ui input">
-                <input type="text" name="nome-arquivo" placeholder="Digite um nome para salvar o email"
+                <input type="text" name="nome-arquivo" placeholder="Nome para salvar o email"
+                       style="width: 400px; margin-right: 10px;" required>
+                <input type="text" name="assunto-email" placeholder="Assunto do email"
                        style="width: 400px; margin-right: 10px;" required>
                 <button class="ui button primary" id="btnSaveTextEmail" onclick="enviaDadosEmail()">Salvar texto do email</button>
             </div>

@@ -392,13 +392,19 @@
     function enviaDadosEmail() {
         csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
         filename = document.querySelector('input[name=nome-arquivo]')
+        subject = document.querySelector('input[name=assunto-email]')
         editorText = quill.root.innerHTML
 
-        if (filename.value === '' && editorText === '<p><br></p>') {
-            return textErrorMessage('Necessário um nome e o texto')
-        } else if (filename.value === '') {
+        {% comment %}if (filename.value === '' && subject.value === '' && editorText === '<p><br></p>') {
+            return textErrorMessage('Necessário nome, assunto e texto')
+        } else{% endcomment %}
+        if (filename.value === '') {
             return textErrorMessage('Faltando um nome para ser salvo')
-        } else if (editorText === '<p><br></p>') {
+        }
+        else if (subject.value === '') {
+            return textErrorMessage('Digite o assunto do email')
+        }
+        else if (editorText === '<p><br></p>') {
             return textErrorMessage('Crie um texto para o email')
         }
 
@@ -409,12 +415,14 @@
             },
             body: JSON.stringify({
                 'nome': filename.value,
-                'email': editorText
+                'email': editorText,
+                'assunto': subject.value
             })
         }).then(function (result) {
             {% comment %}console.log('result =', result.json()){% endcomment %}
             if (result.status === 201) {
                 filename.value = ""
+                subject.value = ""
                 quill.root.innerHTML = ""
 
                 textSuccessMessage('Email salvo com sucesso!')
@@ -448,6 +456,7 @@
 
             document.getElementById("btnSaveTextEmail").setAttribute('disabled', 'disabled')
             document.querySelector('input[name=nome-arquivo]').setAttribute('disabled', 'disabled')
+            document.querySelector('input[name=assunto-email]').setAttribute('disabled', 'disabled')
             {#document.getElementById("btnSaveTextEmail").style.visibility = "hidden";#}
             {#document.querySelector('input[name=nome-arquivo]').setAttribute('type', 'hidden')#}
             quill.root.innerHTML = data.email
